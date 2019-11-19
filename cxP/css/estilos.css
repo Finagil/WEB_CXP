@@ -1,0 +1,143 @@
+﻿.labelsA {
+    background-color: #4BA5FF;
+}
+
+.labelsF {
+    background-color: #ff6600;
+}
+
+.labelsHeader {
+    background-color: #4BA5FF;
+}
+
+.alturaCorta {
+    overflow-y: auto;
+    height: 500px;
+}
+
+.alturaLarga {
+    overflow-y: auto;
+    height: 700px;
+}
+
+.disabledF {
+    pointer-events: none;
+    opacity: 0.6;
+    background-color: #ff6600;
+}
+
+.disabledA {
+    pointer-events: none;
+    opacity: 0.6;
+    background-color: #4BA5FF;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:sans-serif;
+}
+header {
+    height: 50px;
+    background: #4BA5FF;
+    color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+headerA {
+    height: 50px;
+    background: #ff6a00;
+    color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#btn-menu{
+    display:none;
+}
+
+header label{
+    font-size:10px;
+    cursor:pointer;
+    display:none;
+}
+
+headerA label {
+    font-size: 10px;
+    cursor: pointer;
+    display: none;
+}
+
+.menu ul{
+    background: #ff6a00;
+    display:flex;
+    list-style:none;
+}
+
+.menu ul ul {
+    display:none;
+}
+
+.menu a {
+    display:block;
+    padding:15px 20px;
+    color:#ffffff;
+    text-decoration: none;
+}
+
+.menu a:hover{
+    background: #808080;
+}
+
+menu a span{
+    margin-left: 10px;
+}
+
+.menu ul li:hover ul{
+    display:block;
+    position:absolute;
+}
+
+@media(max-width:768px){
+    header label{
+        display:block;
+    }
+    headerA label {
+        display: block;
+    }
+
+    .menu{
+        position:absolute;
+        top:50px;
+        left:0;
+        width:50%;
+        transform:translateX(-100%);
+        transition:all 0.5s;
+    }
+        .menu ul {
+            display: block;
+            background: radial-gradient(0,0,0,0,4);
+        }
+    .menu ul li:hover ul{
+        display:none;
+        position:static;
+    }
+    .menu a span{
+        position:absolute;
+        right:5px;
+    }
+    #btn-menu:checked ~ .menu{
+        transform:translateX(0%);
+    }
+
+    .menu ul ul{
+        background: radial-gradient(0,0,0,0,4);
+    }
+
+    .menu ul ul a{
+       padding: 15px 40px;
+    }
+}

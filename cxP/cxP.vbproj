@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{37099AAD-E1C4-4266-9196-73268F058C76}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>cxP</RootNamespace>
+    <AssemblyName>cxP</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>cxP.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>cxP.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=19.1.0.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <HintPath>..\packages\AjaxControlToolkit.19.1.0\lib\net40\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Design, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.VSDesigner, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Web, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="RoderoLib">
+      <HintPath>..\..\WEB_Pasivos\RoderoLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Web References.mx.gob.sat.facturaelectronica.consultaqr.Reference.cs, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\cxP_\cxP\bin\Web References.mx.gob.sat.facturaelectronica.consultaqr.Reference.cs.dll</HintPath>
+    </Reference>
+    <Reference Include="XmlValidation">
+      <HintPath>C:\Users\vicente-apolonio\Downloads\XMLValidation\XMLValidation\2.0\XmlValidation\bin\Debug\XmlValidation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="configuration.svcinfo" />
+    <Content Include="css\calendar-blue.css" />
+    <Content Include="css\estilos.css" />
+    <Content Include="css\fontello.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="dsProduccion.xsc">
+      <DependentUpon>dsProduccion.xsd</DependentUpon>
+    </Content>
+    <Content Include="dsProduccion.xss">
+      <DependentUpon>dsProduccion.xsd</DependentUpon>
+    </Content>
+    <Content Include="frmAutCompGastos.aspx" />
+    <Content Include="frmAutConComprobante.aspx" />
+    <Content Include="frmAutReembolsos.aspx" />
+    <Content Include="frmAutSinComprobante.aspx" />
+    <Content Include="frmBanner.aspx" />
+    <Content Include="frmComprobarGastos.aspx" />
+    <Content Include="frmConComprobante.aspx" />
+    <Content Include="frmDetallePago.aspx" />
+    <Content Include="frmMisComprobacionesGts.aspx" />
+    <Content Include="frmMisSolicitudes.aspx" />
+    <Content Include="frmMisSolicitudesSCR.aspx" />
+    <Content Include="frmMisSolicitudesSC.aspx" />
+    <Content Include="frmMisPagoContratos.aspx" />
+    <Content Include="frmSinReembolso.aspx" />
+    <Content Include="frmSinComprobante.aspx" />
+    <Content Include="frmSolicitudReemb.aspx" />
+    <Content Include="imagenes\admiracion.jpg" />
+    <Content Include="imagenes\calender.png" />
+    <Content Include="imagenes\check1.JPG" />
+    <Content Include="imagenes\fondoconteblanco.png" />
+    <Content Include="imagenes\LOGO FINAGIL.JPG" />
+    <Content Include="imagenes\logo-shop-primary.png" />
+    <Content Include="imagenes\logo-sin-fondo_web.png" />
+    <Content Include="imagenes\logo-small.png" />
+    <Content Include="imagenes\logoArfin.JPG" />
+    <Content Include="imagenes\LOGOpeque.JPG" />
+    <Content Include="imagenes\LOGOpeque2.JPG" />
+    <Content Include="imagenes\sep.JPG" />
+    <Content Include="images\custom_b.png" />
+    <Content Include="images\custom_bl.png" />
+    <Content Include="images\custom_br.png" />
+    <Content Include="images\custom_l.png" />
+    <Content Include="images\custom_r.png" />
+    <Content Include="images\custom_t.png" />
+    <Content Include="images\custom_tl.png" />
+    <Content Include="images\custom_tr.png" />
+    <Content Include="images\datepicker_b.png" />
+    <Content Include="images\datepicker_bl.png" />
+    <Content Include="images\datepicker_br.png" />
+    <Content Include="images\datepicker_l.png" />
+    <Content Include="images\datepicker_r.png" />
+    <Content Include="images\datepicker_t.png" />
+    <Content Include="images\datepicker_tl.png" />
+    <Content Include="images\datepicker_tr.png" />
+    <Content Include="images\field.png" />
+    <Content Include="Impersonation.cs" />
+    <Content Include="js\calendar-en.min.js" />
+    <None Include="ConsultaCFDIService.wsdl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ConsultaCFDIService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="dsSeguridad.xsc">
+      <DependentUpon>dsSeguridad.xsd</DependentUpon>
+    </Content>
+    <None Include="dsProduccion.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsProduccion.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="dsSeguridad.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSeguridad.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="dsSeguridad.xss">
+      <DependentUpon>dsSeguridad.xsd</DependentUpon>
+    </Content>
+    <Content Include="imagenes\giphy.webp" />
+    <None Include="js\jquery-1.4.1-vsdoc.js" />
+    <Content Include="js\jquery-1.4.1.js" />
+    <Content Include="js\jquery-1.4.1.min.js" />
+    <Content Include="js\jquery.dynDateTime.min.js" />
+    <Content Include="js\menu.js" />
+    <Content Include="Login.aspx" />
+    <Content Include="Lector_XML.WS_Consulta_SAT.Acuse.datasource" />
+    <None Include="packages.config" />
+    <None Include="Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.vb</LastGenOutput>
+    </None>
+    <Content Include="styFW.css" />
+    <Content Include="ValidaCfdi.aspx" />
+    <Content Include="verPdfGts.aspx" />
+    <Content Include="verPdf.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClaseHash.vb" />
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="dsProduccion.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsProduccion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsSeguridad.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSeguridad.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Finagil.Master.designer.vb">
+      <DependentUpon>Finagil.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Finagil.Master.vb">
+      <DependentUpon>Finagil.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmAutCompGastos.aspx.designer.vb">
+      <DependentUpon>frmAutCompGastos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmAutCompGastos.aspx.vb">
+      <DependentUpon>frmAutCompGastos.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmAutConComprobante.aspx.designer.vb">
+      <DependentUpon>frmAutConComprobante.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmAutConComprobante.aspx.vb">
+      <DependentUpon>frmAutConComprobante.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmAutReembolsos.aspx.designer.vb">
+      <DependentUpon>frmAutReembolsos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmAutReembolsos.aspx.vb">
+      <DependentUpon>frmAutReembolsos.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmAutSinComprobante.aspx.designer.vb">
+      <DependentUpon>frmAutSinComprobante.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmAutSinComprobante.aspx.vb">
+      <DependentUpon>frmAutSinComprobante.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmBanner.aspx.designer.vb">
+      <DependentUpon>frmBanner.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmBanner.aspx.vb">
+      <DependentUpon>frmBanner.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmComprobarGastos.aspx.designer.vb">
+      <DependentUpon>frmComprobarGastos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmComprobarGastos.aspx.vb">
+      <DependentUpon>frmComprobarGastos.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmConComprobante.aspx.designer.vb">
+      <DependentUpon>frmConComprobante.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmConComprobante.aspx.vb">
+      <DependentUpon>frmConComprobante.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmDetallePago.aspx.designer.vb">
+      <DependentUpon>frmDetallePago.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmDetallePago.aspx.vb">
+      <DependentUpon>frmDetallePago.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmMisComprobacionesGts.aspx.designer.vb">
+      <DependentUpon>frmMisComprobacionesGts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMisComprobacionesGts.aspx.vb">
+      <DependentUpon>frmMisComprobacionesGts.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmMisSolicitudes.aspx.designer.vb">
+      <DependentUpon>frmMisSolicitudes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMisSolicitudes.aspx.vb">
+      <DependentUpon>frmMisSolicitudes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMisSolicitudesSCR.aspx.designer.vb">
+      <DependentUpon>frmMisSolicitudesSCR.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMisSolicitudesSCR.aspx.vb">
+      <DependentUpon>frmMisSolicitudesSCR.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmMisSolicitudesSC.aspx.designer.vb">
+      <DependentUpon>frmMisSolicitudesSC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMisSolicitudesSC.aspx.vb">
+      <DependentUpon>frmMisSolicitudesSC.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmMisPagoContratos.aspx.designer.vb">
+      <DependentUpon>frmMisPagoContratos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMisPagoContratos.aspx.vb">
+      <DependentUpon>frmMisPagoContratos.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmSinReembolso.aspx.designer.vb">
+      <DependentUpon>frmSinReembolso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSinReembolso.aspx.vb">
+      <DependentUpon>frmSinReembolso.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmSinComprobante.aspx.designer.vb">
+      <DependentUpon>frmSinComprobante.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSinComprobante.aspx.vb">
+      <DependentUpon>frmSinComprobante.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmSolicitudReemb.aspx.designer.vb">
+      <DependentUpon>frmSolicitudReemb.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSolicitudReemb.aspx.vb">
+      <DependentUpon>frmSolicitudReemb.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="rptComprobacionGts.vb">
+      <DependentUpon>rptComprobacionGts.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="rptSolicitudDePagoCopia.vb">
+      <DependentUpon>rptSolicitudDePagoCopia.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="rptSolicitudDePagoSCCopia.vb">
+      <DependentUpon>rptSolicitudDePagoSCCopia.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="utilerias.vb" />
+    <Compile Include="variables.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="readXML_CFDI_class.vb" />
+    <Compile Include="Reference.vb" />
+    <Compile Include="Reference1.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="rptSolicitudDePagoSC.vb">
+      <DependentUpon>rptSolicitudDePagoSC.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="rptSolicitudDePago.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptSolicitudDePago.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ValidaCfdi.aspx.designer.vb">
+      <DependentUpon>ValidaCfdi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ValidaCfdi.aspx.vb">
+      <DependentUpon>ValidaCfdi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="validaXSD.vb" />
+    <Compile Include="verPdfGts.aspx.designer.vb">
+      <DependentUpon>verPdfGts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="verPdfGts.aspx.vb">
+      <DependentUpon>verPdfGts.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="verPdf.aspx.designer.vb">
+      <DependentUpon>verPdf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="verPdf.aspx.vb">
+      <DependentUpon>verPdf.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptComprobacionGts.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptComprobacionGts.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptSolicitudDePagoCopia.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSolicitudDePagoCopia.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptSolicitudDePagoSCCopia.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSolicitudDePagoSCCopia.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptSolicitudDePagoSC.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSolicitudDePagoSC.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rptSolicitudDePago.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptSolicitudDePago.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Finagil.Master" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="files\" />
+    <Folder Include="font\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>57623</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:1906/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
