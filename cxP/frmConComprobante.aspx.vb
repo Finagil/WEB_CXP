@@ -235,6 +235,7 @@ Public Class frmConComprobante
                     'Dim generaEvento As Boolean = taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue)
 
                     folSolPagoFinagil = taEmpresas.ConsultaFolio(Session.Item("Empresa"))
+                    Dim folioPolizaDiario As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
                     Session.Item("namePDF") = Session.Item("Empresa") & "-" & folSolPagoFinagil
                     Dim GeneraEventoContable As Boolean = False
                     If chkg.Checked = True Then
@@ -245,7 +246,7 @@ Public Class frmConComprobante
 
                         For Each rows2 As dsProduccion.CXP_XmlCfdi2Row In tableCFDI2
 
-                            Dim folioPolizaDiario As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
+
                             Dim existeUUIDReg As String = taRegContable.ExisteUUID_ScalarQuery(rows2.uuid)
 
                             row = dtDetalle.NewRow
@@ -391,7 +392,7 @@ Public Class frmConComprobante
 
 
 #Region "Provision"
-                                'Provisión
+                                'Provisión de diario
                                 'If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
                                 If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = False Then
                                     If existeUUIDReg = "NE" Then
@@ -449,16 +450,16 @@ Public Class frmConComprobante
                                     If existeUUIDReg = "NE" Then
                                         taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), 0, rows2.total, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " " & row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
                                     End If
-                                    taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+
                                 End If
 #End Region
                             End If
 
                             dtDetalle.Rows.Add(row)
                         Next
-                        '    If chkContrato.Checked = False And GeneraEventoContable = True Then
-
-                        'End If
+                        If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = False Then
+                            taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                        End If
                         cont2 += 1
                     End If
                     cont += 1

@@ -378,12 +378,22 @@ Public Class frmSinComprobante
                     Response.Write("</script>")
                     rptSolPago.Dispose()
 
+                    'Evento contable
+                    Try
+                        If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = False Then
+                            taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), 0, ddlProveedor.SelectedItem.Text, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now)
+                            taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), 0, CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), ddlProveedor.SelectedValue, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now)
+                        End If
+                    Catch ex As Exception
+                        lblErrorGeneral.Text = ex.ToString
+                        ModalPopupExtender1.Show()
+                    End Try
 
                     cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
-                    cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
+                        cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
 
-                Else
-                    lblErrorGeneral.Text = "El importe solicitado no es numérico"
+                    Else
+                        lblErrorGeneral.Text = "El importe solicitado no es numérico"
                     ModalPopupExtender1.Show()
                 End If
             Else

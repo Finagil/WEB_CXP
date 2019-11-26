@@ -472,7 +472,7 @@
                     </div>
                     <asp:ObjectDataSource ID="comprobantesFiscales" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCFDiXRfc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter">
                         <SelectParameters>
-                            <asp:SessionParameter Name="rfcEmisor" SessionField="rfcEmisor" Type="String" DefaultValue="GAU030322BV4" />
+                            <asp:SessionParameter Name="rfcEmisor" SessionField="rfcEmisor" Type="String" DefaultValue="" />
                             <asp:SessionParameter Name="meses" SessionField="mesesFacturas" Type="Decimal" />
                         </SelectParameters>
                     </asp:ObjectDataSource>
