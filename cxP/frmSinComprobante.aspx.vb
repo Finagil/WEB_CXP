@@ -83,7 +83,7 @@ Public Class frmSinComprobante
         If Not IsPostBack Then
 
             odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
-            odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+            odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
 
             If ddlConcepto.Items.Count = -1 Then
                 'Response.Redirect("~/Default.aspx")
@@ -614,7 +614,8 @@ Public Class frmSinComprobante
             txtImporteCartaNeteto.Enabled = True
             odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
             'odsConceptos.FilterExpression = "idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
-            odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+            'odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+            odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
         Else
             ddlClientes.Enabled = False
             ddlContratos.Enabled = False
@@ -623,7 +624,8 @@ Public Class frmSinComprobante
             odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
             'odsConceptos.FilterExpression = "idConcepto = '" & drDatosEmpresa.idConceptoGastos & "'"
             'odsConceptos.FilterExpression = "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
-            odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+            'odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+            odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
         End If
     End Sub
 

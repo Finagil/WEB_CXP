@@ -684,19 +684,15 @@
                     </ajaxToolkit:TabContainer>
                     </div>
                     
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   
-                   
+                    <br />
                     
-                    
-                    
-                </td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRevisar" runat="server" CssClass="Botones" Text="Revisar" />
+                    &nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td class="auto-style30" colspan="8" id="contenedor2ID" runat="server">
                     
-                    <asp:Button ID="btnRevisar" runat="server" CssClass="Botones" Text="Revisar" />
                     <br />
                    
                    

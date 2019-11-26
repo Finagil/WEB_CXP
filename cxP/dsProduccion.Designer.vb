@@ -4289,6 +4289,12 @@ Partial Public Class dsProduccion
         
         Private columneventoContable As Global.System.Data.DataColumn
         
+        Private columnctaCargoPago As Global.System.Data.DataColumn
+        
+        Private columnctaAbonoPago As Global.System.Data.DataColumn
+        
+        Private columnomisionEC As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Sub New()
@@ -4389,6 +4395,30 @@ Partial Public Class dsProduccion
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property ctaCargoPagoColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnctaCargoPago
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property ctaAbonoPagoColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnctaAbonoPago
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public ReadOnly Property omisionECColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnomisionEC
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -4425,9 +4455,9 @@ Partial Public Class dsProduccion
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
-        Public Overloads Function AddCXP_ConceptosRow(ByVal nombre As String, ByVal cuentaEgreso As String, ByVal impuesto As String, ByVal tipoProducto As String, ByVal cuentaProv As String, ByVal tipoConcepto As Decimal, ByVal eventoContable As Boolean) As CXP_ConceptosRow
+        Public Overloads Function AddCXP_ConceptosRow(ByVal nombre As String, ByVal cuentaEgreso As String, ByVal impuesto As String, ByVal tipoProducto As String, ByVal cuentaProv As String, ByVal tipoConcepto As Decimal, ByVal eventoContable As Boolean, ByVal ctaCargoPago As Decimal, ByVal ctaAbonoPago As Decimal, ByVal omisionEC As Boolean) As CXP_ConceptosRow
             Dim rowCXP_ConceptosRow As CXP_ConceptosRow = CType(Me.NewRow,CXP_ConceptosRow)
-            Dim columnValuesArray() As Object = New Object() {Nothing, nombre, cuentaEgreso, impuesto, tipoProducto, cuentaProv, tipoConcepto, eventoContable}
+            Dim columnValuesArray() As Object = New Object() {Nothing, nombre, cuentaEgreso, impuesto, tipoProducto, cuentaProv, tipoConcepto, eventoContable, ctaCargoPago, ctaAbonoPago, omisionEC}
             rowCXP_ConceptosRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowCXP_ConceptosRow)
             Return rowCXP_ConceptosRow
@@ -4464,6 +4494,9 @@ Partial Public Class dsProduccion
             Me.columncuentaProv = MyBase.Columns("cuentaProv")
             Me.columntipoConcepto = MyBase.Columns("tipoConcepto")
             Me.columneventoContable = MyBase.Columns("eventoContable")
+            Me.columnctaCargoPago = MyBase.Columns("ctaCargoPago")
+            Me.columnctaAbonoPago = MyBase.Columns("ctaAbonoPago")
+            Me.columnomisionEC = MyBase.Columns("omisionEC")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -4485,6 +4518,12 @@ Partial Public Class dsProduccion
             MyBase.Columns.Add(Me.columntipoConcepto)
             Me.columneventoContable = New Global.System.Data.DataColumn("eventoContable", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columneventoContable)
+            Me.columnctaCargoPago = New Global.System.Data.DataColumn("ctaCargoPago", GetType(Decimal), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnctaCargoPago)
+            Me.columnctaAbonoPago = New Global.System.Data.DataColumn("ctaAbonoPago", GetType(Decimal), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnctaAbonoPago)
+            Me.columnomisionEC = New Global.System.Data.DataColumn("omisionEC", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnomisionEC)
             Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnidConcepto}, true))
             Me.columnidConcepto.AutoIncrement = true
             Me.columnidConcepto.AutoIncrementSeed = -1
@@ -19889,6 +19928,51 @@ Partial Public Class dsProduccion
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property ctaCargoPago() As Decimal
+            Get
+                Try 
+                    Return CType(Me(Me.tableCXP_Conceptos.ctaCargoPagoColumn),Decimal)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("El valor de la columna 'ctaCargoPago' de la tabla 'CXP_Conceptos' es DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCXP_Conceptos.ctaCargoPagoColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property ctaAbonoPago() As Decimal
+            Get
+                Try 
+                    Return CType(Me(Me.tableCXP_Conceptos.ctaAbonoPagoColumn),Decimal)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("El valor de la columna 'ctaAbonoPago' de la tabla 'CXP_Conceptos' es DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCXP_Conceptos.ctaAbonoPagoColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Property omisionEC() As Boolean
+            Get
+                Try 
+                    Return CType(Me(Me.tableCXP_Conceptos.omisionECColumn),Boolean)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("El valor de la columna 'omisionEC' de la tabla 'CXP_Conceptos' es DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCXP_Conceptos.omisionECColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Function IsnombreNull() As Boolean
             Return Me.IsNull(Me.tableCXP_Conceptos.nombreColumn)
         End Function
@@ -19969,6 +20053,42 @@ Partial Public Class dsProduccion
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
         Public Sub SeteventoContableNull()
             Me(Me.tableCXP_Conceptos.eventoContableColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsctaCargoPagoNull() As Boolean
+            Return Me.IsNull(Me.tableCXP_Conceptos.ctaCargoPagoColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetctaCargoPagoNull()
+            Me(Me.tableCXP_Conceptos.ctaCargoPagoColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsctaAbonoPagoNull() As Boolean
+            Return Me.IsNull(Me.tableCXP_Conceptos.ctaAbonoPagoColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetctaAbonoPagoNull()
+            Me(Me.tableCXP_Conceptos.ctaAbonoPagoColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Function IsomisionECNull() As Boolean
+            Return Me.IsNull(Me.tableCXP_Conceptos.omisionECColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")>  _
+        Public Sub SetomisionECNull()
+            Me(Me.tableCXP_Conceptos.omisionECColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
@@ -35309,6 +35429,9 @@ Namespace dsProduccionTableAdapters
             tableMapping.ColumnMappings.Add("cuentaProv", "cuentaProv")
             tableMapping.ColumnMappings.Add("tipoConcepto", "tipoConcepto")
             tableMapping.ColumnMappings.Add("eventoContable", "eventoContable")
+            tableMapping.ColumnMappings.Add("ctaCargoPago", "ctaCargoPago")
+            tableMapping.ColumnMappings.Add("ctaAbonoPago", "ctaAbonoPago")
+            tableMapping.ColumnMappings.Add("omisionEC", "omisionEC")
             Me._adapter.TableMappings.Add(tableMapping)
         End Sub
         
@@ -35326,14 +35449,14 @@ Namespace dsProduccionTableAdapters
             Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(0).Connection = Me.Connection
             Me._commandCollection(0).CommandText = "SELECT        idConcepto, nombre, cuentaEgreso, impuesto, tipoProducto, cuentaPro"& _ 
-                "v, tipoConcepto, eventoContable"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            CXP_Conceptos"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (id"& _ 
-                "Empresa = @idEmpresa)"
+                "v, tipoConcepto, eventoContable, ctaCargoPago, ctaAbonoPago, omisionEC"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM    "& _ 
+                "        CXP_Conceptos"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (idEmpresa = @idEmpresa)"
             Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(0).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idEmpresa", Global.System.Data.SqlDbType.[Decimal], 9, Global.System.Data.ParameterDirection.Input, 18, 0, "idEmpresa", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(1).Connection = Me.Connection
-            Me._commandCollection(1).CommandText = "SELECT        ISNULL(eventoContable, 0) AS eventoContable"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            CXP_Co"& _ 
-                "nceptos"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (idConcepto = @idConcepto)"
+            Me._commandCollection(1).CommandText = "SELECT        ISNULL(omisionEC, 0) AS eventoContable"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            CXP_Concept"& _ 
+                "os"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (idConcepto = @idConcepto)"
             Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idConcepto", Global.System.Data.SqlDbType.[Decimal], 9, Global.System.Data.ParameterDirection.Input, 18, 0, "idConcepto", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(2) = New Global.System.Data.SqlClient.SqlCommand()
@@ -35517,7 +35640,7 @@ Namespace dsProduccionTableAdapters
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function GeneraEventoCont_ScalarQuery(ByVal idConcepto As Decimal) As Global.System.Nullable(Of Boolean)
+        Public Overloads Overridable Function GeneraEventoCont_ScalarQuery(ByVal idConcepto As Decimal) As Object
             Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(1)
             command.Parameters(0).Value = CType(idConcepto,Decimal)
             Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
@@ -35535,9 +35658,9 @@ Namespace dsProduccionTableAdapters
             End Try
             If ((returnValue Is Nothing)  _
                         OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
-                Return New Global.System.Nullable(Of Boolean)()
+                Return Nothing
             Else
-                Return New Global.System.Nullable(Of Boolean)(CType(returnValue,Boolean))
+                Return CType(returnValue,Object)
             End If
         End Function
         

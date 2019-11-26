@@ -324,7 +324,7 @@
             <tr>
                 <td class="auto-style11" colspan="6">
                     <div class="auto-style20a">
-                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataKeyNames="idXmlCfdi" DataSourceID="comprobantesFiscales" Height="16px" Width="1226px" ForeColor="#333333" HorizontalAlign="Center" Visible="False">
+                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataKeyNames="idXmlCfdi" DataSourceID="comprobantesFiscales" Height="16px" Width="1226px" ForeColor="#333333" HorizontalAlign="Center">
                             <SelectedRowStyle BackColor="#E0E0E0" />
                             <Columns>
                                 <asp:TemplateField HeaderText="-" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
@@ -472,7 +472,7 @@
                     </div>
                     <asp:ObjectDataSource ID="comprobantesFiscales" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCFDiXRfc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter">
                         <SelectParameters>
-                            <asp:SessionParameter Name="rfcEmisor" SessionField="rfcEmisor" Type="String" />
+                            <asp:SessionParameter Name="rfcEmisor" SessionField="rfcEmisor" Type="String" DefaultValue="GAU030322BV4" />
                             <asp:SessionParameter Name="meses" SessionField="mesesFacturas" Type="Decimal" />
                         </SelectParameters>
                     </asp:ObjectDataSource>

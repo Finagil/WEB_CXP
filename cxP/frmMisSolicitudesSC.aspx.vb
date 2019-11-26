@@ -65,6 +65,7 @@ Public Class frmMisSolicitudesSC
         Dim fecha As String = ""
 
         If e.CommandName = "Cancelar" Then
+            GridView1.Enabled = False
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), CInt(GridView1.Rows(e.CommandArgument).Cells(0).Text))
             Dim nRowCXPPagos As dsProduccion.CXP_PagosRow
             For Each rows As dsProduccion.CXP_PagosRow In td
@@ -168,6 +169,6 @@ Public Class frmMisSolicitudesSC
 
             Response.Redirect("~/frmMisSolicitudesSC.aspx")
         End If
-
+        GridView1.Enabled = True
     End Sub
 End Class

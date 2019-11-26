@@ -345,10 +345,12 @@ Public Class frmSinReembolso
             Else
                 lblErrorGeneral.Text = "El importe solicitado no es numérico"
                 ModalPopupExtender1.Show()
+                bloquea()
             End If
         Else
             lblErrorGeneral.Text = "No se ha seleccionado un autorizante"
             ModalPopupExtender1.Show()
+            bloquea()
         End If
         limpiar()
     End Sub
@@ -459,6 +461,7 @@ Public Class frmSinReembolso
                     If CDec(txtMontoSolicitado.Text) <> (Session.Item("totalb") + Session.Item("totala")) Then
                         lblErrorGeneral.Text = "El importe a reembolsar es distinto al monto solicitado"
                         ModalPopupExtender1.Show()
+                        bloquea()
                         Exit Sub
                     End If
                     txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
@@ -485,11 +488,13 @@ Public Class frmSinReembolso
             Else
                 lblErrorGeneral.Text = "El importe solicitado no es numérico"
                 ModalPopupExtender1.Show()
+                bloquea()
             End If
 
             If IsNumeric(txtImporteCartaNeteto.Text) > 0 Then
                 lblErrorGeneral.Text = "El importe solicitado para la carta neteo no es numérico"
                 ModalPopupExtender1.Show()
+                bloquea()
             End If
             If IsNumeric(txtImporteCartaNeteto.Text) Then
                 If CDec(txtImporteCartaNeteto.Text) > 0 Then
@@ -499,22 +504,48 @@ Public Class frmSinReembolso
                 End If
             End If
         Else
+            bloquea()
             lblErrorGeneral.Text = "No se ha seleccionado un autorizante"
             ModalPopupExtender1.Show()
+            Exit Sub
         End If
+        'cmbCentroDeCostos.Enabled = False
+        'cmbFormaPago.Enabled = False
+        'cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"), CDec(Session.Item("Empresa")))
+        'cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
+        txtMontoSolicitado.Enabled = False
+        txtDescripcionPago.Enabled = False
+        txtFechaPago.Enabled = False
+        desbloquea()
+    End Sub
+
+    Public Sub bloquea()
+        lblAdjuntos.Visible = False
+        fup1.Visible = False
+        btnSolicitar.Visible = False
+        txtRevision.Visible = False
+        btnCancelar.Visible = False
+    End Sub
+
+    Public Sub desbloquea()
         lblAdjuntos.Visible = True
         fup1.Visible = True
         btnSolicitar.Visible = True
         txtRevision.Visible = True
         btnCancelar.Visible = True
-        'cmbCentroDeCostos.Enabled = False
-        'cmbFormaPago.Enabled = False
-        'cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"), CDec(Session.Item("Empresa")))
-        'cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
     End Sub
 
     Protected Sub btnCancelar_Click(sender As Object, e As EventArgs) Handles btnCancelar.Click
         limpiar()
+        bloquea()
+        txtMontoSolicitado.Enabled = True
+        txtDescripcionPago.Enabled = True
+        txtFechaPago.Enabled = True
+        btnCancelar.Visible = False
+        btnSolicitar.Visible = False
+        GridView1.DataSource = Session.Item("")
+        GridView2.DataSource = Session.Item("")
+        txtImporteCartaNeteto.Text = "0"
     End Sub
 
     Protected Sub chkContrato_CheckedChanged(sender As Object, e As EventArgs) Handles chkContrato.CheckedChanged

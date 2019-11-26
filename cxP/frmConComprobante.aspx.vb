@@ -95,7 +95,10 @@ Public Class frmConComprobante
         lbl69B.ForeColor = Color.Green
 
         Session.Item("rfcEmisor") = taProveedor.ObtRfc_ScalarQuery(ddlProveedores.SelectedValue)
+        'MsgBox(Session.Item("rfcEmisor") & Session.Item("mesesFacturas"))
         comprobantesFiscales.FilterExpression = "rfcEmisor ='" & taProveedor.ObtRfc_ScalarQuery(ddlProveedores.SelectedValue) & "' AND rfcReceptor ='" & Session.Item("rfcEmpresa") & "'"
+        'comprobantesFiscales.FilterExpression = "rfcEmisor ='" & taProveedor.ObtRfc_ScalarQuery(ddlProveedores.SelectedValue) & "'"
+
         GridView1.Visible = True
 
         Dim ta69 As New dsProduccionTableAdapters.CRED_Lista_Art69TableAdapter
@@ -169,409 +172,417 @@ Public Class frmConComprobante
             odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
             odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "')"
         End If
-
-
     End Sub
 
 
 
     Protected Sub btnProcesar_Click(sender As Object, e As EventArgs) Handles btnProcesar.Click
         btnProcesar.Enabled = False
-        If Session.Item("Usuario") = "" Then
-            Response.Redirect("~/Login.aspx")
-            Exit Sub
-        End If
-        Dim taRegContable As New dsProduccionTableAdapters.CXP_RegContTableAdapter
-        Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
-        Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
-        Dim taImpuesto As New dsProduccionTableAdapters.CXP_ImpuestoTableAdapter
-        Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
+        Try
+            If Session.Item("Usuario") = "" Then
+                Response.Redirect("~/Login.aspx")
+                Exit Sub
+            End If
+            Dim taRegContable As New dsProduccionTableAdapters.CXP_RegContTableAdapter
+            Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
+            Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
+            Dim taImpuesto As New dsProduccionTableAdapters.CXP_ImpuestoTableAdapter
+            Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
 
-        Dim fechaRegistroCont As Date = Date.Now
-
-
-        If ddlAutorizo.SelectedItem.Text <> "" Then
-            Dim mail As String = "#" & taGenCorresoFases.ObtieneCorreo_ScalarQuery(ddlAutorizo.SelectedValue)
-            Dim nombreAutorizante2 As String = taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("OPERACIONES_CXP")
+            Dim fechaRegistroCont As Date = Date.Now
 
 
-            Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
-
-            dtDetalle.Columns.Add("rfcEmisor", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("rfcReceptor", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("serie", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("folio", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("uuid", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("impuesto", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("mImpuestoT", Type.GetType("System.Decimal"))
-            dtDetalle.Columns.Add("mImpuestoR", Type.GetType("System.Decimal"))
-            dtDetalle.Columns.Add("mImpLocalT", Type.GetType("System.Decimal"))
-            dtDetalle.Columns.Add("mImpLocalR", Type.GetType("System.Decimal"))
-            dtDetalle.Columns.Add("fechaEmision", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("factor", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("SubTotal", Type.GetType("System.Decimal"))
-            dtDetalle.Columns.Add("total", Type.GetType("System.Decimal"))
-            dtDetalle.Columns.Add("totalOrg", Type.GetType("System.Decimal"))
-            dtDetalle.Columns.Add("observaciones", Type.GetType("System.String"))
-            dtDetalle.Columns.Add("concepto", Type.GetType("System.String"))
-
-            Dim row As DataRow
-            Dim cont As Integer = 0
-            Dim cont2 As Integer = 0
-            Dim folSolPagoFinagil As Integer = 0
-            Dim folSolPagoArfin As Integer = 0
-            Dim conCT As Integer = 0
-            Dim totalSolicitud As Decimal = 0
+            If ddlAutorizo.SelectedItem.Text <> "" Then
+                Dim mail As String = "#" & taGenCorresoFases.ObtieneCorreo_ScalarQuery(ddlAutorizo.SelectedValue)
+                Dim nombreAutorizante2 As String = taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("OPERACIONES_CXP")
 
 
-            For Each rows As GridViewRow In GridView1.Rows
-                Dim chkg As CheckBox = rows.Cells(0).FindControl("chk")
-                Dim txtTot As TextBox = rows.Cells(10).FindControl("txtMontoAPagar")
-                Dim txtObs As TextBox = rows.Cells(11).FindControl("txtObservaciones")
-                Dim ddlConc As DropDownList = rows.Cells(12).FindControl("ddlConceptos")
-                Dim txtPorcentaje As TextBox = rows.Cells(11).FindControl("txtPorcentaje")
-                'Dim generaEvento As Boolean = taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue)
+                Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
 
-                folSolPagoFinagil = taEmpresas.ConsultaFolio(Session.Item("Empresa"))
-                Session.Item("namePDF") = Session.Item("Empresa") & "-" & folSolPagoFinagil
-                Dim GeneraEventoContable As Boolean = False
-                If chkg.Checked = True Then
-                    'If taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
-                    '    GeneraEventoContable = True
-                    'End If
-                    taCFDI2.SumaImp_FillBy(tableCFDI2, GridView1.Rows(cont).Cells(7).Text)
+                dtDetalle.Columns.Add("rfcEmisor", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("rfcReceptor", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("serie", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("folio", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("uuid", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("impuesto", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("mImpuestoT", Type.GetType("System.Decimal"))
+                dtDetalle.Columns.Add("mImpuestoR", Type.GetType("System.Decimal"))
+                dtDetalle.Columns.Add("mImpLocalT", Type.GetType("System.Decimal"))
+                dtDetalle.Columns.Add("mImpLocalR", Type.GetType("System.Decimal"))
+                dtDetalle.Columns.Add("fechaEmision", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("factor", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("SubTotal", Type.GetType("System.Decimal"))
+                dtDetalle.Columns.Add("total", Type.GetType("System.Decimal"))
+                dtDetalle.Columns.Add("totalOrg", Type.GetType("System.Decimal"))
+                dtDetalle.Columns.Add("observaciones", Type.GetType("System.String"))
+                dtDetalle.Columns.Add("concepto", Type.GetType("System.String"))
 
-                    For Each rows2 As dsProduccion.CXP_XmlCfdi2Row In tableCFDI2
-
-                        Dim folioPolizaDiario As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
-                        Dim existeUUIDReg As String = taRegContable.ExisteUUID_ScalarQuery(rows2.uuid)
-
-                        row = dtDetalle.NewRow
-
-                        Dim percentPago As Decimal = CDec(txtTot.Text) / CDec(GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", ""))
-
-                        If CDec(txtTot.Text) < rows2.total Then
-                            row("rfcEmisor") = rows2.rfcEmisor
-                            row("rfcReceptor") = rows2.rfcReceptor
-                            row("serie") = rows2.serie.ToString
-                            row("folio") = rows2.folio.ToString
-                            row("uuid") = rows2.uuid.ToString
-                            row("impuesto") = ""
-                            row("mImpuestoT") = Math.Round(CDec(rows2.montoImpuesto.ToString) * percentPago, 2)
-                            row("mImpuestoR") = Math.Round(CDec(rows2.montoImpuestoR.ToString) * percentPago, 2)
-                            row("mImpLocalT") = Math.Round(CDec(rows2.impLocTra.ToString) * percentPago, 2)
-                            row("mImpLocalR") = Math.Round(CDec(rows2.impLocRet.ToString) * percentPago, 2)
-                            row("fechaEmision") = rows2.fechaEmision.ToString
-                            row("factor") = ""
-                            row("subTotal") = Math.Round(CDec(rows2.subTotal) * percentPago, 2)
-                            row("total") = txtTot.Text
-                            row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
-                            row("observaciones") = txtObs.Text
-                            row("concepto") = ddlConc.SelectedItem.Text
-                        ElseIf CDec(txtTot.Text) > rows2.total Then
-                            'Dim dialog As New frmBanner
-
-                            'lblError.Visible = True
-                            lblErrorGeneral.Text = "El importe a pagar no debe ser mayor al saldo de la factura"
-                            ModalPopupExtender1.Show()
-                            Exit Sub
-                        ElseIf IsNumeric(txtPorcentaje.Text) Then
-                            row("rfcEmisor") = rows2.rfcEmisor
-                            row("rfcReceptor") = rows2.rfcReceptor
-                            row("serie") = rows2.serie.ToString
-                            row("folio") = rows2.folio.ToString
-                            row("uuid") = rows2.uuid.ToString
-                            row("impuesto") = ""
-                            row("mImpuestoT") = (CDec(rows2.montoImpuesto.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
-                            row("mImpuestoR") = (CDec(rows2.montoImpuestoR.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
-                            row("mImpLocalT") = (CDec(rows2.impLocTra.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
-                            row("mImpLocalR") = (CDec(rows2.impLocRet.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
-                            row("fechaEmision") = rows2.fechaEmision.ToString
-                            row("factor") = ""
-                            row("subTotal") = (CDec(rows2.subTotal) * (CDec(txtPorcentaje.Text) / 100)).ToString
-                            row("total") = (CDec(txtTot.Text) * (CDec(txtPorcentaje.Text) / 100)).ToString
-                            row("totalOrg") = (CDec(GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")) * (CDec(txtPorcentaje.Text) / 100)).ToString
-                            row("observaciones") = txtObs.Text
-                            row("concepto") = ddlConc.SelectedItem.Text
-                        Else
-                            row("rfcEmisor") = rows2.rfcEmisor
-                            row("rfcReceptor") = rows2.rfcReceptor
-                            row("serie") = rows2.serie.ToString
-                            row("folio") = rows2.folio.ToString
-                            row("uuid") = rows2.uuid.ToString
-                            row("impuesto") = ""
-                            row("mImpuestoT") = rows2.montoImpuesto.ToString
-                            row("mImpuestoR") = rows2.montoImpuestoR.ToString
-                            row("mImpLocalT") = rows2.impLocTra.ToString
-                            row("mImpLocalR") = rows2.impLocRet.ToString
-                            row("fechaEmision") = rows2.fechaEmision.ToString
-                            row("factor") = ""
-                            row("subTotal") = rows2.subTotal
-                            row("total") = txtTot.Text
-                            row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
-                            row("observaciones") = txtObs.Text
-                            row("concepto") = ddlConc.SelectedItem.Text
-                        End If
-
-                        totalSolicitud += CDec(row("total"))
-                        'MsgBox(taProveedor.ObtCuentaProv_ScalarQuery(ddlProveedores.SelectedValue) + ddlProveedores.SelectedValue + GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "") + "0" + ddlProveedores.SelectedItem.Text & " " & row("serie") & " " & row("folio") & row("observaciones") + ddlConc.SelectedValue.ToString, taConceptos.ObtTipoPoliza_ScalarQuery(ddlConc.SelectedValue) + taTipoDocumento.ConsultaFolio(taConceptos.ObtTipoPoliza_ScalarQuery(ddlConc.SelectedValue)) + Session.Item("Empresa"))
-
-                        taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rows2.uuid.ToString)
-
-                        Dim taPagoImpuestos As New dsProduccionTableAdapters.CXP_PagosImpuestosTableAdapter
-                        Dim errores As String = ""
-
-                        If chkContrato.Checked = False Then
-                            For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
-                                Dim efecto As String = ""
-                                Dim tipo As String = ""
-
-                                Dim mPago As Decimal = 0
-
-                                'Prueba de omisión
-                                If rowsCfdi.mTras IsNot Nothing Then
-                                    efecto = "TRA"
-                                    mPago = Math.Round(CDec(Val(rowsCfdi.mTras) * percentPago), 2)
-                                    tipo = "Federal"
-                                    If taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
-                                        lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & " Impuesto: " & rowsCfdi.Impuesto & " Efecto: " & efecto & " Factor: " & rowsCfdi.tipoFactor & " Tipo: " & tipo & " Sin impuesto configurado  " & vbNewLine
-                                        errores = "OK"
-                                    End If
-                                End If
-
-                                'Prueba de omision
-                                If rowsCfdi.mRet IsNot Nothing Then
-                                    efecto = "RET"
-                                    mPago = Math.Round(CDec(Val(rowsCfdi.mRet) * percentPago), 2)
-                                    tipo = "Federal"
-                                    If taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
-                                        lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
-                                        errores = "OK"
-                                    End If
-                                End If
-
-                                If rowsCfdi.mLocTra Is Nothing Or rowsCfdi.mLocTra <> 0 Then
-                                    efecto = "LOC"
-                                    mPago = Math.Round(CDec(Val(rowsCfdi.mLocTra) * percentPago), 2)
-                                    tipo = "Local"
-                                    If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA") = "0" Then
-                                        lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
-                                        errores = "OK"
-                                    End If
-                                End If
-
-                                If rowsCfdi.mLocRet Is Nothing Or rowsCfdi.mLocRet <> 0 Then
-                                    efecto = "LOC"
-                                    mPago = Math.Round(CDec(Val(rowsCfdi.mLocRet) * percentPago), 2)
-                                    tipo = "Local"
-                                    If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET") = "0" Then
-                                        lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
-                                        errores = "OK"
-                                    End If
-                                End If
+                Dim row As DataRow
+                Dim cont As Integer = 0
+                Dim cont2 As Integer = 0
+                Dim folSolPagoFinagil As Integer = 0
+                Dim folSolPagoArfin As Integer = 0
+                Dim conCT As Integer = 0
+                Dim totalSolicitud As Decimal = 0
 
 
-                            Next
-                        End If
-                        If errores = "OK" Then
-                            lblError2.Visible = True
-                            Exit Sub
-                        End If
-                        'Pago Parcial
-                        If chkContrato.Checked = True Then
-                            If cont = 0 Then
-                                taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rows2.fechaEmision, rows2.serie, rows2.folio, rows2.uuid, CDec(row("subTotal")), CDec(row("total")), CDec(row("mImpuestoT")) + CDec(row("mImpLocalT")), CDec(row("mImpuestoR")) + CDec(row("mImpLocalR")), row("observaciones"), ddlConc.SelectedItem.Value, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, rows2.moneda, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                For Each rows As GridViewRow In GridView1.Rows
+                    Dim chkg As CheckBox = rows.Cells(0).FindControl("chk")
+                    Dim txtTot As TextBox = rows.Cells(10).FindControl("txtMontoAPagar")
+                    Dim txtObs As TextBox = rows.Cells(11).FindControl("txtObservaciones")
+                    Dim ddlConc As DropDownList = rows.Cells(12).FindControl("ddlConceptos")
+                    Dim txtPorcentaje As TextBox = rows.Cells(11).FindControl("txtPorcentaje")
+                    'Dim generaEvento As Boolean = taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue)
+
+                    folSolPagoFinagil = taEmpresas.ConsultaFolio(Session.Item("Empresa"))
+                    Session.Item("namePDF") = Session.Item("Empresa") & "-" & folSolPagoFinagil
+                    Dim GeneraEventoContable As Boolean = False
+                    If chkg.Checked = True Then
+                        'If taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
+                        '    GeneraEventoContable = True
+                        'End If
+                        taCFDI2.SumaImp_FillBy(tableCFDI2, GridView1.Rows(cont).Cells(7).Text)
+
+                        For Each rows2 As dsProduccion.CXP_XmlCfdi2Row In tableCFDI2
+
+                            Dim folioPolizaDiario As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
+                            Dim existeUUIDReg As String = taRegContable.ExisteUUID_ScalarQuery(rows2.uuid)
+
+                            row = dtDetalle.NewRow
+
+                            Dim percentPago As Decimal = CDec(txtTot.Text) / CDec(GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", ""))
+
+                            If CDec(txtTot.Text) < rows2.total Then
+                                row("rfcEmisor") = rows2.rfcEmisor
+                                row("rfcReceptor") = rows2.rfcReceptor
+                                row("serie") = rows2.serie.ToString
+                                row("folio") = rows2.folio.ToString
+                                row("uuid") = rows2.uuid.ToString
+                                row("impuesto") = ""
+                                row("mImpuestoT") = Math.Round(CDec(rows2.montoImpuesto.ToString) * percentPago, 2)
+                                row("mImpuestoR") = Math.Round(CDec(rows2.montoImpuestoR.ToString) * percentPago, 2)
+                                row("mImpLocalT") = Math.Round(CDec(rows2.impLocTra.ToString) * percentPago, 2)
+                                row("mImpLocalR") = Math.Round(CDec(rows2.impLocRet.ToString) * percentPago, 2)
+                                row("fechaEmision") = rows2.fechaEmision.ToString
+                                row("factor") = ""
+                                row("subTotal") = Math.Round(CDec(rows2.subTotal) * percentPago, 2)
+                                row("total") = txtTot.Text
+                                row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
+                                row("observaciones") = txtObs.Text
+                                row("concepto") = ddlConc.SelectedItem.Text
+                            ElseIf CDec(txtTot.Text) > rows2.total Then
+                                'Dim dialog As New frmBanner
+
+                                'lblError.Visible = True
+                                lblErrorGeneral.Text = "El importe a pagar no debe ser mayor al saldo de la factura"
+                                ModalPopupExtender1.Show()
+                                Exit Sub
+                            ElseIf IsNumeric(txtPorcentaje.Text) Then
+                                row("rfcEmisor") = rows2.rfcEmisor
+                                row("rfcReceptor") = rows2.rfcReceptor
+                                row("serie") = rows2.serie.ToString
+                                row("folio") = rows2.folio.ToString
+                                row("uuid") = rows2.uuid.ToString
+                                row("impuesto") = ""
+                                row("mImpuestoT") = (CDec(rows2.montoImpuesto.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
+                                row("mImpuestoR") = (CDec(rows2.montoImpuestoR.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
+                                row("mImpLocalT") = (CDec(rows2.impLocTra.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
+                                row("mImpLocalR") = (CDec(rows2.impLocRet.ToString) * (CDec(txtPorcentaje.Text) / 100)).ToString
+                                row("fechaEmision") = rows2.fechaEmision.ToString
+                                row("factor") = ""
+                                row("subTotal") = (CDec(rows2.subTotal) * (CDec(txtPorcentaje.Text) / 100)).ToString
+                                row("total") = (CDec(txtTot.Text) * (CDec(txtPorcentaje.Text) / 100)).ToString
+                                row("totalOrg") = (CDec(GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")) * (CDec(txtPorcentaje.Text) / 100)).ToString
+                                row("observaciones") = txtObs.Text
+                                row("concepto") = ddlConc.SelectedItem.Text
                             Else
-                                taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rows2.fechaEmision, rows2.serie, rows2.folio, rows2.uuid, CDec(row("subTotal")), CDec(row("total")), CDec(row("mImpuestoT")) + CDec(row("mImpLocalT")), CDec(row("mImpuestoR")) + CDec(row("mImpLocalR")), row("observaciones"), ddlConc.SelectedItem.Value, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, rows2.moneda, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                row("rfcEmisor") = rows2.rfcEmisor
+                                row("rfcReceptor") = rows2.rfcReceptor
+                                row("serie") = rows2.serie.ToString
+                                row("folio") = rows2.folio.ToString
+                                row("uuid") = rows2.uuid.ToString
+                                row("impuesto") = ""
+                                row("mImpuestoT") = rows2.montoImpuesto.ToString
+                                row("mImpuestoR") = rows2.montoImpuestoR.ToString
+                                row("mImpLocalT") = rows2.impLocTra.ToString
+                                row("mImpLocalR") = rows2.impLocRet.ToString
+                                row("fechaEmision") = rows2.fechaEmision.ToString
+                                row("factor") = ""
+                                row("subTotal") = rows2.subTotal
+                                row("total") = txtTot.Text
+                                row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
+                                row("observaciones") = txtObs.Text
+                                row("concepto") = ddlConc.SelectedItem.Text
                             End If
-                        Else
-                            taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rows2.fechaEmision, rows2.serie, rows2.folio, rows2.uuid, CDec(row("subTotal")), CDec(row("total")), CDec(row("mImpuestoT")) + CDec(row("mImpLocalT")), CDec(row("mImpuestoR")) + CDec(row("mImpLocalR")), row("observaciones"), ddlConc.SelectedItem.Value, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rows2.moneda, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
 
+                            totalSolicitud += CDec(row("total"))
+                            'MsgBox(taProveedor.ObtCuentaProv_ScalarQuery(ddlProveedores.SelectedValue) + ddlProveedores.SelectedValue + GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "") + "0" + ddlProveedores.SelectedItem.Text & " " & row("serie") & " " & row("folio") & row("observaciones") + ddlConc.SelectedValue.ToString, taConceptos.ObtTipoPoliza_ScalarQuery(ddlConc.SelectedValue) + taTipoDocumento.ConsultaFolio(taConceptos.ObtTipoPoliza_ScalarQuery(ddlConc.SelectedValue)) + Session.Item("Empresa"))
 
-#Region "Provision"
-                            'Provisión
-                            'If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
+                            taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rows2.uuid.ToString)
+
+                            Dim taPagoImpuestos As New dsProduccionTableAdapters.CXP_PagosImpuestosTableAdapter
+                            Dim errores As String = ""
+
                             If chkContrato.Checked = False Then
-                                If existeUUIDReg = "NE" Then
-                                    taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), CDec(rows2.subTotal), 0, rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
-                                End If
-                                Dim contador As Integer = 0
                                 For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
                                     Dim efecto As String = ""
                                     Dim tipo As String = ""
-                                    Dim retecionL As String = ""
+
                                     Dim mPago As Decimal = 0
 
+                                    'Prueba de omisión
                                     If rowsCfdi.mTras IsNot Nothing Then
                                         efecto = "TRA"
                                         mPago = Math.Round(CDec(Val(rowsCfdi.mTras) * percentPago), 2)
                                         tipo = "Federal"
-                                        'taPagoImpuestos.Insert(rowsCfdi.Impuesto, mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), rowsCfdi.uuid)
-                                        If existeUUIDReg = "NE" Then
-                                            taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.mTras, 0, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                        If taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
+                                            lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & " Impuesto: " & rowsCfdi.Impuesto & " Efecto: " & efecto & " Factor: " & rowsCfdi.tipoFactor & " Tipo: " & tipo & " Sin impuesto configurado  " & vbNewLine
+                                            errores = "OK"
                                         End If
                                     End If
+
+                                    'Prueba de omision
                                     If rowsCfdi.mRet IsNot Nothing Then
                                         efecto = "RET"
                                         mPago = Math.Round(CDec(Val(rowsCfdi.mRet) * percentPago), 2)
                                         tipo = "Federal"
-                                        'taPagoImpuestos.Insert(rowsCfdi.Impuesto, mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), rowsCfdi.uuid)
-                                        If existeUUIDReg = "NE" Then
-                                            taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mRet, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                        If taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
+                                            lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
+                                            errores = "OK"
                                         End If
                                     End If
 
-                                    If contador = 0 Then
-                                        If rowsCfdi.mLocTra Is Nothing Or rowsCfdi.mLocTra <> 0 Then
-                                            efecto = "LOC"
-                                            mPago = Math.Round(CDec(Val(rowsCfdi.mLocTra) * percentPago), 2)
-                                            tipo = "Local"
-                                            'taPagoImpuestos.Insert(rowsCfdi.Impuesto & "L", mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA")), rowsCfdi.uuid)
-                                            If existeUUIDReg = "NE" Then
-                                                taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA")), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mLocTra, taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA") & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
-                                            End If
-                                        End If
-
-                                        If rowsCfdi.mLocRet Is Nothing Or rowsCfdi.mLocRet <> 0 Then
-                                            efecto = "LOC"
-                                            mPago = Math.Round(CDec(Val(rowsCfdi.mLocRet) * percentPago), 2)
-                                            tipo = "Local"
-                                            'taPagoImpuestos.Insert(rowsCfdi.Impuesto & "L", mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET")), rowsCfdi.uuid)
-                                            If existeUUIDReg = "NE" Then
-                                                taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET")), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mLocRet, taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET") & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
-                                            End If
+                                    If rowsCfdi.mLocTra Is Nothing Or rowsCfdi.mLocTra <> 0 Then
+                                        efecto = "LOC"
+                                        mPago = Math.Round(CDec(Val(rowsCfdi.mLocTra) * percentPago), 2)
+                                        tipo = "Local"
+                                        If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA") = "0" Then
+                                            lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
+                                            errores = "OK"
                                         End If
                                     End If
-                                    contador += 1
+
+                                    If rowsCfdi.mLocRet Is Nothing Or rowsCfdi.mLocRet <> 0 Then
+                                        efecto = "LOC"
+                                        mPago = Math.Round(CDec(Val(rowsCfdi.mLocRet) * percentPago), 2)
+                                        tipo = "Local"
+                                        If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET") = "0" Then
+                                            lblError2.Text = "Concepto: " & ddlConc.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
+                                            errores = "OK"
+                                        End If
+                                    End If
+
+
                                 Next
-                                If existeUUIDReg = "NE" Then
-                                    taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), 0, rows2.total, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " " & row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
-                                End If
-                                taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
                             End If
+                            If errores = "OK" Then
+                                lblError2.Visible = True
+                                Exit Sub
+                            End If
+                            'Pago Parcial
+                            If chkContrato.Checked = True Then
+                                If cont = 0 Then
+                                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rows2.fechaEmision, rows2.serie, rows2.folio, rows2.uuid, CDec(row("subTotal")), CDec(row("total")), CDec(row("mImpuestoT")) + CDec(row("mImpLocalT")), CDec(row("mImpuestoR")) + CDec(row("mImpLocalR")), row("observaciones"), ddlConc.SelectedItem.Value, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, rows2.moneda, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                Else
+                                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rows2.fechaEmision, rows2.serie, rows2.folio, rows2.uuid, CDec(row("subTotal")), CDec(row("total")), CDec(row("mImpuestoT")) + CDec(row("mImpLocalT")), CDec(row("mImpuestoR")) + CDec(row("mImpLocalR")), row("observaciones"), ddlConc.SelectedItem.Value, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, rows2.moneda, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                End If
+                            Else
+                                taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rows2.fechaEmision, rows2.serie, rows2.folio, rows2.uuid, CDec(row("subTotal")), CDec(row("total")), CDec(row("mImpuestoT")) + CDec(row("mImpLocalT")), CDec(row("mImpuestoR")) + CDec(row("mImpLocalR")), row("observaciones"), ddlConc.SelectedItem.Value, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rows2.moneda, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+
+
+#Region "Provision"
+                                'Provisión
+                                'If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
+                                If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = False Then
+                                    If existeUUIDReg = "NE" Then
+                                        taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), CDec(rows2.subTotal), 0, rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                    End If
+                                    Dim contador As Integer = 0
+                                    For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
+                                        Dim efecto As String = ""
+                                        Dim tipo As String = ""
+                                        Dim retecionL As String = ""
+                                        Dim mPago As Decimal = 0
+
+                                        If rowsCfdi.mTras IsNot Nothing Then
+                                            efecto = "TRA"
+                                            mPago = Math.Round(CDec(Val(rowsCfdi.mTras) * percentPago), 2)
+                                            tipo = "Federal"
+                                            'taPagoImpuestos.Insert(rowsCfdi.Impuesto, mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), rowsCfdi.uuid)
+                                            If existeUUIDReg = "NE" Then
+                                                taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.mTras, 0, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                            End If
+                                        End If
+                                        If rowsCfdi.mRet IsNot Nothing Then
+                                            efecto = "RET"
+                                            mPago = Math.Round(CDec(Val(rowsCfdi.mRet) * percentPago), 2)
+                                            tipo = "Federal"
+                                            'taPagoImpuestos.Insert(rowsCfdi.Impuesto, mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), rowsCfdi.uuid)
+                                            If existeUUIDReg = "NE" Then
+                                                taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mRet, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                            End If
+                                        End If
+
+                                        If contador = 0 Then
+                                            If rowsCfdi.mLocTra Is Nothing Or rowsCfdi.mLocTra <> 0 Then
+                                                efecto = "LOC"
+                                                mPago = Math.Round(CDec(Val(rowsCfdi.mLocTra) * percentPago), 2)
+                                                tipo = "Local"
+                                                'taPagoImpuestos.Insert(rowsCfdi.Impuesto & "L", mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA")), rowsCfdi.uuid)
+                                                If existeUUIDReg = "NE" Then
+                                                    taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA")), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mLocTra, taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA") & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                                End If
+                                            End If
+
+                                            If rowsCfdi.mLocRet Is Nothing Or rowsCfdi.mLocRet <> 0 Then
+                                                efecto = "LOC"
+                                                mPago = Math.Round(CDec(Val(rowsCfdi.mLocRet) * percentPago), 2)
+                                                tipo = "Local"
+                                                'taPagoImpuestos.Insert(rowsCfdi.Impuesto & "L", mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET")), rowsCfdi.uuid)
+                                                If existeUUIDReg = "NE" Then
+                                                    taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET")), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mLocRet, taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET") & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                                End If
+                                            End If
+                                        End If
+                                        contador += 1
+                                    Next
+                                    If existeUUIDReg = "NE" Then
+                                        taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), 0, rows2.total, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " " & row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont)
+                                    End If
+                                    taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                                End If
 #End Region
-                        End If
+                            End If
 
-                        dtDetalle.Rows.Add(row)
-                    Next
-                    '    If chkContrato.Checked = False And GeneraEventoContable = True Then
+                            dtDetalle.Rows.Add(row)
+                        Next
+                        '    If chkContrato.Checked = False And GeneraEventoContable = True Then
 
-                    'End If
-                    cont2 += 1
+                        'End If
+                        cont2 += 1
+                    End If
+                    cont += 1
+                Next
+
+                'inserta carta neteo
+
+                If CDec(txtImporteCartaNeteto.Text) > 0 And IsNumeric(txtImporteCartaNeteto.Text) Then
+                    If Not IsNumeric(txtImporteCartaNeteto.Text) Then
+                        'lblError.Visible = True
+                        lblErrorGeneral.Text = "El importe de la Carta Neteo no es numérico"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                    If fupCartaNeteo.HasFile = False Then
+                        'lblError.Visible = True
+                        lblErrorGeneral.Text = "No se ha seleccionado ninguna Carta Neteo como archivo adjunto"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                    Dim guuidCN As String = Guid.NewGuid.ToString
+                    Dim archivoPDF As HttpPostedFile = fupCartaNeteo.PostedFile
+                    If Session.Item("Empresa") = "23" Then
+                        archivoPDF.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
+                        taCFDI2.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                    Else
+                        archivoPDF.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
+                        taCFDI2.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                    End If
+
+                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now, "", "", guuidCN, 0, CDec(txtImporteCartaNeteto.Text) * -1, 0, 0, "CARTA NETEO ( " & txtDescCartaNeteo.Text & " )", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                    conCT = +1
+
                 End If
-                cont += 1
-            Next
+                Try
+                    subirArchivosAdjuntos(folSolPagoFinagil, Session.Item("idCDeudor"))
+                Catch ex As Exception
+                    lblErrorGeneral.Text = ex.ToString
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End Try
+                If cont2 > 0 Then
 
-            'inserta carta neteo
+                    taEmpresas.ConsumeFolio(Session.Item("Empresa"))
 
-            If CDec(txtImporteCartaNeteto.Text) > 0 And IsNumeric(txtImporteCartaNeteto.Text) Then
-                If Not IsNumeric(txtImporteCartaNeteto.Text) Then
-                    'lblError.Visible = True
-                    lblErrorGeneral.Text = "El importe de la Carta Neteo no es numérico"
+
+                    Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
+                    Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
+
+                    Dim dtSolPDF As DataTable
+                    dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
+
+                    taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), folSolPagoFinagil, "No Pagada")
+
+                    Dim dtObsSol As DataTable
+                    dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
+                    taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(folSolPagoFinagil))
+
+                    Dim var_observaciones As Integer = dtObsSol.Rows.Count
+                    Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
+
+                    'dtDetalle.WriteXml("C:\Files\dtDetalle.xml", XmlWriteMode.WriteSchema)
+                    rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoCopia.rpt"))
+                    rptSolPago.SetDataSource(dtSolPDF)
+                    rptSolPago.Subreports(0).SetDataSource(dtObsSol)
+                    rptSolPago.Refresh()
+
+
+                    rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folSolPagoFinagil))
+                    rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
+                    rptSolPago.SetParameterValue("var_contrato", chkContrato.Checked)
+
+
+                    If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
+                        rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
+                    Else
+                        rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/logoArfin.JPG"))
+                    End If
+
+                    Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("namePDF") & ".pdf"
+                    rptSolPago.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
+                    Response.Write("<script>")
+                    rutaPDF = rutaPDF.Replace("\", "/")
+                    rutaPDF = rutaPDF.Replace("~", "..")
+                    Response.Write("window.open('verPdf.aspx','popup','_blank','width=200,height=200')")
+                    Response.Write("</script>")
+                    rptSolPago.Dispose()
+                Else
+                    lblErrorGeneral.Text = "No se ha seleccionado ningún comprobante"
                     ModalPopupExtender1.Show()
                     Exit Sub
                 End If
-                If fupCartaNeteo.HasFile = False Then
-                    'lblError.Visible = True
-                    lblErrorGeneral.Text = "No se ha seleccionado ninguna Carta Neteo como archivo adjunto"
-                    ModalPopupExtender1.Show()
-                    Exit Sub
-                End If
-                Dim guuidCN As String = Guid.NewGuid.ToString
-                Dim archivoPDF As HttpPostedFile = fupCartaNeteo.PostedFile
-                If Session.Item("Empresa") = "23" Then
-                    archivoPDF.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
-                    taCFDI2.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                Else
-                    archivoPDF.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
-                    taCFDI2.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                End If
 
-                taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now, "", "", guuidCN, 0, CDec(txtImporteCartaNeteto.Text) * -1, 0, 0, "CARTA NETEO ( " & txtDescCartaNeteo.Text & " )", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
-                conCT = +1
-
-            End If
-
-            subirArchivosAdjuntos(folSolPagoFinagil, Session.Item("idCDeudor"))
-
-            If cont2 > 0 Then
-
-                taEmpresas.ConsumeFolio(Session.Item("Empresa"))
-
-
-                Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
-                Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
-
-                Dim dtSolPDF As DataTable
-                dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
-
-                taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), folSolPagoFinagil, "No Pagada")
-
-                Dim dtObsSol As DataTable
-                dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-                taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(folSolPagoFinagil))
-
-                Dim var_observaciones As Integer = dtObsSol.Rows.Count
-                Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
-
-                'dtDetalle.WriteXml("C:\Files\dtDetalle.xml", XmlWriteMode.WriteSchema)
-                rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoCopia.rpt"))
-                rptSolPago.SetDataSource(dtSolPDF)
-                rptSolPago.Subreports(0).SetDataSource(dtObsSol)
-                rptSolPago.Refresh()
-
-
-                rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folSolPagoFinagil))
-                rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
-                rptSolPago.SetParameterValue("var_contrato", chkContrato.Checked)
-
-
-                If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
-                    rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
-                Else
-                    rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/logoArfin.JPG"))
-                End If
-
-                Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("namePDF") & ".pdf"
-                rptSolPago.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
-                Response.Write("<script>")
-                rutaPDF = rutaPDF.Replace("\", "/")
-                rutaPDF = rutaPDF.Replace("~", "..")
-                Response.Write("window.open('verPdf.aspx','popup','_blank','width=200,height=200')")
-                Response.Write("</script>")
-                rptSolPago.Dispose()
+                GridView1.Visible = False
+                btnProcesar.Visible = False
+                GridView1.Enabled = True
+                btnCancelar.Visible = False
+                btnVistaPrevia.Visible = False
+                lblError.Text = ""
+                lblError.Text = ""
+                GridView2.Visible = False
+                fupCartaNeteo.Visible = False
+                txtDescCartaNeteo.Visible = False
+                btnSeleccionar.Enabled = True
+                ddlProveedores.Enabled = True
+                txtBuscar.Enabled = True
+                btnBuscar.Enabled = True
+                cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
+                cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
             Else
-                lblErrorGeneral.Text = "No se ha seleccionado ningún comprobante"
+                'lblError.Visible = True
+                lblErrorGeneral.Text = "No se ha seleccionado un autorizante"
                 ModalPopupExtender1.Show()
                 Exit Sub
             End If
-
-            GridView1.Visible = False
-            btnProcesar.Visible = False
-            GridView1.Enabled = True
-            btnCancelar.Visible = False
-            btnVistaPrevia.Visible = False
-            lblError.Text = ""
-            lblError.Text = ""
-            GridView2.Visible = False
-            fupCartaNeteo.Visible = False
-            txtDescCartaNeteo.Visible = False
-            btnSeleccionar.Enabled = True
-            ddlProveedores.Enabled = True
-            txtBuscar.Enabled = True
-            btnBuscar.Enabled = True
-            cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
-            cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
-        Else
-            'lblError.Visible = True
-            lblErrorGeneral.Text = "No se ha seleccionado un autorizante"
+            'ddlAutorizo.SelectedValue = ""
+            'dtDetalle.Dispose()
+            'dtDetalleA.Dispose()
+            'dtDetalleB.Dispose()
+        Catch ex As Exception
+            lblErrorGeneral.Text = ex.ToString
             ModalPopupExtender1.Show()
             Exit Sub
-        End If
-        'ddlAutorizo.SelectedValue = ""
-        'dtDetalle.Dispose()
-        'dtDetalleA.Dispose()
-        'dtDetalleB.Dispose()
+        End Try
         lblAdjuntos.Visible = False
         fup1.Visible = False
         btnProcesar.Enabled = True
@@ -975,7 +986,7 @@ Public Class frmConComprobante
             ddlClientes.Enabled = True
             odsAnexosActivos.FilterExpression = "cliente ='" & ddlClientes.SelectedValue & "'"
             odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
-            odsConceptos.FilterExpression = "idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
+            odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
 
 
         Else
