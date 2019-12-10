@@ -79,7 +79,7 @@
         }
         .auto-style29 {
             height: 22px;
-            text-align: right;
+            text-align: left;
         }
         .auto-style31 {
             width: 186px;
@@ -538,16 +538,12 @@
                     &nbsp;</td>
             </tr>
             <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="8">
-                    <ajaxToolkit:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0" Visible="False">
+                <td style="font-family: Arial; vertical-align: bottom;" colspan="8" class="auto-style21">
+                    <ajaxToolkit:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1" Visible="False">
                         <ajaxToolkit:TabPanel ID="TabPanel1" runat="server" HeaderText="Deducibles" BackColor="#FFFFFF">
                             <ContentTemplate>
                
-                                <asp:GridView ID="GridView2" runat="server" AllowSorting="True" Height="16px" Width="975px" ForeColor="#333333" HorizontalAlign="Center" AutoGenerateColumns="False" ShowFooter="True" PageSize="2" Font-Size="Small">
-                            <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
-                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
+                                <asp:GridView ID="GridView2" runat="server" AllowSorting="True" Height="16px" Width="1111px" ForeColor="#333333" HorizontalAlign="Center" AutoGenerateColumns="False" ShowFooter="True" PageSize="2" Font-Size="Small">
                             <Columns>
                                 <asp:BoundField DataField="serie" HeaderText="Serie">
                                 <ItemStyle HorizontalAlign="Right" Wrap="True" />
@@ -573,6 +569,10 @@
                                 </asp:TemplateField>
                             </Columns>
             <EditRowStyle BackColor="#FF6600" />
+                            <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
+            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
                         </asp:GridView>
                             </ContentTemplate>
                         </ajaxToolkit:TabPanel>
@@ -582,27 +582,38 @@
                                 <table style="align-content: center ; width: 90%;">
                                     <tr>
                                         <td>&nbsp;</td>
-                                        Descripción y /o concepto del gasto:<asp:TextBox ID="txtConceptoND" runat="server" Width="240px"></asp:TextBox>
-                                                    Importe:
-                    <asp:TextBox ID="txtImporteND" runat="server"></asp:TextBox>
-                    <asp:Button ID="btnNoDeducible" runat="server" CssClass="Botones" Text="Agregar" />
-     
-                                        <td>&nbsp;</td>
-                                          <asp:GridView ID="GridView3" runat="server" AllowSorting="True" Height="16px" Width="419px" ForeColor="#333333" HorizontalAlign="Center" AutoGenerateColumns="False" ShowFooter="True" Font-Size="Small">
-                            <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
-                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-                            <Columns>
-                                <asp:BoundField HeaderText="Descripción y/o Concepto del Gasto" DataField="descripcion">
-                                <ItemStyle HorizontalAlign="center" Wrap="True" Width="300px" />
-                                </asp:BoundField>
-                                <asp:BoundField HeaderText="Importe" DataField="importe" DataFormatString="{0:c}">
-                                <ItemStyle HorizontalAlign="center" Wrap="True" Width="50px" />
-                                </asp:BoundField>
-                            </Columns>
-            <EditRowStyle BackColor="#FF6600" />
-                        </asp:GridView>
+                                        <caption>
+                                            Descripción y /o concepto del gasto:<asp:TextBox ID="txtConceptoND" runat="server" Width="240px"></asp:TextBox>
+                                            Importe:
+                                            <asp:TextBox ID="txtImporteND" runat="server"></asp:TextBox>
+                                            <asp:Button ID="btnNoDeducible" runat="server" CssClass="Botones" Text="Agregar" />
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <asp:GridView ID="GridView3" runat="server" AllowSorting="True" AutoGenerateColumns="False" Font-Size="Small" ForeColor="#333333" Height="16px" HorizontalAlign="Center" ShowFooter="True" Width="419px">
+                                                    <Columns>
+                                                        <asp:BoundField DataField="descripcion" HeaderText="Descripción y/o Concepto del Gasto">
+                                                        <ControlStyle Width="200px" />
+                                                        <HeaderStyle Wrap="False" />
+                                                        <ItemStyle HorizontalAlign="Left" Width="450px" Wrap="False" />
+                                                        </asp:BoundField>
+                                                        <asp:BoundField DataField="importe" DataFormatString="{0:c}" HeaderText="Importe">
+                                                        <ItemStyle HorizontalAlign="Center" Width="100px" Wrap="True" />
+                                                        </asp:BoundField>
+                                                        <asp:TemplateField HeaderText="Documentos adjuntos">
+                                                            <ItemTemplate>
+                                                                <asp:FileUpload ID="fupNoDeducibles" runat="server" />
+                                                            </ItemTemplate>
+                                                            <ItemStyle Width="150px" />
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                    <EditRowStyle BackColor="#FF6600" />
+                                                    <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
+                                                    <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
+                                                    <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+                                                    <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
+                                                </asp:GridView>
+                                            </tr>
+                                        </caption>
                                                                            </tr>
                                 </table>                                                                                
 
@@ -617,6 +628,7 @@
             </tr>
             <tr>
                 <td style="font-family: Arial; vertical-align: bottom;" colspan="8">
+                    
                     &nbsp;</td>
             </tr>
             <tr>

@@ -115,6 +115,7 @@
     <None Include="configuration.svcinfo" />
     <Content Include="css\calendar-blue.css" />
     <Content Include="css\estilos.css" />
+    <Content Include="css\estilo_n.css" />
     <Content Include="css\fontello.css" />
     <Content Include="Default.aspx" />
     <Content Include="dsProduccion.xsc">
@@ -130,6 +131,7 @@
     <Content Include="frmBanner.aspx" />
     <Content Include="frmComprobarGastos.aspx" />
     <Content Include="frmConComprobante.aspx" />
+    <Content Include="frmConComprobanteN.aspx" />
     <Content Include="frmDetallePago.aspx" />
     <Content Include="frmMisComprobacionesGts.aspx" />
     <Content Include="frmMisSolicitudes.aspx" />
@@ -284,6 +286,13 @@
     </Compile>
     <Compile Include="frmConComprobante.aspx.vb">
       <DependentUpon>frmConComprobante.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="frmConComprobanteN.aspx.designer.vb">
+      <DependentUpon>frmConComprobanteN.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmConComprobanteN.aspx.vb">
+      <DependentUpon>frmConComprobanteN.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="frmDetallePago.aspx.designer.vb">

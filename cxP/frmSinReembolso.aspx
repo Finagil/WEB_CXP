@@ -224,27 +224,29 @@
             </tr>
             <tr>
                 <td class="auto-style42" style="font-family: Arial; font-size: small" colspan="2">
-                    Sucursal (CC):<br />
-                    <ajaxToolkit:ComboBox ID="cmbCentroDeCostos" runat="server" DataSourceID="odsCentroDeCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" MaxLength="0" style="display: inline;" Width="200px">
+                    Cuenta Bancaria:<br />
+                    <ajaxToolkit:ComboBox ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="cuenta" DataValueField="idCuentas" MaxLength="0" style="display: inline;" Width="600px" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block" Visible="False">
                     </ajaxToolkit:ComboBox>
-                    <asp:ObjectDataSource ID="odsCentroDeCostos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCC_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_SucursalesTableAdapter" UpdateMethod="Update">
+                    <br />
+                    <asp:ObjectDataSource ID="odsCuentasBancarias" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="CuentasBancarias_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter" UpdateMethod="Update">
                         <DeleteParameters>
-                            <asp:Parameter Name="Original_idSucursal" Type="Decimal" />
+                            <asp:Parameter Name="Original_idCuentas" Type="Decimal" />
                         </DeleteParameters>
                         <InsertParameters>
-                            <asp:Parameter Name="nombreSucursal" Type="String" />
-                            <asp:Parameter Name="id_Sucursal" Type="String" />
-                            <asp:Parameter Name="idSuc" Type="String" />
-                            <asp:Parameter Name="idEmpresa" Type="Decimal" />
+                            <asp:Parameter Name="idProveedor" Type="Decimal" />
+                            <asp:Parameter Name="idBanco" Type="Decimal" />
+                            <asp:Parameter Name="cuenta" Type="String" />
+                            <asp:Parameter Name="clabe" Type="String" />
                         </InsertParameters>
                         <UpdateParameters>
-                            <asp:Parameter Name="nombreSucursal" Type="String" />
-                            <asp:Parameter Name="id_Sucursal" Type="String" />
-                            <asp:Parameter Name="idSuc" Type="String" />
-                            <asp:Parameter Name="idEmpresa" Type="Decimal" />
-                            <asp:Parameter Name="Original_idSucursal" Type="Decimal" />
+                            <asp:Parameter Name="idProveedor" Type="Decimal" />
+                            <asp:Parameter Name="idBanco" Type="Decimal" />
+                            <asp:Parameter Name="cuenta" Type="String" />
+                            <asp:Parameter Name="clabe" Type="String" />
+                            <asp:Parameter Name="Original_idCuentas" Type="Decimal" />
                         </UpdateParameters>
                     </asp:ObjectDataSource>
+                    <br />
                 </td>
                 <td class="auto-style42" style="font-family: Arial; font-size: small">
                     Forma de Pago:<br />
@@ -269,6 +271,29 @@
                             <asp:Parameter Name="tipo" Type="String" />
                             <asp:Parameter Name="idEmpres" Type="Decimal" />
                             <asp:Parameter Name="Original_idTipoDocumento" Type="Decimal" />
+                        </UpdateParameters>
+                    </asp:ObjectDataSource>
+                    <br />
+                    Sucursal (CC):<br />
+                    <ajaxToolkit:ComboBox ID="cmbCentroDeCostos" runat="server" DataSourceID="odsCentroDeCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" MaxLength="0" style="display: inline;" Width="200px">
+                    </ajaxToolkit:ComboBox>
+                    <br />
+                    <asp:ObjectDataSource ID="odsCentroDeCostos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCC_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_SucursalesTableAdapter" UpdateMethod="Update">
+                        <DeleteParameters>
+                            <asp:Parameter Name="Original_idSucursal" Type="Decimal" />
+                        </DeleteParameters>
+                        <InsertParameters>
+                            <asp:Parameter Name="nombreSucursal" Type="String" />
+                            <asp:Parameter Name="id_Sucursal" Type="String" />
+                            <asp:Parameter Name="idSuc" Type="String" />
+                            <asp:Parameter Name="idEmpresa" Type="Decimal" />
+                        </InsertParameters>
+                        <UpdateParameters>
+                            <asp:Parameter Name="nombreSucursal" Type="String" />
+                            <asp:Parameter Name="id_Sucursal" Type="String" />
+                            <asp:Parameter Name="idSuc" Type="String" />
+                            <asp:Parameter Name="idEmpresa" Type="Decimal" />
+                            <asp:Parameter Name="Original_idSucursal" Type="Decimal" />
                         </UpdateParameters>
                     </asp:ObjectDataSource>
                 </td>

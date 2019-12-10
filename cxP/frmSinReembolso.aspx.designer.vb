@@ -248,22 +248,22 @@ Partial Public Class frmSinReembolso
     Protected WithEvents lbl69B As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''Control cmbCentroDeCostos.
+    '''Control cmbCuentasBancarias.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents cmbCentroDeCostos As Global.AjaxControlToolkit.ComboBox
+    Protected WithEvents cmbCuentasBancarias As Global.AjaxControlToolkit.ComboBox
     
     '''<summary>
-    '''Control odsCentroDeCostos.
+    '''Control odsCuentasBancarias.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents odsCentroDeCostos As Global.System.Web.UI.WebControls.ObjectDataSource
+    Protected WithEvents odsCuentasBancarias As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control cmbFormaPago.
@@ -282,6 +282,24 @@ Partial Public Class frmSinReembolso
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents odsFormaPago As Global.System.Web.UI.WebControls.ObjectDataSource
+    
+    '''<summary>
+    '''Control cmbCentroDeCostos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cmbCentroDeCostos As Global.AjaxControlToolkit.ComboBox
+    
+    '''<summary>
+    '''Control odsCentroDeCostos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsCentroDeCostos As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control id3.

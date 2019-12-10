@@ -266,6 +266,15 @@ Partial Public Class frmConComprobante
     Protected WithEvents id5a As Global.System.Web.UI.HtmlControls.HtmlTableCell
     
     '''<summary>
+    '''Control id5h.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents id5h As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    
+    '''<summary>
     '''Control id5b.
     '''</summary>
     '''<remarks>
@@ -302,13 +311,13 @@ Partial Public Class frmConComprobante
     Protected WithEvents odsCentroCostos As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
-    '''Control id5d.
+    '''Control id5i.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents id5d As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents id5i As Global.System.Web.UI.HtmlControls.HtmlTableCell
     
     '''<summary>
     '''Control cmbFormaPago.
@@ -327,6 +336,33 @@ Partial Public Class frmConComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents odsFormaPago As Global.System.Web.UI.WebControls.ObjectDataSource
+    
+    '''<summary>
+    '''Control id5d.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents id5d As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    
+    '''<summary>
+    '''Control cmbCuentasBancarias.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cmbCuentasBancarias As Global.AjaxControlToolkit.ComboBox
+    
+    '''<summary>
+    '''Control odsCuentasBancarias.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsCuentasBancarias As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control id5.
@@ -470,7 +506,7 @@ Partial Public Class frmConComprobante
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents btnProcesar As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnProcesar As Global.RoderoLib.BotonEnviar
     
     '''<summary>
     '''Control btnCancelar.

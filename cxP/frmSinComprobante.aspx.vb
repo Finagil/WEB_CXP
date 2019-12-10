@@ -84,6 +84,7 @@ Public Class frmSinComprobante
 
             odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
             odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+            odsCuentasBancarias.FilterExpression = "idProveedor = 0"
 
             If ddlConcepto.Items.Count = -1 Then
                 'Response.Redirect("~/Default.aspx")
@@ -330,6 +331,11 @@ Public Class frmSinComprobante
 
                     subirArchivosAdjuntos(folSolPagoFinagil, Session.Item("idCDeudor"))
 
+                    'Valida evento contable en concepto y contrato
+                    If taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = False And chkContrato.Checked = False Then
+                        taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                    End If
+
                     Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
                     Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
 
@@ -381,11 +387,13 @@ Public Class frmSinComprobante
                     'Evento contable
                     Try
                         If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = False Then
-                            taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), 0, ddlProveedor.SelectedItem.Text, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now)
-                            taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), 0, CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), ddlProveedor.SelectedValue, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now)
+                            If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 Then
+                                taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), 0, ddlProveedor.SelectedItem.Text, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, ddlConcepto.SelectedValue)
+                                taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), 0, CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), ddlProveedor.SelectedValue, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, ddlConcepto.SelectedValue)
+                            End If
                         End If
                     Catch ex As Exception
-                        lblErrorGeneral.Text = ex.ToString
+                        lblErrorGeneral.Text = ex.ToString.Substring(1, 100)
                         ModalPopupExtender1.Show()
                     End Try
 
@@ -412,26 +420,13 @@ Public Class frmSinComprobante
         Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
         If fup1.HasFiles Then
             For Each files As HttpPostedFile In fup1.PostedFiles
-
-                'MsgBox(Right(fup1.PostedFile.ContentType.Trim, 3).ToString)
-
-                If fup1.FileBytes.Length > 500000 Then
-                    lblErrorGeneral.Text = "El tamaño del archivo no puede ser mayor a 5 MB"
-                    Exit Sub
-                ElseIf Right(fup1.PostedFile.ContentType.Trim, 3).ToString <> "PDF" And Right(fup1.PostedFile.ContentType.Trim, 3).ToString <> "pdf" Then
-                    lblErrorGeneral.Text = "El tipo de archivo no puede ser distinto a PDF"
-                    Exit Sub
-                End If
-            Next
-            For Each files As HttpPostedFile In fup1.PostedFiles
-
                 Dim guuidCN As String = Guid.NewGuid.ToString
                 If Session.Item("Empresa") = "23" Then
-                    fup1.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
+                    files.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
                     taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
                     taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
                 Else
-                    fup1.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
+                    files.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
                     taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
                     taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
                 End If
@@ -840,6 +835,7 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub ddlProveedor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlProveedor.SelectedIndexChanged
+        odsCuentasBancarias.FilterExpression = "idProveedor =" & ddlProveedor.SelectedValue
         valida_Proveedor()
     End Sub
 

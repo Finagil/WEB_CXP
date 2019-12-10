@@ -284,6 +284,7 @@ Public Class frmComprobarGastos
         GridView3.DataSource = dtDetalleB
         GridView3.DataBind()
         btnComprobar.Visible = True
+        btncancelarComprobacion.Visible = True
     End Sub
 
     Protected Sub btnComprobar_Click(sender As Object, e As EventArgs) Handles btnComprobar.Click
@@ -305,40 +306,65 @@ Public Class frmComprobarGastos
             Dim taComprobacionGtos As New dsProduccionTableAdapters.CXP_ComprobGtosTableAdapter
             Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
             Dim taEmpresas As New dsProduccionTableAdapters.CXP_EmpresasTableAdapter
-
+            Dim taPagoImpuestos As New dsProduccionTableAdapters.CXP_PagosImpuestosTableAdapter
+            Dim taCFDIImpuestos As New dsProduccionTableAdapters.Vw_CXP_ImpuestosCFDITableAdapter
+            Dim dtCFDIImpuestos As New dsProduccion.Vw_CXP_ImpuestosCFDIDataTable
+            Dim taRegContable As New dsProduccionTableAdapters.CXP_RegContTableAdapter
 
             Dim cont As Integer = 0
             Dim folComprobacionCom As Integer = taEmpresas.ConsultaFolioCom(Session.Item("Empresa"))
             Session.Item("namePDFg") = Session.Item("Empresa") & "-" & folComprobacionCom
 
-            'If taUsuarios.ExisteUsuario_ScalarQuery(taCXPPagos.rfcProveedorSolicitud_ScalarQuery(CDec(Session.Item("Empresa")), CDec(ddlFolioSolicitud.SelectedItem.Text))) = "NE" Then
-            '    ModalPopupExtender4.Show()
-            '    Exit Sub
-            'End If
             Dim mail As String = "#" & taGenCorresoFases.ObtieneCorreo_ScalarQuery(ddlAutorizo.SelectedValue)
 
                 Dim contador As Integer = 0
                 Dim totalFacturas As Decimal = 0
                 For Each rows As GridViewRow In GridView2.Rows
                     taUUIDPagos.ObtDatosFactura_FillBy(dtDatosFactura, GridView2.Rows(contador).Cells(2).Text)
-                    For Each rowsa As dsProduccion.vw_CXP_XmlCfdi2_grpUuidRow In dtDatosFactura.Rows
-                        Dim percentPago As Decimal = CDec(GridView2.Rows(contador).Cells(5).Text) / CDec(GridView2.Rows(contador).Cells(4).Text)
-                    taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, ddlFolioSolicitud.SelectedItem.Text, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "CompGtos", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), Nothing, Nothing)
+                For Each rowsa As dsProduccion.vw_CXP_XmlCfdi2_grpUuidRow In dtDatosFactura.Rows
 
+                    Dim percentPago As Decimal = CDec(GridView2.Rows(contador).Cells(5).Text) / CDec(GridView2.Rows(contador).Cells(4).Text)
+                    taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, ddlFolioSolicitud.SelectedItem.Text, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "CompGtos", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), Nothing, Nothing)
                     taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), rowsa.uuid, CDec(GridView2.Rows(contador).Cells(5).Text), 0, GridView2.Rows(contador).Cells(3).Text.Replace("&nbsp;", ""), txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, rowsa.folio, rowsa.serie)
+                    '***
+                    taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rowsa.uuid.ToString)
+                    For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
+                        If rowsCfdi.mTras IsNot Nothing Then
+                            'taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.mTras, 0, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, ddlConc.SelectedItem.Value)
+                        ElseIf rowsCfdi.mRet IsNot Nothing Then
+
+                        End If
+                    Next
 
                     totalFacturas += CDec(GridView2.Rows(contador).Cells(5).Text)
-                    Next
-                    contador += 1
+                Next
+                contador += 1
                 Next
 
                 Dim contadorND As Integer = 0
-                For Each rowsND As GridViewRow In GridView3.Rows
-                taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), "ND", CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "", "")
+            For Each rowsND As GridViewRow In GridView3.Rows
+                Dim fileUp As FileUpload = rowsND.Cells(2).FindControl("fupNoDeducibles")
+                Dim taCFDI As New dsProduccionTableAdapters.CXP_XmlCfdi2TableAdapter
+                Dim taCompGts As New dsProduccionTableAdapters.CXP_ComprobGtosTableAdapter
+                If fileUp.HasFile Then
+                    Dim archivoPDF As HttpPostedFile = fileUp.PostedFile
+                    Dim guuidCN As String = Guid.NewGuid.ToString
+                    If Session.Item("Empresa") = "23" Then
+                        archivoPDF.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
+                        taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(GridView3.Rows(contadorND).Cells(1).Text), 1, "", 0, 0, 0, 0)
+                        taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), guuidCN, CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "Adjunto", "ND")
+                    Else
+                        archivoPDF.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
+                        taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(GridView3.Rows(contadorND).Cells(1).Text), 1, "", 0, 0, 0, 0)
+                        taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), guuidCN, CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "Adjunto", "ND")
+                    End If
+                Else
+                    taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), "ND", CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "", "")
+                End If
                 contadorND += 1
-                Next
+            Next
 
-                taEmpresas.ConsumeFolioCom(Session.Item("Empresa"))
+            taEmpresas.ConsumeFolioCom(Session.Item("Empresa"))
 
                 Dim taComprobacion As New dsProduccionTableAdapters.Vw_CXP_ComprobacionGastosTableAdapter
 

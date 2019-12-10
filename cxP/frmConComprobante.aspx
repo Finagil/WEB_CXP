@@ -20,6 +20,21 @@
         });
     </script>
     <style type="text/css">
+    .auto-style7shapeA {
+        width: 80%;
+        height: 100px;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+
+    .auto-style7shapeB {
+        width: 80%;
+        height: 100px;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+
+
     .CajaDialogo
     {
         background-color: #FFF700;
@@ -35,7 +50,6 @@
         margin: 7px;
         text-align: center;
     }
-
     .auto-style7 {
         width: 50%;
         height: 915px;
@@ -89,7 +103,7 @@
             text-align: center;
             top: auto;
         }
-    .auto-style27 {
+        .auto-style27 {
         width: 426px;
     }
         .auto-style28 {
@@ -146,10 +160,9 @@
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensajeError" TargetControlID="lblErrorGeneral" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
      <link href="styFW.css" rel="stylesheet" type="text/css" />
     <div class="auto-style21">
-     
         <table class="auto-style7">
             <tr>
-                <td id="id0" runat="server" class="auto-style29" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #FF6600;" colspan="2">
+                <td id="id0" runat="server" class="auto-style29" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #FF6600;" colspan="3">
                     Proveedor:</td>
                 <td id="id2" runat="server" class="auto-style28" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #FF6600;" colspan="2">
                     Estatus EFOS:</td>
@@ -159,7 +172,7 @@
                     Contrato</td>
             </tr>
             <tr>
-                <td class="auto-style23" style="font-family: Arial, Helvetica, sans-serif; font-size: medium" colspan="2">
+                <td class="auto-style23" style="font-family: Arial, Helvetica, sans-serif; font-size: medium" colspan="3">
                     <div class="auto-style22">
                         <br />
                         <asp:TextBox ID="txtBuscar" runat="server" Width="392px" Height="20px"></asp:TextBox>
@@ -263,14 +276,16 @@
                 </td>
             </tr>
             <tr>
-                <td id="id5a" runat="server" class="auto-style32" colspan="3" style="background-color: #FF6600">
+                <td id="id5a" runat="server" class="auto-style32" colspan="2" style="background-color: #FF6600">
                     Sucursal (CC):</td>
-                <td id="id5b" runat="server" class="auto-style32" colspan="3" style="background-color: #FF6600">
+                <td id="id5h" runat="server" class="auto-style32" colspan="2" style="background-color: #FF6600">
                     Forma de Pago:</td>
+                <td id="id5b" runat="server" class="auto-style32" colspan="3" style="background-color: #FF6600">
+                    Cuenta Bancaria</td>
             </tr>
             <tr>
-                <td id="id5c" runat="server" class="auto-style32" colspan="3" style="vertical-align: middle;">
-                    <ajaxToolkit:ComboBox ID="cmbCentroDeCostos" runat="server"  DataSourceID="odsCentroCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" Font-Size="Small" MaxLength="0" style="display: inline;" Width="200px">
+                <td id="id5c" runat="server" class="auto-style32" colspan="2" style="vertical-align: middle;">
+                    <ajaxToolkit:ComboBox ID="cmbCentroDeCostos" runat="server"  DataSourceID="odsCentroCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" Font-Size="Small" MaxLength="0" style="display: inline;" Width="200px" Height="18px" RenderMode="Block">
                     </ajaxToolkit:ComboBox>
                     <asp:ObjectDataSource ID="odsCentroCostos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCC_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_SucursalesTableAdapter" UpdateMethod="Update">
                         <DeleteParameters>
@@ -291,8 +306,8 @@
                         </UpdateParameters>
                     </asp:ObjectDataSource>
                 </td>
-                <td id="id5d" runat="server" class="auto-style32" colspan="3" style="vertical-align: middle;">
-                    <ajaxToolkit:ComboBox ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" Font-Size="Small" MaxLength="0" style="display: inline;" Width="200px">
+                <td id="id5i" runat="server" class="auto-style32" colspan="2" style="vertical-align: middle;">
+                    <ajaxToolkit:ComboBox ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" Font-Size="Small" MaxLength="0" style="display: inline;" Width="200px" Height="18px" RenderMode="Block">
                     </ajaxToolkit:ComboBox>
                     <asp:ObjectDataSource ID="odsFormaPago" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="DocumentosEgreso_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_tipoDocumentoSatTableAdapter" UpdateMethod="Update">
                         <DeleteParameters>
@@ -316,13 +331,35 @@
                         </UpdateParameters>
                     </asp:ObjectDataSource>
                 </td>
+                <td id="id5d" runat="server" class="auto-style32" colspan="3" style="vertical-align: middle;">
+                    <ajaxToolkit:ComboBox ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="cuenta" DataValueField="idCuentas" MaxLength="0" style="display: block;" Width="600px" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block" Visible="False">
+                    </ajaxToolkit:ComboBox>
+                    <asp:ObjectDataSource ID="odsCuentasBancarias" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="CuentasBancarias_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter" UpdateMethod="Update">
+                        <DeleteParameters>
+                            <asp:Parameter Name="Original_idCuentas" Type="Decimal" />
+                        </DeleteParameters>
+                        <InsertParameters>
+                            <asp:Parameter Name="idProveedor" Type="Decimal" />
+                            <asp:Parameter Name="idBanco" Type="Decimal" />
+                            <asp:Parameter Name="cuenta" Type="String" />
+                            <asp:Parameter Name="clabe" Type="String" />
+                        </InsertParameters>
+                        <UpdateParameters>
+                            <asp:Parameter Name="idProveedor" Type="Decimal" />
+                            <asp:Parameter Name="idBanco" Type="Decimal" />
+                            <asp:Parameter Name="cuenta" Type="String" />
+                            <asp:Parameter Name="clabe" Type="String" />
+                            <asp:Parameter Name="Original_idCuentas" Type="Decimal" />
+                        </UpdateParameters>
+                    </asp:ObjectDataSource>
+                </td>
             </tr>
             <tr>
-                <td id="id5" runat="server" class="auto-style32" colspan="6" style="background-color: #FF6600">
+                <td id="id5" runat="server" class="auto-style32" colspan="7" style="background-color: #FF6600">
                     Selección de facturas para pago:</td>
             </tr>
             <tr>
-                <td class="auto-style11" colspan="6">
+                <td class="auto-style11" colspan="7">
                     <div class="auto-style20a">
                         <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataKeyNames="idXmlCfdi" DataSourceID="comprobantesFiscales" Height="16px" Width="1226px" ForeColor="#333333" HorizontalAlign="Center">
                             <SelectedRowStyle BackColor="#E0E0E0" />
@@ -529,18 +566,22 @@
                                 <asp:FileUpload ID="fup1" runat="server" Visible="False" accept=".pdf" multiple="multiple" AllowMultiple="true"/>
                     <br />
                     <br />
-                    <asp:Button ID="btnProcesar" runat="server" CssClass="Botones" Text="Procesar" Visible="False" />
+                   <cc1:BotonEnviar ID="btnProcesar" runat="server" BackColor="#FF6600" Font-Bold="True" Visible="false"
+                       ForeColor="White" Text="Procesar" TextoEnviando="Procesando..." Width="182px" Font-Size="Medium" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    
+                    &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnCancelar" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" />
                     &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
                     <asp:Button ID="Button1" runat="server" Text="Button" Visible="False" />
                     <br />
                     <asp:Label ID="lblError" runat="server" Font-Names="Arial Black" Font-Size="X-Large" ForeColor="#FF6401" Text="Error" Visible="False"></asp:Label>
+                    <br />
                 </td>
             </tr>
             <tr>
                 <td class="auto-style16">&nbsp;</td>
-                <td class="auto-style18" colspan="3">
+                <td class="auto-style18" colspan="4">
                     &nbsp;</td>
                 <td class="auto-style27" colspan="2">&nbsp;</td>
             </tr>

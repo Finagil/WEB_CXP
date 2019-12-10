@@ -248,22 +248,22 @@ Partial Public Class frmSinComprobante
     Protected WithEvents lbl69B As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''Control cmbCentroDeCostos.
+    '''Control cmbCuentasBancarias.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents cmbCentroDeCostos As Global.AjaxControlToolkit.ComboBox
+    Protected WithEvents cmbCuentasBancarias As Global.AjaxControlToolkit.ComboBox
     
     '''<summary>
-    '''Control odsCentroDeCostos.
+    '''Control odsCuentasBancarias.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents odsCentroDeCostos As Global.System.Web.UI.WebControls.ObjectDataSource
+    Protected WithEvents odsCuentasBancarias As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control cmbFormaPago.
@@ -282,6 +282,24 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents odsFormaPago As Global.System.Web.UI.WebControls.ObjectDataSource
+    
+    '''<summary>
+    '''Control cmbCentroDeCostos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cmbCentroDeCostos As Global.AjaxControlToolkit.ComboBox
+    
+    '''<summary>
+    '''Control odsCentroDeCostos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsCentroDeCostos As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control id3.
@@ -788,6 +806,15 @@ Partial Public Class frmSinComprobante
     Protected WithEvents fup1 As Global.System.Web.UI.WebControls.FileUpload
     
     '''<summary>
+    '''Control lblAdjuntos0.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblAdjuntos0 As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
     '''Control fupCarteNeteo.
     '''</summary>
     '''<remarks>
@@ -803,7 +830,7 @@ Partial Public Class frmSinComprobante
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents btnSolicitar As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSolicitar As Global.RoderoLib.BotonEnviar
     
     '''<summary>
     '''Control btnCancelar.
