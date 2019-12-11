@@ -4,6 +4,7 @@
          .auto-style13 {
             margin-left: 10px;
             margin-top: 20px;
+            width:98%;
         }
         .auto-style8 {
             text-align: center;
@@ -14,7 +15,7 @@
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div style="height: 450px">
+    <div style="height: 400px">
         <div class="auto-style8">
     <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="odsMisComprobacionesGts" HorizontalAlign="Center" CssClass="auto-style13">
     <Columns>
@@ -46,6 +47,7 @@
             <HeaderStyle Font-Names="Arial" HorizontalAlign="Center" Font-Size="Small" />
         <ItemStyle HorizontalAlign="Right" Width="100px" />
         </asp:BoundField>
+        <asp:BoundField DataField="estatus" HeaderText="Estatus" />
         <asp:TemplateField HeaderText="PDF Comprobación">
               <ItemTemplate>
                       <asp:HyperLink Font-Names="Arial" ID="lnkPdf" NavigateUrl='<%# Eval("folioComprobacion", "~/GTS/" & Session.Item("Empresa") & "-" & "{0}.pdf") %>' Target="_blank" runat="server">pdf</asp:HyperLink>
@@ -53,7 +55,14 @@
               <HeaderStyle HorizontalAlign="Center" Font-Size="Small" />
               <ItemStyle Width="100px" />
         </asp:TemplateField>
-        
+        <asp:TemplateField>
+             <ItemTemplate>
+                  <asp:Button ID="btnOpciones" runat="server" Text="Cancelar Comprobación"
+                       CommandName="Cancelar" 
+                       CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>" />
+             </ItemTemplate>
+            <ItemStyle Width="100px" />
+        </asp:TemplateField>
     </Columns>
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
             <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />

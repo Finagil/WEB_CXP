@@ -549,6 +549,7 @@ Public Class frmConComprobante
         lblAdjuntos.Visible = False
         fup1.Visible = False
         btnProcesar.Enabled = True
+        GridView1.Dispose()
     End Sub
 
     Public Sub terminaProceso()

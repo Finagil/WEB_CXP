@@ -29,13 +29,12 @@ Public Class frmMisSolicitudesSC
             Dim taAutorizaciones As New dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter
             Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesSCDataTable
             Dim drAutorizaciones As dsProduccion.Vw_CXP_MisSolicitudesSCRow
+            Dim taComprobaciones As New dsProduccionTableAdapters.Vw_CXP_MisComprobacionesTableAdapter
 
             taAutorizaciones.ObtAuroizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CInt(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
             If dtAutorizaciones.Rows.Count > 0 Then
                 drAutorizaciones = dtAutorizaciones.Rows(0)
-                'If row.Cells(0).Text = "50" Then
-                '    MsgBox("OK")
-                'End If
+                Dim contComp As Integer = taComprobaciones.ObtNoComprobaciones_ScalarQuery(CDec(row.Cells(0).Text.Trim), CInt(Session.Item("Empresa")))
                 If row.Cells(4).Text.Trim = "Autoriza 1" And drAutorizaciones.st <> "Cancelada" Then
                     row.Cells(4).Text = "Autorizó (1): " & vbCrLf & drAutorizaciones.Autoriza1
                 ElseIf row.Cells(4).Text.Trim = "Rechazada 1" And drAutorizaciones.st <> "Cancelada" Then
@@ -52,6 +51,10 @@ Public Class frmMisSolicitudesSC
                     row.Cells(4).Text = "Pagada"
                     btn.Enabled = False
                     btn.Text = "Pagada"
+                End If
+                If contComp > 0 Then
+                    btn.Text = contComp.ToString & " Comprobaciones"
+                    btn.Enabled = False
                 End If
             End If
         Next
