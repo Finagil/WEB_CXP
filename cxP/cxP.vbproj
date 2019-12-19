@@ -55,8 +55,9 @@
     <Reference Include="CrystalDecisions.VSDesigner, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Web, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="RoderoLib">
-      <HintPath>..\..\WEB_Pasivos\RoderoLib.dll</HintPath>
+    <Reference Include="RoderoLib, Version=1.0.1777.2921, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\RoderoLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -79,7 +80,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Web References.mx.gob.sat.facturaelectronica.consultaqr.Reference.cs, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\cxP_\cxP\bin\Web References.mx.gob.sat.facturaelectronica.consultaqr.Reference.cs.dll</HintPath>
+      <HintPath>bin\Web References.mx.gob.sat.facturaelectronica.consultaqr.Reference.cs.dll</HintPath>
     </Reference>
     <Reference Include="XmlValidation">
       <HintPath>C:\Users\vicente-apolonio\Downloads\XMLValidation\XMLValidation\2.0\XmlValidation\bin\Debug\XmlValidation.dll</HintPath>
