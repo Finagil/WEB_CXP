@@ -38,13 +38,13 @@ Public Class ValidaCfdi
                 rootPathSave = Server.MapPath("Arfin")
                 rutaSaveProceso = Server.MapPath("~\Procesados\ARFIN\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day))
             Else
-                rutasCFDI = "\ARFIN\Todos"
-                rootPathSave = Server.MapPath("Arfin")
+                rutasCFDI = "\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\ARFIN\Todos\"
+                rootPathSave = "\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\ARFIN\Todos\"
                 'Directory.CreateDirectory(Server.MapPath("\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\ARFIN\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day)))
-                rutaSaveProceso = Server.MapPath("~\Procesados\ARFIN\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day))
+                rutaSaveProceso = ("\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\ARFIN\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day))
             End If
         Else
-            If Directory.Exists((Server.MapPath("~\Procesados\ARFIN\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day)))) Then
+            If Directory.Exists((Server.MapPath("~\Procesados\FINAGIL\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day)))) Then
                 rutasCFDI = "\FINAGIL\Todos"
                 rootPathSave = Server.MapPath("Finagil")
                 rutaSaveProceso = Server.MapPath("~\Procesados\FINAGIL\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day))
@@ -77,7 +77,7 @@ Public Class ValidaCfdi
             For Each arch As HttpPostedFile In FileUpload1.PostedFiles
                 Dim ext() As String = arch.FileName.Split(".")
                 Dim GU As Guid = Guid.NewGuid
-                If ext(1) <> "xml" Then
+                If ext(1).ToLower <> "xml" Then
                     lblError.Visible = True
                     lblError.Text = "Solo se permiten archivos XML"
                     Exit For
@@ -87,7 +87,7 @@ Public Class ValidaCfdi
 
                 For Each archPdf As HttpPostedFile In FileUpload2.PostedFiles
                     Dim extPdf() As String = archPdf.FileName.Split(".")
-                    If extPdf(1) <> "pdf" Then
+                    If extPdf(1).ToLower <> "pdf" Then
                         lblError.Visible = True
                         lblError.Text = "Solo se permiten archivos PDF"
                         Exit For
@@ -106,7 +106,7 @@ Public Class ValidaCfdi
                         doc.Save(rootPath & "\" & GU.ToString & "." & ext(ext.Length - 1))
                     End If
 
-                    If ext(0) = extPdf(0) Then
+                     If ext(0) = extPdf(0) Then
                         'lblValidacion.Visible = True
                         Dim var As String = "Sin errores en XSD"
                         Try
