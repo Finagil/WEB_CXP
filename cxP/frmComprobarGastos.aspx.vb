@@ -366,49 +366,49 @@ Public Class frmComprobarGastos
 
             taEmpresas.ConsumeFolioCom(Session.Item("Empresa"))
 
-                Dim taComprobacion As New dsProduccionTableAdapters.Vw_CXP_ComprobacionGastosTableAdapter
+            Dim taComprobacion As New dsProduccionTableAdapters.Vw_CXP_ComprobacionGastosTableAdapter
 
-                Dim rptComprobacion As New ReportDocument
-                Dim dtSol1 As DataTable
-                dtSol1 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
-                Dim dtSol2 As DataTable
-                dtSol2 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
-                Dim dtSol3 As DataTable
-                dtSol3 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
+            Dim rptComprobacion As New ReportDocument
+            Dim dtSol1 As DataTable
+            dtSol1 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
+            Dim dtSol2 As DataTable
+            dtSol2 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
+            Dim dtSol3 As DataTable
+            dtSol3 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
 
 
-                Dim taSol1 As New dsProduccionTableAdapters.Vw_CXP_ComprobacionGastosTableAdapter
+            Dim taSol1 As New dsProduccionTableAdapters.Vw_CXP_ComprobacionGastosTableAdapter
             Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
             taSol1.Obt1_FillBy(dtSol1, CDec(Session.Item("Empresa")), folComprobacionCom)
-                taSol1.ObtND_FillBy(dtSol2, CDec(Session.Item("Empresa")), folComprobacionCom)
-                taSol1.ObtDND_FillBy(dtSol3, CDec(Session.Item("Empresa")), folComprobacionCom)
+            taSol1.ObtND_FillBy(dtSol2, CDec(Session.Item("Empresa")), folComprobacionCom)
+            taSol1.ObtDND_FillBy(dtSol3, CDec(Session.Item("Empresa")), folComprobacionCom)
 
-                rptComprobacion.Load(Server.MapPath("~/rptComprobacionGts.rpt"))
-                rptComprobacion.SetDataSource(dtSol1)
-                rptComprobacion.Subreports(0).SetDataSource(dtSol2)
-                rptComprobacion.Subreports(1).SetDataSource(dtSol3)
-                rptComprobacion.Refresh()
+            rptComprobacion.Load(Server.MapPath("~/rptComprobacionGts.rpt"))
+            rptComprobacion.SetDataSource(dtSol1)
+            rptComprobacion.Subreports(1).SetDataSource(dtSol2)
+            rptComprobacion.Subreports(0).SetDataSource(dtSol3)
+            rptComprobacion.Refresh()
 
-                If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
-                    rptComprobacion.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
-                Else
-                    rptComprobacion.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/logoArfin.JPG"))
-                End If
+            If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
+                rptComprobacion.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
+            Else
+                rptComprobacion.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/logoArfin.JPG"))
+            End If
             rptComprobacion.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folComprobacionCom))
             rptComprobacion.SetParameterValue("var_totalConFactura", FormatCurrency(taComprobacion.importeSifacturas_ScalarQuery(CDec(Session.Item("Empresa")), folComprobacionCom)))
-                rptComprobacion.SetParameterValue("var_totalSinFactura", FormatCurrency(taComprobacion.importeNoFacturas_ScalarQuery(CDec(Session.Item("Empresa")), folComprobacionCom)))
-                rptComprobacion.SetParameterValue("var_total", FormatCurrency(taComprobacion.Total_ScalarQuery(CDec(Session.Item("Empresa")), folComprobacionCom)))
+            rptComprobacion.SetParameterValue("var_totalSinFactura", FormatCurrency(taComprobacion.importeNoFacturas_ScalarQuery(CDec(Session.Item("Empresa")), folComprobacionCom)))
+            rptComprobacion.SetParameterValue("var_total", FormatCurrency(taComprobacion.Total_ScalarQuery(CDec(Session.Item("Empresa")), folComprobacionCom)))
 
             Dim rutaPDF As String = "~\GTS\" & Session.Item("namePDFg") & ".pdf"
             rptComprobacion.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
 
-                Response.Write("<script>")
-                rutaPDF = rutaPDF.Replace("\", "/")
-                rutaPDF = rutaPDF.Replace("~", "..")
-                Response.Write("window.open('verPdfGts.aspx','popup','_blank','width=200,height=200')")
-                Response.Write("</script>")
-            Else
-                ModalPopupExtender3.Show()
+            Response.Write("<script>")
+            rutaPDF = rutaPDF.Replace("\", "/")
+            rutaPDF = rutaPDF.Replace("~", "..")
+            Response.Write("window.open('verPdfGts.aspx','popup','_blank','width=200,height=200')")
+            Response.Write("</script>")
+        Else
+            ModalPopupExtender3.Show()
             Exit Sub
         End If
         lblTotalGastos.Visible = False
