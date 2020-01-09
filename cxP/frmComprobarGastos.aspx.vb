@@ -317,10 +317,10 @@ Public Class frmComprobarGastos
 
             Dim mail As String = "#" & taGenCorresoFases.ObtieneCorreo_ScalarQuery(ddlAutorizo.SelectedValue)
 
-                Dim contador As Integer = 0
-                Dim totalFacturas As Decimal = 0
-                For Each rows As GridViewRow In GridView2.Rows
-                    taUUIDPagos.ObtDatosFactura_FillBy(dtDatosFactura, GridView2.Rows(contador).Cells(2).Text)
+            Dim contador As Integer = 0
+            Dim totalFacturas As Decimal = 0
+            For Each rows As GridViewRow In GridView2.Rows
+                taUUIDPagos.ObtDatosFactura_FillBy(dtDatosFactura, GridView2.Rows(contador).Cells(2).Text)
                 For Each rowsa As dsProduccion.vw_CXP_XmlCfdi2_grpUuidRow In dtDatosFactura.Rows
 
                     Dim percentPago As Decimal = CDec(GridView2.Rows(contador).Cells(5).Text) / CDec(GridView2.Rows(contador).Cells(4).Text)
@@ -339,9 +339,9 @@ Public Class frmComprobarGastos
                     totalFacturas += CDec(GridView2.Rows(contador).Cells(5).Text)
                 Next
                 contador += 1
-                Next
+            Next
 
-                Dim contadorND As Integer = 0
+            Dim contadorND As Integer = 0
             For Each rowsND As GridViewRow In GridView3.Rows
                 Dim fileUp As FileUpload = rowsND.Cells(2).FindControl("fupNoDeducibles")
                 Dim taCFDI As New dsProduccionTableAdapters.CXP_XmlCfdi2TableAdapter
@@ -385,8 +385,8 @@ Public Class frmComprobarGastos
 
             rptComprobacion.Load(Server.MapPath("~/rptComprobacionGts.rpt"))
             rptComprobacion.SetDataSource(dtSol1)
-            rptComprobacion.Subreports(1).SetDataSource(dtSol2)
-            rptComprobacion.Subreports(0).SetDataSource(dtSol3)
+            rptComprobacion.Subreports(0).SetDataSource(dtSol2)
+            rptComprobacion.Subreports(1).SetDataSource(dtSol3)
             rptComprobacion.Refresh()
 
             If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
