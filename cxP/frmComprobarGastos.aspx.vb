@@ -359,7 +359,7 @@ Public Class frmComprobarGastos
                         taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), guuidCN, CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "Adjunto", "ND", "Activo")
                     End If
                 Else
-                    taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), "ND", CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "", "", "Activo")
+                    taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), "ND", CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "", "ND", "Activo")
                 End If
                 contadorND += 1
             Next
@@ -440,10 +440,6 @@ Public Class frmComprobarGastos
         txtConceptoND.Text = ""
         TabContainer1.Visible = False
         odbSolicitudes2.FilterExpression = "idConcepto = '" & taTipoDocumento.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' AND estatus like '%Autoriza 2%'"
-    End Sub
-
-    Protected Sub GridView3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView3.SelectedIndexChanged
-
     End Sub
 
     Private Sub GridView3_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridView3.RowDataBound
