@@ -42545,12 +42545,11 @@ Namespace dsProduccionTableAdapters
             Me._commandCollection(2).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idConcepto", Global.System.Data.SqlDbType.[Decimal], 9, Global.System.Data.ParameterDirection.Input, 18, 0, "idConcepto", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(3) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(3).Connection = Me.Connection
-            Me._commandCollection(3).CommandText = "SELECT        folioSolicitud, fechaSolicitud, SUM(totalPagado) AS totalPagado, es"& _ 
-                "tatus, razonSocial, Autoriza1, Autoriza2, idConcepto, st"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            Vw_CXP"& _ 
-                "_MisSolicitudesSC"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"GROUP BY folioSolicitud, fechaSolicitud, estatus, razonSocial"& _ 
-                ", usuario, idEmpresas, Autoriza1, Autoriza2, idConcepto, st"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"HAVING        (usua"& _ 
-                "rio = @usuario) AND (idEmpresas = @empresa) AND (idConcepto <> @idConcepto) AND "& _ 
-                "(SUM(totalPagado) > 0)"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"ORDER BY folioSolicitud DESC"
+            Me._commandCollection(3).CommandText = "SELECT        folioSolicitud, MIN(fechaSolicitud) AS fechaSolicitud, SUM(totalPag"& _ 
+                "ado) AS totalPagado, estatus, razonSocial, Autoriza1, Autoriza2, idConcepto, st"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            Vw_CXP_MisSolicitudesSC"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"GROUP BY folioSolicitud, estatus, razo"& _ 
+                "nSocial, usuario, idEmpresas, Autoriza1, Autoriza2, idConcepto, st"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"HAVING      "& _ 
+                "  (usuario = @usuario) AND (idEmpresas = @empresa) AND (idConcepto <> @idConcept"& _ 
+                "o) AND (SUM(totalPagado) > 0)"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"ORDER BY folioSolicitud DESC"
             Me._commandCollection(3).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(3).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@usuario", Global.System.Data.SqlDbType.VarChar, 50, Global.System.Data.ParameterDirection.Input, 0, 0, "usuario", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(3).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@empresa", Global.System.Data.SqlDbType.[Decimal], 9, Global.System.Data.ParameterDirection.Input, 18, 0, "idEmpresas", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
