@@ -6,7 +6,7 @@ Imports System.IO
 
 Public Class frmMisSolicitudesSC
     Inherits System.Web.UI.Page
-
+    Dim taComprobaciones As New dsProduccionTableAdapters.Vw_CXP_MisComprobacionesTableAdapter
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim taEmpresa As New dsProduccionTableAdapters.CXP_EmpresasTableAdapter
         Session.Item("idConcepto") = taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa"))
@@ -22,14 +22,12 @@ Public Class frmMisSolicitudesSC
             GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
         End If
         For Each row As GridViewRow In GridView1.Rows
-            Dim btn As Button = row.Cells(5).FindControl("btnOpciones")
             Session.Item("Leyenda") = "Mis solicitudes sin comprobante fiscal"
-
 
             Dim taAutorizaciones As New dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter
             Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesSCDataTable
             Dim drAutorizaciones As dsProduccion.Vw_CXP_MisSolicitudesSCRow
-            Dim taComprobaciones As New dsProduccionTableAdapters.Vw_CXP_MisComprobacionesTableAdapter
+
 
             taAutorizaciones.ObtAuroizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CInt(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
             If dtAutorizaciones.Rows.Count > 0 Then
@@ -45,16 +43,11 @@ Public Class frmMisSolicitudesSC
                     row.Cells(4).Text = "Rechazó (2): " & vbCrLf & drAutorizaciones.Autoriza2
                 ElseIf drAutorizaciones.st = "Cancelada" Then
                     row.Cells(4).Text = "Cancelada"
-                    btn.Enabled = False
-                    btn.Text = "Cancelada"
                 ElseIf drAutorizaciones.st = "Pagada" Then
                     row.Cells(4).Text = "Pagada"
-                    btn.Enabled = False
-                    btn.Text = "Pagada"
                 End If
                 If contComp > 0 Then
-                    btn.Text = contComp.ToString & " Comprobaciones"
-                    btn.Enabled = False
+                    'row.Cells(4).Text = "Comprobaciones"
                 End If
             End If
         Next
@@ -66,17 +59,19 @@ Public Class frmMisSolicitudesSC
         Dim td As New dsProduccion.CXP_PagosDataTable
         Dim contrato As Boolean = False
         Dim fecha As String = ""
-
-        If e.CommandName = "Cancelar" Then
+        LabelError.Visible = False
+        If e.CommandName = "Select" Then
+            HiddenID.Value = e.CommandSource.Text
+            HiddenEstatus.Value = e.CommandArgument
+        ElseIf InStr(HiddenEstatus.Value, "Cancelada") > 0 Then
+            LabelError.Visible = True
+            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE CANCELADA")
+        ElseIf e.CommandName = "Cancelar" Then
             GridView1.Enabled = False
-            taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), CInt(GridView1.Rows(e.CommandArgument).Cells(0).Text))
+            taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
             Dim nRowCXPPagos As dsProduccion.CXP_PagosRow
             For Each rows As dsProduccion.CXP_PagosRow In td
-
                 nRowCXPPagos = dsProd.CXP_Pagos.NewCXP_PagosRow
-
-                'taPagos.Insert(rows.idProveedor, rows.idUsuario, rows.folioSolicitud, Date.Now.ToLongDateString, rows.fechaSolicitud, rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1, (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1, rows.autoriza2, rows.ok1, rows.ok2, rows.moneda, Date.Now.ToLongDateString, False, rows.noContrato, rows.idAutoriza2, rows.naAutoriza2, rows.naAutoriza1, rows.cCostos, rows.fPago)
-
                 nRowCXPPagos.idProveedor = rows.idProveedor
                 nRowCXPPagos.idUsuario = rows.idUsuario
                 nRowCXPPagos.folioSolicitud = rows.folioSolicitud
@@ -134,10 +129,10 @@ Public Class frmMisSolicitudesSC
 
             Dim dtObsSol As DataTable
             dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-            taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CInt(GridView1.Rows(e.CommandArgument).Cells(0).Text))
-            taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), CInt(GridView1.Rows(e.CommandArgument).Cells(0).Text), "Cancelada")
-            taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CInt(GridView1.Rows(e.CommandArgument).Cells(0).Text))
-            taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CInt(GridView1.Rows(e.CommandArgument).Cells(0).Text))
+            taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), HiddenID.Value)
+            taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), HiddenID.Value, "Cancelada")
+            taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), HiddenID.Value)
+            taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), HiddenID.Value)
 
             Dim var_observaciones As Integer = dtObsSol.Rows.Count
             Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
@@ -150,7 +145,7 @@ Public Class frmMisSolicitudesSC
 
             rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
             rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
-            rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(fecha & Session.Item("Empresa") & GridView1.Rows(e.CommandArgument).Cells(0).Text))
+            rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(fecha & Session.Item("Empresa") & HiddenID.Value.ToString))
             rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
             rptSolPago.SetParameterValue("var_contrato", contrato)
 
@@ -161,7 +156,7 @@ Public Class frmMisSolicitudesSC
             End If
 
 
-            Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("Empresa") & "-" & GridView1.Rows(e.CommandArgument).Cells(0).Text & ".pdf"
+            Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("Empresa") & "-" & HiddenID.Value & ".pdf"
             rptSolPago.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
             Response.Write("<script>")
             rutaPDF = rutaPDF.Replace("\", "/")
@@ -171,6 +166,9 @@ Public Class frmMisSolicitudesSC
             rptSolPago.Dispose()
 
             Response.Redirect("~/frmMisSolicitudesSC.aspx")
+        Else
+            LabelError.Visible = True
+            LabelError.Text = UCase("Selecion no válida.")
         End If
         GridView1.Enabled = True
     End Sub

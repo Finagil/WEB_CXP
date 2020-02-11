@@ -14,6 +14,33 @@ Option Explicit On
 Partial Public Class frmMisSolicitudesSCR
     
     '''<summary>
+    '''Control HiddenID.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents HiddenID As Global.System.Web.UI.WebControls.HiddenField
+    
+    '''<summary>
+    '''Control HiddenEstatus.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents HiddenEstatus As Global.System.Web.UI.WebControls.HiddenField
+    
+    '''<summary>
+    '''Control LabelError.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents LabelError As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
     '''Control GridView1.
     '''</summary>
     '''<remarks>

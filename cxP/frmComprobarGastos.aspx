@@ -68,7 +68,7 @@
         }
         .auto-style26 {
             overflow-x: auto;
-            height: 600px;
+            height: 100%;
         }
         .auto-style27 {
             width: 148px;

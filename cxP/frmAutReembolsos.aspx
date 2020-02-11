@@ -9,7 +9,7 @@
         .auto-style14 {
             text-align: center;
             overflow-y:auto;
-            height:300px;
+            height:100%;
         }
         </style>
 </asp:Content>

@@ -2,13 +2,18 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <div style="height: 450px" class="auto-style8">
+    <div style="height: 100%" class="auto-style8">
         <br />
         <br />
         <br />
         <br />
         <br />
         <asp:Image ID="Image1" runat="server" ImageUrl="~/imagenes/logo-sin-fondo_web.png" />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
     </div>
 
     </asp:Content>

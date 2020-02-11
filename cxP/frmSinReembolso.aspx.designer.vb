@@ -23,6 +23,15 @@ Partial Public Class frmSinReembolso
     Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
     
     '''<summary>
+    '''Control contenedorID.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents contenedorID As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
     '''Control pnlMensajeError.
     '''</summary>
     '''<remarks>
@@ -156,15 +165,6 @@ Partial Public Class frmSinReembolso
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents ModalPopupExtender3 As Global.AjaxControlToolkit.ModalPopupExtender
-    
-    '''<summary>
-    '''Control contenedorID.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents contenedorID As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
     '''Control id1.
@@ -777,15 +777,6 @@ Partial Public Class frmSinReembolso
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents btnRevisar As Global.System.Web.UI.WebControls.Button
-    
-    '''<summary>
-    '''Control contenedor2ID.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents contenedor2ID As Global.System.Web.UI.HtmlControls.HtmlTableCell
     
     '''<summary>
     '''Control contenedor2IDa.

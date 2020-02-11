@@ -18,9 +18,6 @@
     <link rel="stylesheet" href="css/fontello.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <style type="text/css">
-   
-
-
         .auto-style1 {
             width: 159%;
             height: 54px;
@@ -50,13 +47,18 @@
             height: 500px;
             width: 775px;
         }
+        .auto-styleFT{
+         position:fixed;
+         left:0px;
+         bottom:0px;
+         width:100%;
+
+        }
        
     </style>
 </head>
 <body onload="window.history.fordward();">
-    <form id="form1" runat="server">
-        <div runat="server" id="idDiv1">
-            <table style="width: 100%" id="idDiv2" runat="server" >
+    <table style="width: 100%" id="idDiv2" runat="server" >
                 <tr>
                     <td id="identificadorUnico1" runat="server" class="labels10">
                         <asp:Label ID="lblLeyenda" runat="server" Font-Bold="True" Font-Names="Verdana" ForeColor="White" Text="Label" Width="152%"></asp:Label>
@@ -65,8 +67,8 @@
                         <img src="imagenes/logo-shop-primary.png" class="auto-style3" ID="imgURL" runat="server"/></td>
                 </tr>
             </table>
-            <header id="identificadorUnico15" runat="server">
-                <input type="checkbox" id="btn-menu" />
+    <header id="identificadorUnico15" runat="server">
+            <input type="checkbox" id="btn-menu" />
                 <label for="submenu" class="icon-menu" ></label>
                 <nav class="menu">
                     <ul>
@@ -100,18 +102,15 @@
                     </ul>
                 </nav>
             </header>
-            <script src="menu.js"></script>
-            <table style="width: 100%">
-
-            </table>
+    <script src="menu.js"></script>
+    <form id="form1" runat="server">
+        <div runat="server" id="idDiv1">            
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                <div class="auto-style7">
-        
-        <br />
-        <br />
-    </div>
             </asp:ContentPlaceHolder>
         </div>
+    </form>    
+    
+    <footer class="auto-styleFT">
     <table style="width: 100%; position: static;">
         <tr>
             <td style="height: 30px; background-color: #ff6600" id="identificadorUnico16" runat="server">
@@ -138,6 +137,6 @@
             </td>
         </tr>
     </table>
-    </form>
-    </body>
+    </footer>
+</body>
 </html>

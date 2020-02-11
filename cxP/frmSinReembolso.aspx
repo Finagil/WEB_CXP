@@ -79,7 +79,7 @@
           }
            .auto-style21a {
             overflow-y: auto;
-            height: 700px;
+            height:100%;
         }
           .auto-style43 {
               width: 184px;
@@ -123,6 +123,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
      <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
+    <div class="auto-style21a" id="contenedorID" runat="server" >
     <asp:Panel ID="pnlMensajeError" runat="server" CssClass="CajaDialogo" style="display: none;">
     <table border="0" width="200px" style="margin: 2px; padding: 0px; background-color: #FFF700; color: #000000;">
         <tr>
@@ -160,7 +161,7 @@
 </asp:Panel>
 
     <asp:Panel ID="pnlTotales" runat="server" CssClass="CajaDialogo" style="display: none;">
-    <table border="0" height="100" width="250px" style="margin: 2px; padding: 0px; background-color: #FFF700; color: #000000;">
+    <table border="0" height="100px" width="250px" style="margin: 2px; padding: 0px; background-color: #FFF700; color: #000000;">
         <tr>
             <td align="lefth">
                 <asp:Label ID="lblEncabezado" runat="server" Text=" Datos previos: " BackColor="#FFF700" Font-Bold="true"/>
@@ -180,7 +181,7 @@
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensajeError" TargetControlID="lblErrorGeneral" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender2" runat="server" OkControlID="Button1" PopupControlID="pnlTotales" TargetControlID="lblTotales" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
      <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender3" runat="server" OkControlID="Button1" PopupControlID="pnlEFOS" TargetControlID="lblEFOSDesc" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-     <div class="auto-style21a" id="contenedorID" runat="server" >
+     
      <link href="styFW.css" rel="stylesheet" type="text/css" />
     <p>
         <table class="auto-style40">
@@ -697,12 +698,8 @@
                                                 </asp:GridView>
                                             </tr>
                                         </caption>
-                                                                           </tr>
-                                </table>                                                                                
-
-                               
-                              
-
+                                               </tr>
+                                </table>     
 
                             </ContentTemplate>
                          </ajaxToolkit:TabPanel>
@@ -711,62 +708,28 @@
                     
                     <br />
                     
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRevisar" runat="server" CssClass="Botones" Text="Revisar" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="btnRevisar" runat="server" CssClass="Botones" Text="Revisar" /><br />
                     &nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td class="auto-style30" colspan="8" id="contenedor2ID" runat="server">
-                    
-                    <br />
-                   
-                   
-                    
-                    
-                    
-                </td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
                 <td class="auto-style30" colspan="4" id="contenedor2IDa" runat="server">
-                    
                     <asp:TextBox ID="txtRevision" runat="server" BackColor="Yellow" Font-Bold="True" Font-Names="Arial" ForeColor="Red" Height="102px" ReadOnly="True" TextMode="MultiLine" Visible="False" Width="650px"></asp:TextBox>
-                   
-                   
-                    
-                    
-                    
                 </td>
                 <td class="auto-style42" colspan="4" id="contenedor2IDb" runat="server">
-                    
                                 <asp:Label ID="lblAdjuntos" runat="server" Text="Archivos adjuntos (solo PDF):" Visible="False"></asp:Label>
                                 <br />
                                 <asp:FileUpload ID="fup1" runat="server" Visible="False" accept=".pdf" multiple="multiple" AllowMultiple="true" />
-                   
-                   
-                    
-                    
-                    
                 </td>
                 <td>&nbsp;</td>
             </tr>
         </table>
-        <div class="auto-style30">
-                <br />
-            <br />
-                <br />
-     <br />
-    <asp:FileUpload ID="fupCarteNeteo" runat="server" Visible="False" />
-                    <br />
-            <br />
-    <asp:Button ID="btnSolicitar" runat="server" CssClass="Botones" Text="Solicitar" Visible="False" />
-    &nbsp;&nbsp;&nbsp;
-     <asp:Button ID="btnCancelar" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" />
-    <br />
-    <asp:Label ID="lblError" runat="server" Font-Names="Arial Black" Font-Size="X-Large" ForeColor="#FF6401" Text="Error" Visible="False"></asp:Label>
+        <div class="auto-style30"><br /><br /><br /><br />
+            <asp:FileUpload ID="fupCarteNeteo" runat="server" Visible="False" /><br /><br />
+            <asp:Button ID="btnSolicitar" runat="server" CssClass="Botones" Text="Solicitar" Visible="False" />&nbsp;&nbsp;&nbsp;
+            <asp:Button ID="btnCancelar" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" /><br />
+            <asp:Label ID="lblError" runat="server" Font-Names="Arial Black" Font-Size="X-Large" ForeColor="#FF6401" Text="Error" Visible="False"></asp:Label>
         </div>
     </p>
-<p>
-        &nbsp;</p>
          </div>
 </asp:Content>

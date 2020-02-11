@@ -3,7 +3,7 @@
     <title>Validación de CFDI</title>
     <style type="text/css">
         .auto-style7 {
-            height: 450px;
+            height:100%;
         }
         .auto-style8 {
             width: 100%;

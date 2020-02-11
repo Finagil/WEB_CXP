@@ -4,8 +4,7 @@
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="ajaxToolkit" %>
 <% @ Register assembly = "AjaxControlToolkit" namespace = "AjaxControlToolkit"  tagprefix = "asp"  %>  
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-     
-     <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#<%=txtFechaPago.ClientID %>").dynDateTime({
                 showsTime: false,
@@ -26,15 +25,12 @@
         margin-left: 20px;
         margin-top: 20px;
     }
-
     .auto-style7shapeB {
         width: 80%;
         height: 100px;
         margin-left: 20px;
         margin-top: 20px;
     }
-
-
     .CajaDialogo
     {
         background-color: #FFF700;
@@ -89,7 +85,7 @@
            margin-left: 10px;
             margin-top: 10px;
             overflow-y: auto;
-            height: 650px;
+            height: 100%;
         }
         .auto-style22 {
             text-align: left;

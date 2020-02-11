@@ -1,4 +1,7 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Finagil.Master" CodeBehind="frmMisSolicitudes.aspx.vb" Inherits="cxP.frmMisSolicitudes" %>
+
+<%@ Register Assembly="RoderoLib" Namespace="RoderoLib" TagPrefix="cc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server" >
     <style type="text/css">
 
@@ -9,13 +12,16 @@
         .auto-style14 {
             text-align: center;
             overflow-y:auto;
-            height:300px;
+            height:100%;
         }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server" >
-    <div style="height: 450px">
+    <div style="height: 100%">
                         <div class="auto-style14">
+                            <asp:HiddenField ID="HiddenID" runat="server" />
+                            <asp:HiddenField ID="HiddenEstatus" runat="server" />
+                            <asp:Label ID="LabelError" runat="server" Text="Error" Font-Bold="True" ForeColor="#FF3300" Visible="False" Font-Size="X-Large"></asp:Label>
                         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudes" Height="16px" Width="1226px" ForeColor="#333333" HorizontalAlign="Center" PageSize="20">
                             <Columns>
                                 <asp:BoundField DataField="folioSolicitud" HeaderText="Folio Solicitud" ItemStyle-HorizontalAlign="Right" HeaderStyle-HorizontalAlign="Center">
@@ -55,14 +61,13 @@
 <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField ItemStyle-HorizontalAlign="Center">
+                                <asp:TemplateField ShowHeader="False">
+                                    <HeaderTemplate>
+                                        <cc1:BotonEnviar ID="BotonEnviar1" runat="server" Text="Cancelar Solicitud" TextoEnviando="Cancelando..." CommandName="Cancelar" />
+                                    </HeaderTemplate>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnOpciones" runat="server" Text="Cancelar Solicitud"
-                                             CommandName="Cancelar" 
-                                             CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>" />
-                                    </ItemTemplate>
-
-<ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandArgument='<%# Eval("st") %>' CommandName="Select" Text='<%# Eval("folioSolicitud", "{0}") %>'></asp:LinkButton>
+                                    </ItemTemplate>                                     
                                 </asp:TemplateField>
                                                                
                             </Columns>
@@ -72,6 +77,7 @@
             <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
             <EditRowStyle BackColor="#FF6600" />
                         </asp:GridView>
+                    
                     </div>
                     <br />
         <asp:ObjectDataSource ID="odsMisSolicitudes" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="MisSolicitudes_GetData" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisSolicitudesTableAdapter">

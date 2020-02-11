@@ -75,7 +75,7 @@
           }
            .auto-style21a {
             overflow-y: auto;
-            height: 700px;
+            height:100%;
         }
           .auto-style45 {
               text-align: left;
@@ -131,8 +131,10 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     <asp:ScriptManager ID="ScriptManager1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
+
+    <div class="auto-style21a" id="contenedorID" runat="server" >
     <asp:Panel ID="pnlMensajeError" runat="server" CssClass="CajaDialogo" style="display: none;">
     <table border="0" width="200px" style="margin: 2px; padding: 0px; background-color: #FFF700; color: #000000;">
         <tr>
@@ -149,9 +151,9 @@
     <div>
         <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" />
     </div>
-</asp:Panel>
+    </asp:Panel>
 
-     <asp:Panel ID="pnlEFOS" runat="server" CssClass="CajaDialogo" style="display: none;">
+    <asp:Panel ID="pnlEFOS" runat="server" CssClass="CajaDialogo" style="display: none;">
     <table border="0" width="200px" style="margin: 2px; padding: 0px; background-color: #FFF700; color: #000000;">
         <tr>
             <td align="lefth">
@@ -167,7 +169,7 @@
     <div>
         <asp:Button ID="Button3" runat="server" Text="Aceptar" />
     </div>
-</asp:Panel>
+    </asp:Panel>
 
     <asp:Panel ID="pnlTotales" runat="server" CssClass="CajaDialogo" style="display: none;">
     <table border="0" height="100" width="250px" style="margin: 2px; padding: 0px; background-color: #FFF700; color: #000000;">
@@ -190,7 +192,8 @@
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensajeError" TargetControlID="lblErrorGeneral" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender2" runat="server" OkControlID="Button1" PopupControlID="pnlTotales" TargetControlID="lblTotales" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender3" runat="server" OkControlID="Button1" PopupControlID="pnlEFOS" TargetControlID="lblEFOSDesc" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-     <div class="auto-style21a" id="contenedorID" runat="server" >
+
+     
      <link href="styFW.css" rel="stylesheet" type="text/css" />
     <p>
         <table class="auto-style40">
