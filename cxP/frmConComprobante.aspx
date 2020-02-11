@@ -78,8 +78,8 @@
             overflow-y: auto;
             overflow-x: auto;
             height:250px;
-            width:1350px;
-            text-align: left;          
+            width:100%;
+            text-align: left;            
         }
         .auto-style21 {
            margin-left: 10px;
@@ -154,7 +154,7 @@
     </div>
 </asp:Panel>
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensajeError" TargetControlID="lblErrorGeneral" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-     <link href="styFW.css" rel="stylesheet" type="text/css" />
+    <link href="styFW.css" rel="stylesheet" type="text/css" />
     <div class="auto-style21">
         <table class="auto-style7">
             <tr>
@@ -571,16 +571,13 @@
                     &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
                     <asp:Button ID="Button1" runat="server" Text="Button" Visible="False" />
                     <br />
-                    <asp:Label ID="lblError" runat="server" Font-Names="Arial Black" Font-Size="X-Large" ForeColor="#FF6401" Text="Error" Visible="False"></asp:Label>
+                    <asp:Label ID="lblError" runat="server" Font-Names="Arial Black" Font-Size="X-Large" ForeColor="#FF6401" Text="Error" Visible="False"></asp:Label><br />
                     <br />
                 </td>
-            </tr>
-            <tr>
-                <td class="auto-style16">&nbsp;</td>
-                <td class="auto-style18" colspan="4">
-                    &nbsp;</td>
-                <td class="auto-style27" colspan="2">&nbsp;</td>
-            </tr>
+            </tr>            
         </table>
     </div>
+    <br />
+    <br />
+    <br />
 </asp:Content>
