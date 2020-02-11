@@ -204,6 +204,7 @@
     <Content Include="js\menu.js" />
     <Content Include="Login.aspx" />
     <Content Include="Lector_XML.WS_Consulta_SAT.Acuse.datasource" />
+    <Content Include="MaestraVacia.Master" />
     <None Include="packages.config" />
     <None Include="Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
@@ -365,6 +366,13 @@
     </Compile>
     <Compile Include="Login.aspx.vb">
       <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MaestraVacia.Master.designer.vb">
+      <DependentUpon>MaestraVacia.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MaestraVacia.Master.vb">
+      <DependentUpon>MaestraVacia.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="rptComprobacionGts.vb">
