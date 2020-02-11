@@ -39297,10 +39297,10 @@ Namespace dsProduccionTableAdapters
             Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(1).Connection = Me.Connection
             Me._commandCollection(1).CommandText = "SELECT        Autoriza1, Autoriza2, estatus, fechaSolicitud, folioSolicitud, razo"& _ 
-                "nSocial, st"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            Vw_CXP_MisSolicitudes"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (usuario = @usu"& _ 
-                "ario) AND (idEmpresas = @empresa) AND (folioSolicitud = @folioSolicitud)"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"GROUP "& _ 
-                "BY Autoriza1, Autoriza2, estatus, fechaSolicitud, folioSolicitud, razonSocial, s"& _ 
-                "t"
+                "nSocial, MIN(st) AS st"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            Vw_CXP_MisSolicitudes"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (usu"& _ 
+                "ario = @usuario) AND (idEmpresas = @empresa) AND (folioSolicitud = @folioSolicit"& _ 
+                "ud)"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"GROUP BY Autoriza1, Autoriza2, estatus, fechaSolicitud, folioSolicitud, raz"& _ 
+                "onSocial"
             Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@usuario", Global.System.Data.SqlDbType.VarChar, 50, Global.System.Data.ParameterDirection.Input, 0, 0, "usuario", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@empresa", Global.System.Data.SqlDbType.[Decimal], 9, Global.System.Data.ParameterDirection.Input, 18, 0, "idEmpresas", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
