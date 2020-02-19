@@ -46,9 +46,6 @@
         ElseIf InStr(HiddenEstatus.Value, "Pagada") > 0 Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
-        ElseIf InStr(HiddenEstatus.Value, "Rechazada") > 0 Then
-            LabelError.Visible = True
-            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE RECHAZADA")
         ElseIf e.CommandName = "Cancelar" Then
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
             For Each rows As dsProduccion.CXP_PagosRow In td
