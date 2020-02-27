@@ -63,7 +63,7 @@
                  <cc1:BotonEnviar ID="BotonEnviar1" runat="server" Text="Cancelar Solicitud" TextoEnviando="Cancelando..." CommandName="Cancelar" />
                  </HeaderTemplate>
              <ItemTemplate>
-                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandArgument='<%# Eval("estatus") %>' CommandName="Select" Text='<%# Eval("idFolioSolicitud", "{0}") %>'></asp:LinkButton>
+                 <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandArgument='<%# Eval("estatus") %>' CommandName="Select" Text='<%# Eval("folioComprobacion", "{0}") & "|" & Eval("idFolioSolicitud", "{0}") %>' ></asp:LinkButton>
              </ItemTemplate>
         </asp:TemplateField>
     </Columns>
