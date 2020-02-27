@@ -92,8 +92,8 @@ Public Class frmMisSolicitudesSC
                 nRowCXPPagos.estatus = "Cancelacion"
                 nRowCXPPagos.autoriza1 = rows.autoriza1
                 nRowCXPPagos.autoriza2 = rows.autoriza2
-                nRowCXPPagos.ok1 = rows.ok1
-                nRowCXPPagos.ok2 = rows.ok2
+                nRowCXPPagos.ok1 = "CANCELADA"
+                nRowCXPPagos.ok2 = "CANCELADA"
                 nRowCXPPagos.moneda = rows.moneda
                 nRowCXPPagos.fechaPago = Date.Now.ToLongDateString()
                 nRowCXPPagos.contrato = False
@@ -111,7 +111,7 @@ Public Class frmMisSolicitudesSC
                 dsProd.CXP_Pagos.GetChanges()
                 taPagos.Update(dsProd.CXP_Pagos)
 
-                taPagos.ActualizaACancelada_UpdateQuery(rows.folioSolicitud, rows.uuid)
+                taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
             Next
 
 

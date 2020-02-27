@@ -38237,9 +38237,12 @@ Namespace dsProduccionTableAdapters
             Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(1).Connection = Me.Connection
-            Me._commandCollection(1).CommandText = "UPDATE       CXP_Pagos"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SET                estatus = 'Cancelada'"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (f"& _ 
-                "olioSolicitud = @folioSolicitud) AND (uuid = @uuid) AND (totalPagado > 0);  "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)
+            Me._commandCollection(1).CommandText = "UPDATE       CXP_Pagos"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SET                estatus = 'Cancelada', ok1 = @OK1, ok2"& _ 
+                " = @OK2"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (folioSolicitud = @folioSolicitud) AND (uuid = @uuid) AND "& _ 
+                "(totalPagado > 0);   "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)
             Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@OK1", Global.System.Data.SqlDbType.VarChar, 50, Global.System.Data.ParameterDirection.Input, 0, 0, "ok1", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@OK2", Global.System.Data.SqlDbType.VarChar, 50, Global.System.Data.ParameterDirection.Input, 0, 0, "ok2", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@folioSolicitud", Global.System.Data.SqlDbType.[Decimal], 9, Global.System.Data.ParameterDirection.Input, 18, 0, "folioSolicitud", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@uuid", Global.System.Data.SqlDbType.VarChar, 36, Global.System.Data.ParameterDirection.Input, 0, 0, "uuid", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
             Me._commandCollection(2) = New Global.System.Data.SqlClient.SqlCommand()
@@ -39039,17 +39042,27 @@ Namespace dsProduccionTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
          Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, false)>  _
-        Public Overloads Overridable Function ActualizaACancelada_UpdateQuery(ByVal folioSolicitud As Global.System.Nullable(Of Decimal), ByVal uuid As String) As Integer
+        Public Overloads Overridable Function ActualizaACancelada_UpdateQuery(ByVal OK1 As String, ByVal OK2 As String, ByVal folioSolicitud As Global.System.Nullable(Of Decimal), ByVal uuid As String) As Integer
             Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(1)
-            If (folioSolicitud.HasValue = true) Then
-                command.Parameters(0).Value = CType(folioSolicitud.Value,Decimal)
-            Else
+            If (OK1 Is Nothing) Then
                 command.Parameters(0).Value = Global.System.DBNull.Value
+            Else
+                command.Parameters(0).Value = CType(OK1,String)
             End If
-            If (uuid Is Nothing) Then
+            If (OK2 Is Nothing) Then
                 command.Parameters(1).Value = Global.System.DBNull.Value
             Else
-                command.Parameters(1).Value = CType(uuid,String)
+                command.Parameters(1).Value = CType(OK2,String)
+            End If
+            If (folioSolicitud.HasValue = true) Then
+                command.Parameters(2).Value = CType(folioSolicitud.Value,Decimal)
+            Else
+                command.Parameters(2).Value = Global.System.DBNull.Value
+            End If
+            If (uuid Is Nothing) Then
+                command.Parameters(3).Value = Global.System.DBNull.Value
+            Else
+                command.Parameters(3).Value = CType(uuid,String)
             End If
             Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
             If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _

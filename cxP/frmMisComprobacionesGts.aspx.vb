@@ -27,8 +27,8 @@
         ElseIf e.CommandName = "Cancelar" Then
             taPagos.ObtFolioParaCancelarGastos_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
             For Each rows As dsProduccion.CXP_PagosRow In td
-                taPagos.Insert(rows.idProveedor, rows.idUsuario, rows.folioSolicitud, Date.Now.ToLongDateString, rows.fechaSolicitud, rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1, (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1, rows.autoriza2, Nothing, Nothing, rows.moneda, Date.Now.ToLongDateString, rows.contrato, Nothing, Nothing, Nothing, Nothing, rows.cCostos, rows.fPago)
-                taPagos.ActualizaACancelada_UpdateQuery(rows.folioSolicitud, rows.uuid)
+                taPagos.Insert(rows.idProveedor, rows.idUsuario, rows.folioSolicitud, Date.Now.ToLongDateString, rows.fechaSolicitud, rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1, (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1, rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, rows.contrato, Nothing, Nothing, Nothing, Nothing, rows.cCostos, rows.fPago)
+                taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
             Next
             taComprobacion.ConsultaRegistros_FillBy(dtComprobacion, HiddenID.Value, CInt(Session.Item("Empresa")), HiddenID.Value)
             For Each rowsC As dsProduccion.CXP_ComprobGtosRow In dtComprobacion
