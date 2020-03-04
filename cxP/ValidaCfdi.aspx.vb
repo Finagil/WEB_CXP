@@ -49,14 +49,14 @@ Public Class ValidaCfdi
                 rootPathSave = Server.MapPath("Finagil")
                 rutaSaveProceso = Server.MapPath("~\Procesados\FINAGIL\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day))
             Else
-                rutasCFDI = "\FINAGIL\Todos"
-                rootPathSave = Server.MapPath("Finagil")
+                rutasCFDI = "\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\FINAGIL\Todos\"
+                rootPathSave = "\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\FINAGIL\Todos\"
                 'Directory.CreateDirectory(Server.MapPath("\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\FINAGIL\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day)))
-                rutaSaveProceso = Server.MapPath("~\Procesados\FINAGIL\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day))
+                rutaSaveProceso = "\\server-nas\Contabilidad CFDI\ARCHIVOS ADD CONTPAQi\CFDI_PROV\FINAGIL\" & Date.Now.Year.ToString & "-" & MonthName(Date.Now.Month) & "-" & String.Format("{0:00}", Date.Now.Day)
             End If
         End If
 
-            lblError.Visible = False
+        lblError.Visible = False
         'lblValidacion.Visible = False
         lblError.Text = ""
         'lblValidacion.Text = ""
@@ -106,7 +106,7 @@ Public Class ValidaCfdi
                         doc.Save(rootPath & "\" & GU.ToString & "." & ext(ext.Length - 1))
                     End If
 
-                     If ext(0) = extPdf(0) Then
+                    If ext(0) = extPdf(0) Then
                         'lblValidacion.Visible = True
                         Dim var As String = "Sin errores en XSD"
                         Try
