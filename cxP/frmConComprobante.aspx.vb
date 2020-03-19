@@ -45,6 +45,7 @@ Public Class frmConComprobante
             odsAnexosActivos.FilterExpression = "cliente ='" & ddlClientes.SelectedValue & "'"
             cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
             cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
+            GridView1.Visible = False
         End If
     End Sub
 
