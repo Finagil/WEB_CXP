@@ -14,12 +14,12 @@
             font-family: Arial, Verdana, Geneva, sans-serif;
             font-weight: bold;
             font-size: large;
-            color: #FF6401;
+            color: #F58220;
         }
         .auto-style3 {
             font-family: Arial;
             font-weight: bold;
-            color: #FF6401;
+            color: #F58220;
         }
         .auto-style4 {
             margin-left: 0px;

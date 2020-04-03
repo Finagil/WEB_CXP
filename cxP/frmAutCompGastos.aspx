@@ -75,10 +75,10 @@
                                 </asp:TemplateField>
                             </Columns>
                             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#FF6600" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+            <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
                             <asp:ObjectDataSource ID="odsAutConComprobante" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="MisAutorizaciones_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_AutCompGastosTableAdapter">
                                 <SelectParameters>

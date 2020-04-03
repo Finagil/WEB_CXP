@@ -258,8 +258,8 @@
 
         <table class="auto-style14">
             <tr>
-                <td id="id1" runat="server" class="auto-style8" style="font-family: Arial; font-size: medium; background-color: #FF6600; font-weight: bold; color: #FFFFFF;" colspan="5">Solicitud:</td>
-                <td id="id2" runat="server" style="font-family: Arial; font-size: medium; background-color: #FF6600; font-weight: bold; color: #FFFFFF;" colspan="3">Datos de la solicitud:</td>
+                <td id="id1" runat="server" class="auto-style8" style="font-family: Arial; font-size: medium; background-color: #F58220; font-weight: bold; color: #FFFFFF;" colspan="5">Solicitud:</td>
+                <td id="id2" runat="server" style="font-family: Arial; font-size: medium; background-color: #F58220; font-weight: bold; color: #FFFFFF;" colspan="3">Datos de la solicitud:</td>
             </tr>
             <tr>
                 <td class="auto-style11" style="font-family: Arial; font-size: medium" colspan="5">Folio de solicitud:<br />
@@ -286,7 +286,7 @@
                 </td>
             </tr>
             <tr>
-                <td id="id3" runat="server" class="auto-style8" style="font-family: Arial; font-size: medium; border-bottom-style: solid; border-bottom-color: #FF6600; border-bottom-width: 3px;" colspan="5">
+                <td id="id3" runat="server" class="auto-style8" style="font-family: Arial; font-size: medium; border-bottom-style: solid; border-bottom-color: #F58220; border-bottom-width: 3px;" colspan="5">
                     <asp:TextBox ID="txtDescripcion" runat="server" Font-Bold="True" Height="41px" ReadOnly="True" Rows="2" TextMode="MultiLine" Width="399px" CssClass="auto-style25"></asp:TextBox>
                     <asp:ObjectDataSource ID="odsProveedores" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtProv_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_ProveedoresTableAdapter">
                         <SelectParameters>
@@ -295,7 +295,7 @@
                         </SelectParameters>
                     </asp:ObjectDataSource>
                     </td>
-                <td id="id4" runat="server" class="auto-style9" style="font-family: Arial; font-size: small; border-bottom-style: solid; border-bottom-color: #FF6600; border-bottom-width: 3px;" colspan="2">
+                <td id="id4" runat="server" class="auto-style9" style="font-family: Arial; font-size: small; border-bottom-style: solid; border-bottom-color: #F58220; border-bottom-width: 3px;" colspan="2">
                     Autoriza:<asp:DropDownList ID="ddlAutorizo" runat="server" Height="20px" Width="221px" Enabled="False" DataSourceID="odsAutoriza" DataTextField="Nombre" DataValueField="id_correo">
                         <asp:ListItem Selected="True"></asp:ListItem>
                         <asp:ListItem>Valentin Cruz Barrios</asp:ListItem>
@@ -321,7 +321,7 @@
                         </UpdateParameters>
                     </asp:ObjectDataSource>
                 </td>
-                <td id="id9" runat="server" style="font-family: Arial; font-size: medium; border-bottom-style: solid; border-bottom-color: #FF6600; border-bottom-width: 3px;">
+                <td id="id9" runat="server" style="font-family: Arial; font-size: medium; border-bottom-style: solid; border-bottom-color: #F58220; border-bottom-width: 3px;">
                     <asp:ObjectDataSource ID="odsSolicitudes" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ConSaldo_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter">
                         <SelectParameters>
                             <asp:SessionParameter Name="usuario" SessionField="Usuario" Type="String" />
@@ -352,10 +352,10 @@
                 </td>
             </tr>
             <tr>
-                <td id="id5" runat="server" class="auto-style17" style="font-family: Arial; font-size: medium; background-color: #FF6600; color: #FFFFFF;" colspan="2">Asignar facturas:</td>
-                <td id="id6" runat="server" class="auto-style18" style="font-family: Arial; font-size: medium; background-color: #FF6600;" colspan="3">&nbsp;</td>
-                <td id="id7" runat="server" class="auto-style9" style="font-family: Arial; font-size: medium; background-color: #FF6600;" colspan="2">&nbsp;</td>
-                <td id="id8" runat="server" style="font-family: Arial; font-size: medium; background-color: #FF6600;">&nbsp;</td>
+                <td id="id5" runat="server" class="auto-style17" style="font-family: Arial; font-size: medium; background-color: #F58220; color: #FFFFFF;" colspan="2">Asignar facturas:</td>
+                <td id="id6" runat="server" class="auto-style18" style="font-family: Arial; font-size: medium; background-color: #F58220;" colspan="3">&nbsp;</td>
+                <td id="id7" runat="server" class="auto-style9" style="font-family: Arial; font-size: medium; background-color: #F58220;" colspan="2">&nbsp;</td>
+                <td id="id8" runat="server" style="font-family: Arial; font-size: medium; background-color: #F58220;">&nbsp;</td>
             </tr>
             <tr>
                 <td style="font-family: Arial; vertical-align: bottom;" colspan="5">Buscar proveedor:&nbsp;
@@ -501,10 +501,10 @@
                                
                             </Columns>
                             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#FF6600" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+            <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
                     </div>
                     <asp:ObjectDataSource ID="odsCFDI" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCFDiXRfc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter">
@@ -526,7 +526,7 @@
                         <asp:Button ID="btnCancelar" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" />
                 </td>
                 <td style="font-family: Arial; vertical-align: bottom;" colspan="2">
-                        <asp:Label ID="lblError" runat="server" Font-Size="Small" ForeColor="#FF6600" Font-Bold="True"></asp:Label>
+                        <asp:Label ID="lblError" runat="server" Font-Size="Small" ForeColor="#F58220" Font-Bold="True"></asp:Label>
                 </td>
             </tr>
             <tr>
@@ -568,10 +568,10 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
-            <EditRowStyle BackColor="#FF6600" />
-                            <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+            <EditRowStyle BackColor="#F58220" />
+                            <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
                         </asp:GridView>
                             </ContentTemplate>
@@ -606,10 +606,10 @@
                                                             <ItemStyle Width="150px" />
                                                         </asp:TemplateField>
                                                     </Columns>
-                                                    <EditRowStyle BackColor="#FF6600" />
-                                                    <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
-                                                    <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-                                                    <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+                                                    <EditRowStyle BackColor="#F58220" />
+                                                    <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
+                                                    <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+                                                    <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                                                     <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
                                                 </asp:GridView>
                                             </tr>

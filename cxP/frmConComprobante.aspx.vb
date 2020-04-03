@@ -722,6 +722,12 @@ Public Class frmConComprobante
                     Exit Sub
                 End If
 
+                If txtObs.Text.Length = 0 Then
+                    lblErrorGeneral.Text = "Falta incluir una descripción de pago"
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+
                 If IsNumeric(txtPorcentaje.Text) Then
                         If CDec(txtPorcentaje.Text) > 100 Then
                             lblErrorGeneral.Text = "El % de pago solicitado no debe de exceder el 100 % del importe restante"

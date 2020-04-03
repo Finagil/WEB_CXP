@@ -74,10 +74,10 @@
                             </asp:BoundField>
                         </Columns>
                         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#FF6600" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+            <EditRowStyle BackColor="#F58220" />
                     </asp:GridView>
                 </td>
                 <td class="auto-style16"></td>
@@ -86,7 +86,7 @@
                 <td class="auto-style17"></td>
                 <td class="auto-style18" style="font-family: Arial; font-size: medium; font-weight: bold; color: #000000">
                     <div>
-                        &nbsp;&nbsp;<asp:Label ID="lblError" runat="server" Text="Error" Font-Size="Smaller" ForeColor="#FF6600" Height="59px" Visible="False" Width="1000px"></asp:Label>
+                        &nbsp;&nbsp;<asp:Label ID="lblError" runat="server" Text="Error" Font-Size="Smaller" ForeColor="#F58220" Height="59px" Visible="False" Width="1000px"></asp:Label>
                     </div>
             </tr>
         </table>

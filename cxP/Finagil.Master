@@ -63,7 +63,7 @@
                     <td id="identificadorUnico1" runat="server" class="labels10">
                         <asp:Label ID="lblLeyenda" runat="server" Font-Bold="True" Font-Names="Verdana" ForeColor="White" Text="Label" Width="152%"></asp:Label>
                     </td>
-                    <td class="auto-style2" style="background-color: #ff6600; text-align: right;" ID="identificadorUnico2">
+                    <td class="auto-style2" style="background-color: #F58220; text-align: right;" ID="identificadorUnico2">
                         <img src="imagenes/logo-shop-primary.png" class="auto-style3" ID="imgURL" runat="server"/></td>
                 </tr>
             </table>
@@ -113,7 +113,7 @@
     <footer class="auto-styleFT">
     <table style="width: 100%; position: static;">
         <tr>
-            <td style="height: 30px; background-color: #ff6600" id="identificadorUnico16" runat="server">
+            <td style="height: 30px; background-color: #F58220" id="identificadorUnico16" runat="server">
                 <table class="width:100%;" >
                     <tr >
                         <td  class="auto-style5" style="font-size: x-small; font-family: 'Arial Black'; ">Usuario:</td>

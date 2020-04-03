@@ -186,9 +186,9 @@
     <p>
         <table class="auto-style40">
             <tr>
-                <td id="id1" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #FF6600; color: #FFFFFF; font-weight: bold;" colspan="2">
+                <td id="id1" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #F58220; color: #FFFFFF; font-weight: bold;" colspan="2">
                     Proveedor:</td>
-                <td id="id2" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #FF6600; color: #FFFFFF; font-weight: bold;">
+                <td id="id2" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #F58220; color: #FFFFFF; font-weight: bold;">
                         Concepto:</td>
             </tr>
             <tr>
@@ -204,16 +204,16 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style51" style="border-color: #FF6600; border-width: 2px; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
+                <td class="auto-style51" style="border-color: #F58220; border-width: 2px; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
                     Buscar proveedor:<br />
                     <asp:TextBox ID="txtBuscarProveedor" runat="server" Width="182px" Enabled="False"></asp:TextBox>
                     <asp:Button ID="btnBuscar" runat="server" Text="    Buscar    " CssClass="Botones" Width="90px" Enabled="False" />
                 </td>
-                <td class="auto-style49" style="border-color: #FF6600; border-width: 2px; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
+                <td class="auto-style49" style="border-color: #F58220; border-width: 2px; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
                     Seleccionar proveedor:<asp:DropDownList ID="ddlProveedor" runat="server" DataSourceID="odsProveedores" DataTextField="razonSocial" DataValueField="idProveedor" Height="20px" Width="330px" Enabled="False" AutoPostBack="True">
                     </asp:DropDownList>
                 </td>
-                <td class="auto-style50" style="border-color: #FF6600; border-width: 2px; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
+                <td class="auto-style50" style="border-color: #F58220; border-width: 2px; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
                     <span style="color: rgb(0, 0, 0); font-family: Verdana; font-size: x-small; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Artículo 69 (Créditos fiscales)<br />
                     <asp:Label ID="lbl69" runat="server" ForeColor="Green" Font-Bold="True"></asp:Label>
                     <br />
@@ -300,9 +300,9 @@
                 </td>
             </tr>
             <tr>
-                <td id="id3" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; color: #FFFFFF; font-weight: bold; background-color: #FF6600;" colspan="2">
+                <td id="id3" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; color: #FFFFFF; font-weight: bold; background-color: #F58220;" colspan="2">
                     Deudor: </td>
-                <td id="id4" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; color: #FFFFFF; font-weight: bold; background-color: #FF6600;">
+                <td id="id4" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; color: #FFFFFF; font-weight: bold; background-color: #F58220;">
                     Autoriza:</td>
             </tr>
             <tr>
@@ -396,7 +396,7 @@
                 </td>
             </tr>
             <tr>
-                <td id="id0" runat="server" class="auto-style30" colspan="3" style="font-weight: bold; color: #FFFFFF; background-color: #FF6600; font-family: Arial;">Datos de la solicitud:</td>
+                <td id="id0" runat="server" class="auto-style30" colspan="3" style="font-weight: bold; color: #FFFFFF; background-color: #F58220; font-family: Arial;">Datos de la solicitud:</td>
             </tr>
             <asp:ObjectDataSource ID="odsClientes" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ClientesAnexosActNoPagados_GetData" TypeName="cxP.dsProduccionTableAdapters.ClientesTableAdapter"></asp:ObjectDataSource>
         </table>
@@ -405,26 +405,26 @@
         <table style="margin-left:20px; margin-top:10px;" class="auto-style52" >
             <tr >
                 
-                <td id="id6" runat="server" class="auto-style36" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;">Fecha de Solicitud</td>
-                <td id="id7" runat="server" class="auto-style33" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;">Moneda</td>
-                <td id="id8" runat="server" class="auto-style41" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;">Importe Solicitado</td>
-                <td id="id9" runat="server" class="auto-style35" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;" colspan="2">Descripción del Pago</td>
-                <td id="id10" runat="server" class="auto-style44" style="font-family: Arial; font-weight: bold; color: #FFFFFF; background-color: #FF6600; font-size: small;" colspan="2">Fecha de Pago</td>
-                <td id="id11" runat="server" class="auto-style44" style="font-family: Arial; font-weight: bold; color: #FFFFFF; background-color: #FF6600; font-size: small;">Contrato</td>
+                <td id="id6" runat="server" class="auto-style36" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;">Fecha de Solicitud</td>
+                <td id="id7" runat="server" class="auto-style33" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;">Moneda</td>
+                <td id="id8" runat="server" class="auto-style41" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;">Importe Solicitado</td>
+                <td id="id9" runat="server" class="auto-style35" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold; color: #FFFFFF;" colspan="2">Descripción del Pago</td>
+                <td id="id10" runat="server" class="auto-style44" style="font-family: Arial; font-weight: bold; color: #FFFFFF; background-color: #F58220; font-size: small;" colspan="2">Fecha de Pago</td>
+                <td id="id11" runat="server" class="auto-style44" style="font-family: Arial; font-weight: bold; color: #FFFFFF; background-color: #F58220; font-size: small;">Contrato</td>
             </tr>
             <tr>
                 
-                <td id="id12" runat="server" class="auto-style37" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold;">
+                <td id="id12" runat="server" class="auto-style37" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold;">
                     <asp:Label ID="lblFechaSolicitud" runat="server" ForeColor="White" Text="Label"></asp:Label>
                 </td>
-                <td id="id13" runat="server" class="auto-style33" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold;">
+                <td id="id13" runat="server" class="auto-style33" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold;">
                     <asp:DropDownList ID="ddlMoneda" runat="server" DataSourceID="odsMonedas" DataTextField="c_NombreMoneda" DataValueField="c_Moneda">
                     </asp:DropDownList>
                 </td>
-                <td id="id14" runat="server" class="auto-style41" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold;">
+                <td id="id14" runat="server" class="auto-style41" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold;">
                     <asp:TextBox ID="txtMontoSolicitado" runat="server" Width="152px"></asp:TextBox>
                 </td>
-                <td id="id15" runat="server" class="auto-style35" style="background-color: #FF6600; font-family: Arial; font-size: small; font-weight: bold;" colspan="2">
+                <td id="id15" runat="server" class="auto-style35" style="background-color: #F58220; font-family: Arial; font-size: small; font-weight: bold;" colspan="2">
                     <asp:TextBox ID="txtDescripcionPago" runat="server" Width="535px"></asp:TextBox>
                 </td>
                 <td id="id16" runat="server" class="auto-style43" colspan="2">
@@ -436,7 +436,7 @@
             </tr>
             <tr>
                 
-                <td id="id18" runat="server" class="auto-style45" colspan="8" style="font-family: Arial; font-size: small; background-color: #FF6600;">
+                <td id="id18" runat="server" class="auto-style45" colspan="8" style="font-family: Arial; font-size: small; background-color: #F58220;">
                     Cliente:
                     <asp:DropDownList ID="ddlClientes" runat="server" AutoPostBack="True" DataSourceID="odsClientes" DataTextField="Descr" DataValueField="Cliente" Enabled="False">
                     </asp:DropDownList>
@@ -463,7 +463,7 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td class="auto-style30" colspan="8" style="border-color: #FF6600; background-color: #FF6600" id="identificadroUnico0" runat="server">
+                <td class="auto-style30" colspan="8" style="border-color: #F58220; background-color: #F58220" id="identificadroUnico0" runat="server">
                     &nbsp;</td>
                 <td style="background-color: #FFFFFF">&nbsp;</td>
             </tr>
@@ -613,10 +613,10 @@
                                
                             </Columns>
                             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#FF6600" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+            <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
                         <br />
                     </div>
@@ -629,10 +629,10 @@
                             <ContentTemplate>
                
                                 <asp:GridView ID="GridView2" runat="server" AllowSorting="True" Height="16px" Width="975px" ForeColor="#333333" HorizontalAlign="Center" AutoGenerateColumns="False" ShowFooter="True" PageSize="2" Font-Size="Small">
-                            <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+                            <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="serie" HeaderText="Serie">
                                 <ItemStyle HorizontalAlign="Right" Wrap="True" />
@@ -657,7 +657,7 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
-            <EditRowStyle BackColor="#FF6600" />
+            <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
                             </ContentTemplate>
                          </ajaxToolkit:TabPanel>
@@ -690,10 +690,10 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                                     </Columns>
-                                                    <EditRowStyle BackColor="#FF6600" />
-                                                    <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
-                                                    <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-                                                    <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+                                                    <EditRowStyle BackColor="#F58220" />
+                                                    <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
+                                                    <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+                                                    <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                                                     <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
                                                 </asp:GridView>
                                             </tr>

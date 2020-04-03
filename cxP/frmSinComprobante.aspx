@@ -198,9 +198,9 @@
     <p>
         <table class="auto-style40">
             <tr>
-                <td id="id1" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #FF6600; color: #FFFFFF; font-weight: bold;" colspan="2">
+                <td id="id1" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #F58220; color: #FFFFFF; font-weight: bold;" colspan="2">
                     Proveedor:</td>
-                <td id="id2" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #FF6600; color: #FFFFFF; font-weight: bold;">
+                <td id="id2" runat="server" class="auto-style42" style="font-family: Arial; font-size: medium; background-color: #F58220; color: #FFFFFF; font-weight: bold;">
                         Concepto:</td>
             </tr>
             <tr>
@@ -217,12 +217,12 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style57" style="border-width: 2px; border-color: #FF6600; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
+                <td class="auto-style57" style="border-width: 2px; border-color: #F58220; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
                     Buscar proveedor:<br />
                     <asp:TextBox ID="txtBuscarProveedor" runat="server" Width="233px" Height="19px" Enabled="False"></asp:TextBox>
                     <asp:Button ID="btnBuscar" runat="server" Text="    Buscar    " CssClass="Botones" Width="90px" Enabled="False" />
                 </td>
-                <td class="auto-style57" style="border-width: 2px; border-color: #FF6600; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
+                <td class="auto-style57" style="border-width: 2px; border-color: #F58220; font-family: Arial; font-size: small; border-top-style: solid; border-bottom-style: solid;">
                     Seleccionar proveedor:<br />
                     <asp:DropDownList ID="ddlProveedor" runat="server" DataSourceID="odsProveedores" DataTextField="razonSocial" DataValueField="idProveedor" Height="20px" Width="345px" Enabled="False" AutoPostBack="True">
                     </asp:DropDownList>

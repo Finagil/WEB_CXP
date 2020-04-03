@@ -637,6 +637,12 @@ Public Class frmSinReembolso
             Dim txtCon As TextBox = rows.Cells(11).FindControl("txtConceptoFactura")
 
             If chkg.Checked = True Then
+
+                If txtCon.Text.Length = 0 Then
+                    lblErrorGeneral.Text = "Falta descripción del pago"
+                    ModalPopupExtender1.Show()
+                End If
+
                 Dim contb As Integer = 0
                 For Each rows1 As GridViewRow In GridView2.Rows
                     If GridView1.Rows(conta).Cells(7).Text = GridView2.Rows(contb).Cells(2).Text Then

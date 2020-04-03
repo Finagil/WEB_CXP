@@ -19,7 +19,7 @@ div.calendar { position: relative; }
 }
 
 	.calendar .nav {
-		background: #ff6600 url(menuarrow.gif) no-repeat 100% 100%;
+		background: #F58220 url(menuarrow.gif) no-repeat 100% 100%;
 	}
 
 .calendar thead .title { /* This holds the current "month, year" */
@@ -31,7 +31,7 @@ div.calendar { position: relative; }
 }
 
 .calendar thead .headrow { /* Row <TR> containing navigation buttons */
-		background: #ff6600;
+		background: #F58220;
 		color: #fff;
 	}
 

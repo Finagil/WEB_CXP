@@ -715,10 +715,12 @@ Public Class frmSinComprobante
 
             If chkg.Checked = True Then
 
-                'If CDec(txtTot.Text) > CDec(lblSaldo.Text) Then
-                '    ModalPopupExtender1.Show()
-                '    Exit Sub
-                'End If
+
+                If txtCon.Text.Length = 0 Then
+                    lblErrorGeneral.Text = "Falta incluir la descripción de pago"
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
 
                 rowA = dtDetalleA.NewRow
                 rowA("serie") = GridView1.Rows(conta).Cells(6).Text.Replace("&nbsp;", "")
@@ -728,12 +730,6 @@ Public Class frmSinComprobante
                 rowA("total1") = GridView1.Rows(conta).Cells(11).Text.Replace("$", "")
                 rowA("total") = CDec(txtTot.Text)
                 dtDetalleA.Rows.Add(rowA)
-                'If (totala + CDec(txtTot.Text)) <= CDec(lblSaldo.Text) Then
-                '    dtDetalleA.Rows.Add(rowA)
-                '    totala += CDec(txtTot.Text)
-                'Else
-                '    ModalPopupExtender1.Show()
-                'End If
 
             End If
             conta += 1
@@ -759,6 +755,12 @@ Public Class frmSinComprobante
         totalb = totalb + CDec(txtImporteND.Text)
         Dim rowComp As DataRow
 
+        If txtConceptoND.Text.Length = 0 Then
+            lblErrorGeneral.Text = "Falta incluir la descripción de pago"
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End If
+
         rowComp = dtDetalleB.NewRow
         rowComp("descripcion") = txtConceptoND.Text
         If IsNumeric(txtImporteND.Text) Then
@@ -767,6 +769,8 @@ Public Class frmSinComprobante
             'ModalPopupExtender2.Show()
         End If
 
+
+
         dtDetalleB.Rows.Add(rowComp)
 
         GridView3.DataSource = dtDetalleB
@@ -774,9 +778,6 @@ Public Class frmSinComprobante
         'btnComprobar.Visible = True
     End Sub
 
-    Protected Sub GridView3_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView3.SelectedIndexChanged
-
-    End Sub
 
     Private Sub GridView3_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridView3.RowDataBound
         Dim con_b As Integer = 0

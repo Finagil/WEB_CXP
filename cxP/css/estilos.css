@@ -3,7 +3,7 @@
 }
 
 .labelsF {
-    background-color: #ff6600;
+    background-color: #F58220;
 }
 
 .labelsHeader {
@@ -23,7 +23,7 @@
 .disabledF {
     pointer-events: none;
     opacity: 0.6;
-    background-color: #ff6600;
+    background-color: #F58220;
 }
 
 .disabledA {
@@ -48,7 +48,7 @@ header {
 }
 headerA {
     height: 50px;
-    background: #ff6a00;
+    background: ##4BA5FF;
     color: #ffffff;
     display: flex;
     justify-content: flex-end;
@@ -71,10 +71,10 @@ headerA label {
     display: none;
 }
 
-.menu ul{
-    background: #ff6a00;
-    display:flex;
-    list-style:none;
+.menu ul {
+    background: #F58220;
+    display: flex;
+    list-style: none;
 }
 
 .menu ul ul {

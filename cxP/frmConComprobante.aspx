@@ -158,13 +158,13 @@
     <div class="auto-style21">
         <table class="auto-style7">
             <tr>
-                <td id="id0" runat="server" class="auto-style29" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #FF6600;" colspan="3">
+                <td id="id0" runat="server" class="auto-style29" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #F58220;" colspan="3">
                     Proveedor:</td>
-                <td id="id2" runat="server" class="auto-style28" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #FF6600;" colspan="2">
+                <td id="id2" runat="server" class="auto-style28" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #F58220;" colspan="2">
                     Estatus EFOS:</td>
-                <td id="id3" runat="server" class="auto-style33" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #FF6600">
+                <td id="id3" runat="server" class="auto-style33" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #F58220">
                     Autoriza:</td>
-                <td id="id4" runat="server" class="auto-style31" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #FF6600">
+                <td id="id4" runat="server" class="auto-style31" style="font-family: Arial; font-size: medium; font-weight: bold; color: #FFFFFF; background-color: #F58220">
                     Contrato</td>
             </tr>
             <tr>
@@ -272,11 +272,11 @@
                 </td>
             </tr>
             <tr>
-                <td id="id5a" runat="server" class="auto-style32" colspan="2" style="background-color: #FF6600">
+                <td id="id5a" runat="server" class="auto-style32" colspan="2" style="background-color: #F58220">
                     Sucursal (CC):</td>
-                <td id="id5h" runat="server" class="auto-style32" colspan="2" style="background-color: #FF6600">
+                <td id="id5h" runat="server" class="auto-style32" colspan="2" style="background-color: #F58220">
                     Forma de Pago:</td>
-                <td id="id5b" runat="server" class="auto-style32" colspan="3" style="background-color: #FF6600">
+                <td id="id5b" runat="server" class="auto-style32" colspan="3" style="background-color: #F58220">
                     Cuenta Bancaria</td>
             </tr>
             <tr>
@@ -351,7 +351,7 @@
                 </td>
             </tr>
             <tr>
-                <td id="id5" runat="server" class="auto-style32" colspan="7" style="background-color: #FF6600">
+                <td id="id5" runat="server" class="auto-style32" colspan="7" style="background-color: #F58220">
                     Selección de facturas para pago:</td>
             </tr>
             <tr>
@@ -497,10 +497,10 @@
                                
                             </Columns>
                             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#FF6600" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+            <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
                     </div>
                     <asp:ObjectDataSource ID="comprobantesFiscales" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCFDiXRfc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter">
@@ -526,10 +526,10 @@
                     <asp:Button ID="btnCancelarBusqueda" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" Width="100px" />
                     <br />
                         <asp:GridView ID="GridView2" runat="server" AllowPaging="True" AllowSorting="True" CssClass="auto-style13" Height="16px" Width="794px" ForeColor="#333333" HorizontalAlign="Center" AutoGenerateColumns="False" ShowFooter="True">
-                            <FooterStyle BackColor="#FF6600" Font-Bold="True" ForeColor="Black" />
-            <PagerStyle BackColor="#FF6600" ForeColor="White" HorizontalAlign="Center" />
+                            <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
+            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
                              <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-            <HeaderStyle BackColor="#FF6600" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="serie" HeaderText="Serie">
                                 <ItemStyle HorizontalAlign="Right" Wrap="True" />
@@ -548,7 +548,7 @@
                                 <ItemStyle BackColor="Yellow" Font-Bold="True" ForeColor="Red" Wrap="True" HorizontalAlign="Left" />
                                 </asp:BoundField>
                             </Columns>
-            <EditRowStyle BackColor="#FF6600" />
+            <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
                     <asp:Label ID="lblError2" runat="server" Font-Names="Arial Black" Font-Size="Small" ForeColor="#006600" Text="Error" Visible="False" Width="900px"></asp:Label>
                     <br />
@@ -562,7 +562,7 @@
                                 <asp:FileUpload ID="fup1" runat="server" Visible="False" accept=".pdf" multiple="multiple" AllowMultiple="true"/>
                     <br />
                     <br />
-                   <cc1:BotonEnviar ID="btnProcesar" runat="server" BackColor="#FF6600" Font-Bold="True" Visible="false"
+                   <cc1:BotonEnviar ID="btnProcesar" runat="server" BackColor="#F58220" Font-Bold="True" Visible="false"
                        ForeColor="White" Text="Procesar" TextoEnviando="Procesando..." Width="182px" Font-Size="Medium" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     
