@@ -126,6 +126,7 @@
     <Content Include="dsProduccion.xss">
       <DependentUpon>dsProduccion.xsd</DependentUpon>
     </Content>
+    <Content Include="frmAltaProveedor.aspx" />
     <Content Include="frmAutCompGastos.aspx" />
     <Content Include="frmAutConComprobante.aspx" />
     <Content Include="frmAutReembolsos.aspx" />
@@ -241,6 +242,13 @@
     <Compile Include="Finagil.Master.vb">
       <DependentUpon>Finagil.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmAltaProveedor.aspx.designer.vb">
+      <DependentUpon>frmAltaProveedor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmAltaProveedor.aspx.vb">
+      <DependentUpon>frmAltaProveedor.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="frmAutCompGastos.aspx.designer.vb">
       <DependentUpon>frmAutCompGastos.aspx</DependentUpon>

@@ -4,20 +4,21 @@
 
 
         .auto-style13 {
-            margin-left: 20px;
+            margin-left: 10px;
             margin-top: 20px;
         }
          .auto-style14 {
             text-align: center;
             overflow-y:auto;
-            height:100%;
+            height:400px;
         }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div style="height: 450px" >
               <div class="auto-style14">
-                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudesSC" Height="16px" Width="1349px" ForeColor="#333333" HorizontalAlign="Center" Font-Names="Arial">
+                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudesSC" Height="16px" Width="1349px" ForeColor="#333333" HorizontalAlign="Center" Font-Names="Arial" CellPadding="4" GridLines="None">
+                            <AlternatingRowStyle BackColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="folioSolicitud" HeaderText="Folio Solicitud" ItemStyle-HorizontalAlign="Right" HeaderStyle-HorizontalAlign="Center" SortExpression="folioSolicitud">
                                 <HeaderStyle HorizontalAlign="Center" Font-Size="Small" />
@@ -71,11 +72,16 @@
                                 </asp:TemplateField>
 
                             </Columns>
-                            <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#F58220" ForeColor="Black" HorizontalAlign="Center" />
-                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
+                            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+                             <RowStyle BackColor="#FFE0C0" />
+                             <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
             <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#F58220" />
+            <EditRowStyle BackColor="#7C6F57" />
+                            <SortedAscendingCellStyle BackColor="#F8FAFA" />
+                            <SortedAscendingHeaderStyle BackColor="#246B61" />
+                            <SortedDescendingCellStyle BackColor="#D4DFE1" />
+                            <SortedDescendingHeaderStyle BackColor="#15524A" />
                         </asp:GridView>
                       <br />
                     <asp:ObjectDataSource ID="odsMisSolicitudesSC" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisPagosContratosTableAdapter">

@@ -6,13 +6,13 @@
     <style type="text/css">
 
         .auto-style13 {
-            margin-left: 20px;
+            margin-left: 10px;
             margin-top: 20px;
         }
         .auto-style14 {
             text-align: center;
             overflow-y:auto;
-            height:100%;
+            height:400px;
         }
         </style>
 </asp:Content>
@@ -22,7 +22,8 @@
                             <asp:HiddenField ID="HiddenID" runat="server" />
                             <asp:HiddenField ID="HiddenEstatus" runat="server" />
                             <asp:Label ID="LabelError" runat="server" Text="Error" Font-Bold="True" ForeColor="#FF3300" Visible="False" Font-Size="X-Large"></asp:Label>
-                        <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudes" Height="16px" Width="1226px" ForeColor="#333333" HorizontalAlign="Center" PageSize="20">
+                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudes" Height="16px" Width="1226px" ForeColor="#333333" HorizontalAlign="Center" PageSize="20" CellPadding="4" GridLines="None">
+                            <AlternatingRowStyle BackColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="folioSolicitud" HeaderText="Folio Solicitud" ItemStyle-HorizontalAlign="Right" HeaderStyle-HorizontalAlign="Center">
                                 <HeaderStyle Font-Names="Arial" HorizontalAlign="Center" Wrap="False" />
@@ -71,11 +72,16 @@
                                 </asp:TemplateField>
                                                                
                             </Columns>
-                            <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
-                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
+                            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+                             <RowStyle BackColor="#FFE0C0" />
+                             <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
             <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#F58220" />
+            <EditRowStyle BackColor="#7C6F57" />
+                            <SortedAscendingCellStyle BackColor="#F8FAFA" />
+                            <SortedAscendingHeaderStyle BackColor="#246B61" />
+                            <SortedDescendingCellStyle BackColor="#D4DFE1" />
+                            <SortedDescendingHeaderStyle BackColor="#15524A" />
                         </asp:GridView>
                     
                     </div>

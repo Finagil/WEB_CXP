@@ -10,7 +10,7 @@
         .auto-style8 {
             text-align: center;
             overflow-y:auto;
-            height:100%;
+            height:400px;
         }
         
         </style>
@@ -20,11 +20,12 @@
         <asp:HiddenField ID="HiddenID" runat="server" />
         <asp:HiddenField ID="HiddenEstatus" runat="server" />
         <asp:Label ID="LabelError" runat="server" Text="Error" Font-Bold="True" ForeColor="#FF3300" Visible="False" Font-Size="X-Large"></asp:Label>
-    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="odsMisComprobacionesGts" HorizontalAlign="Center" CssClass="auto-style13">
+    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="odsMisComprobacionesGts" HorizontalAlign="Center" CssClass="auto-style13" CellPadding="4" ForeColor="#333333" GridLines="None">
+        <AlternatingRowStyle BackColor="White" />
     <Columns>
         <asp:BoundField DataField="folioComprobacion" HeaderText="Folio de  Comprobación" SortExpression="folioComprobacion" >
         <HeaderStyle HorizontalAlign="Center" Font-Size="Small" />
-        <ItemStyle Width="100px" BorderStyle="Solid" HorizontalAlign="Right" />
+        <ItemStyle Width="100px"  HorizontalAlign="Right" />
         </asp:BoundField>
         <asp:BoundField DataField="idFolioSolicitud" HeaderText="Folio de Solicitud" SortExpression="idFolioSolicitud" >
         <HeaderStyle HorizontalAlign="Center" Font-Size="Small" />
@@ -67,11 +68,16 @@
              </ItemTemplate>
         </asp:TemplateField>
     </Columns>
-        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
-                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
+        <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+                             <RowStyle BackColor="#FFE0C0" />
+                             <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
             <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#F58220" />
+            <EditRowStyle BackColor="#7C6F57" />
+        <SortedAscendingCellStyle BackColor="#F8FAFA" />
+        <SortedAscendingHeaderStyle BackColor="#246B61" />
+        <SortedDescendingCellStyle BackColor="#D4DFE1" />
+        <SortedDescendingHeaderStyle BackColor="#15524A" />
 </asp:GridView>
             
 <asp:ObjectDataSource ID="odsMisComprobacionesGts" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="MayorCero_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisComprobacionesTableAdapter">

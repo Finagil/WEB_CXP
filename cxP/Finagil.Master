@@ -98,6 +98,11 @@
                         </li>
                         <li id="identificadorUnico12" runat="server"><a href="ValidaCfdi.aspx">Valida CFDI</a></li>
                         <li id="identificadorUnico13" runat="server"><a href="frmComprobarGastos.aspx">Comprobar Gastos</a></li>
+                        <li class="submenu" id="pr1" runat="server"><a href="Default.aspx">Proveedores<span class="icon-down-open"></span></a>
+                             <ul>
+                                <li id="prs1" runat="server"><a href="frmAltaProveedor.aspx">Alta de proveedor</a></li>
+                             </ul>
+                        </li>
                         <li id="identificadorUnico14" runat="server"><a href="Login.aspx">Salir</a></li>
                     </ul>
                 </nav>

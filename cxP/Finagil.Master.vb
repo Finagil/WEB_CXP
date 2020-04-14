@@ -29,6 +29,10 @@
                 identificadorUnico10.Attributes.Add("class", "headerA")
                 identificadorUnico11.Attributes.Add("style", "background-color: #4BA5FF;")
                 identificadorUnico11.Attributes.Add("class", "headerA")
+                pr1.Attributes.Add("style", "background-color: #4BA5FF;")
+                pr1.Attributes.Add("class", "headerA")
+                prs1.Attributes.Add("style", "background-color: #4BA5FF;")
+                prs1.Attributes.Add("class", "headerA")
                 If Session.Item("Usuario") <> "viapolo" And Session.Item("Usuario") <> "lgarciac" And Session.Item("Usuario") <> "vcruz" Then
                     identificadorUnico12.Attributes.Add("style", "pointer-events:none;opacity:0.6;background-color: #4BA5FF;")
                     identificadorUnico12.Attributes.Add("class", "disabledA")
@@ -37,40 +41,47 @@
                     identificadorUnico12.Attributes.Add("class", "headerA")
                 End If
 
-                If Session.Item("Usuario") <> "lmercado" And Session.Item("Usuario") <> "maria.montes" Then
-                    identificadorUnico19.Attributes.Add("style", "pointer-events:none;opacity:0.6;background-color: #4BA5FF;")
-                    identificadorUnico19.Attributes.Add("class", "disabledA")
-                Else
-                    identificadorUnico19.Attributes.Add("style", "background-color: #4BA5FF;")
-                    identificadorUnico19.Attributes.Add("class", "headerA")
+                If Session.Item("Usuario") <> "viapolo" Then
+                    pr1.Attributes.Add("style", "pointer-events:none;opacity:0.6;background-color: #4BA5FF;")
+                    pr1.Attributes.Add("class", "disabledA")
+                    prs1.Attributes.Add("style", "pointer-events:none;opacity:0.6;background-color: #4BA5FF;")
+                    prs1.Attributes.Add("class", "disabledA")
                 End If
 
-                identificadorUnico13.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico13.Attributes.Add("class", "headerA")
-                identificadorUnico14.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico14.Attributes.Add("class", "headerA")
-                identificadorUnico15.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico15.Attributes.Add("class", "headerA")
-                identificadorUnico16.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico16.Attributes.Add("class", "labelsA")
-                identificadorUnico17.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico17.Attributes.Add("class", "labelsA")
-                identificadorUnico18.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico18.Attributes.Add("class", "labelsA")
+                If Session.Item("Usuario") <> "lmercado" And Session.Item("Usuario") <> "maria.montes" Then
+                        identificadorUnico19.Attributes.Add("style", "pointer-events:none;opacity:0.6;background-color: #4BA5FF;")
+                        identificadorUnico19.Attributes.Add("class", "disabledA")
+                    Else
+                        identificadorUnico19.Attributes.Add("style", "background-color: #4BA5FF;")
+                        identificadorUnico19.Attributes.Add("class", "headerA")
+                    End If
 
-                identificadorUnico20.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico20.Attributes.Add("class", "labelsA")
-                identificadorUnico21.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico21.Attributes.Add("class", "labelsA")
-                identificadorUnico22.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico22.Attributes.Add("class", "labelsA")
-                identificadorUnico23.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico23.Attributes.Add("class", "labelsA")
-                identificadorUnico24.Attributes.Add("style", "background-color: #4BA5FF;")
-                identificadorUnico24.Attributes.Add("class", "labelsA")
-                imgURL.Src = "imagenes/logoArfin.png"
-            Else
-                identificadorUnico1.Attributes.Add("style", "background-color: #F58220;")
+                    identificadorUnico13.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico13.Attributes.Add("class", "headerA")
+                    identificadorUnico14.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico14.Attributes.Add("class", "headerA")
+                    identificadorUnico15.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico15.Attributes.Add("class", "headerA")
+                    identificadorUnico16.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico16.Attributes.Add("class", "labelsA")
+                    identificadorUnico17.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico17.Attributes.Add("class", "labelsA")
+                    identificadorUnico18.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico18.Attributes.Add("class", "labelsA")
+
+                    identificadorUnico20.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico20.Attributes.Add("class", "labelsA")
+                    identificadorUnico21.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico21.Attributes.Add("class", "labelsA")
+                    identificadorUnico22.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico22.Attributes.Add("class", "labelsA")
+                    identificadorUnico23.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico23.Attributes.Add("class", "labelsA")
+                    identificadorUnico24.Attributes.Add("style", "background-color: #4BA5FF;")
+                    identificadorUnico24.Attributes.Add("class", "labelsA")
+                    imgURL.Src = "imagenes/logoArfin.png"
+                Else
+                    identificadorUnico1.Attributes.Add("style", "background-color: #F58220;")
                 identificadorUnico1.Attributes.Add("class", "labelsA")
                 identificadorUnico2.Attributes.Add("style", "background-color: #F58220;")
                 identificadorUnico2.Attributes.Add("class", "labelsF")

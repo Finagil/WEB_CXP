@@ -13,6 +13,7 @@
         End If
         If Session.Item("Empresa") = "24" Then
             GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+            GridView1.RowStyle.BackColor = System.Drawing.Color.FromArgb(213, 244, 255)
         End If
         For Each row As GridViewRow In GridView1.Rows
             Dim btn As Button = row.Cells(5).FindControl("btnOpciones")

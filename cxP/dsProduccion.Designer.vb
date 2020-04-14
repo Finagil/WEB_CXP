@@ -29198,7 +29198,7 @@ Partial Public Class dsProduccion
         Public Property A2() As String
             Get
                 If Me.IsA2Null Then
-                    Return String.Empty
+                    Return Nothing
                 Else
                     Return CType(Me(Me.tableVw_CXP_AutCompGastos.A2Column),String)
                 End If
@@ -29228,7 +29228,7 @@ Partial Public Class dsProduccion
         Public Property Autoriza2() As String
             Get
                 If Me.IsAutoriza2Null Then
-                    Return String.Empty
+                    Return Nothing
                 Else
                     Return CType(Me(Me.tableVw_CXP_AutCompGastos.Autoriza2Column),String)
                 End If
@@ -48154,11 +48154,12 @@ Namespace dsProduccionTableAdapters
             Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(1).Connection = Me.Connection
             Me._commandCollection(1).CommandText = "SELECT        folioSolicitud, fechaSolicitud, SUM(totalPagado) AS totalPagado, us"& _ 
-                "uario, idEmpresa, razonSocial, estatus, Autoriza1, A2, A1, Autoriza2, nombre"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FR"& _ 
-                "OM            Vw_CXP_AutCompGastos"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"GROUP BY folioSolicitud, fechaSolicitud, usu"& _ 
-                "ario, idEmpresa, razonSocial, estatus, Autoriza1, A2, A1, Autoriza2, nombre"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"HAV"& _ 
-                "ING        (idEmpresa = @idEmpresa) AND (A2 = @usuario) OR"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"                    "& _ 
-                "     (idEmpresa = @idEmpresa) AND (A1 = @usuario)"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"ORDER BY folioSolicitud DESC"
+                "uario, idEmpresa, razonSocial, estatus, Autoriza1, '' AS A2, A1, '' AS Autoriza2"& _ 
+                ", nombre"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            Vw_CXP_AutCompGastos"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"GROUP BY folioSolicitud, fechaSo"& _ 
+                "licitud, usuario, idEmpresa, razonSocial, estatus, Autoriza1, A2, A1, Autoriza2,"& _ 
+                " nombre"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"HAVING        (idEmpresa = @idEmpresa) AND (A2 = @usuario) OR"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"        "& _ 
+                "                 (idEmpresa = @idEmpresa) AND (A1 = @usuario)"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"ORDER BY folioSol"& _ 
+                "icitud DESC"
             Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@idEmpresa", Global.System.Data.SqlDbType.[Decimal], 9, Global.System.Data.ParameterDirection.Input, 18, 0, "idEmpresa", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@usuario", Global.System.Data.SqlDbType.VarChar, 50, Global.System.Data.ParameterDirection.Input, 0, 0, "A2", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))

@@ -5,61 +5,52 @@
 
 
         .auto-style13 {
-            margin-left: 20px;
+            margin-left: 10px;
             margin-top: 20px;
         }
          .auto-style14 {
             text-align: center;
-            overflow-y:auto;
-            height:100%;
+            overflow-y: auto;
+            height:400px;
         }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     <div class="auto-style14">
+     <div class="auto-style14" >
                             <asp:HiddenField ID="HiddenID" runat="server" />
                             <asp:HiddenField ID="HiddenEstatus" runat="server" />
                             <asp:Label ID="LabelError" runat="server" Text="Error" Font-Bold="True" ForeColor="#FF3300" Visible="False" Font-Size="X-Large"></asp:Label>
-                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudesSC" Width="1331px" ForeColor="#333333" HorizontalAlign="Center" PageSize="20" Font-Names="Arial" AllowCustomPaging="True" AllowPaging="True">
+                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudesSC" Width="1331px" ForeColor="#333333" HorizontalAlign="Center" PageSize="20" Font-Names="Arial" CellPadding="4" GridLines="None">
+                            <AlternatingRowStyle BackColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="folioSolicitud" HeaderText="Folio Solicitud" ItemStyle-HorizontalAlign="Right" HeaderStyle-HorizontalAlign="Center">
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <ItemStyle HorizontalAlign="Right" />
                                 </asp:BoundField>
                                 
-                                
                                 <asp:BoundField DataField="fechaSolicitud" HeaderText="Fecha Solicitud" ItemStyle-HorizontalAlign="Right" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}" >
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="Right" />
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <ItemStyle HorizontalAlign="Right" />
                                 </asp:BoundField>
                                 
-                                
-                                <asp:BoundField DataField="razonSocial" HeaderText="Proveedor" >
-                                
-                                
-                                <ItemStyle HorizontalAlign="Right" />
+                                <asp:BoundField DataField="razonSocial" HeaderText="Proveedor" >                            
+                                    <ItemStyle HorizontalAlign="Right" />
                                 </asp:BoundField>
-                                
                                 
                                 <asp:BoundField HeaderText="Importe de Solicitud" DataField="totalPagado" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:c}" >
-                                
-                                
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="Right" />
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <ItemStyle HorizontalAlign="Right" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="estatus" HeaderText="Estatus" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right" >
-<HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-
-<ItemStyle HorizontalAlign="Left" Font-Size="X-Small"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    <ItemStyle HorizontalAlign="Left" Font-Size="X-Small" BorderStyle="None" BorderWidth="2px"></ItemStyle>
                                 </asp:BoundField>
-                                <asp:TemplateField HeaderText="PDF Solicitud" HeaderStyle-Font-Names="Arial" ItemStyle-HorizontalAlign="Right" >
+                                <asp:TemplateField HeaderText="PDF" HeaderStyle-Font-Names="Arial" ItemStyle-HorizontalAlign="Right" >
                                     <ItemTemplate>
                                         <asp:HyperLink Font-Names="Arial" ID="lnkPdf" NavigateUrl='<%# Eval("folioSolicitud", "~/TmpFinagil/" & Session.Item("Empresa") & "-" & "{0}.pdf") %>' Target="_blank" runat="server">pdf</asp:HyperLink>
                                     </ItemTemplate>
-
-<HeaderStyle Font-Names="Arial"></HeaderStyle>
-
-<ItemStyle HorizontalAlign="Right"></ItemStyle>
+                                    <HeaderStyle Font-Names="Arial"></HeaderStyle>
+                                    <ItemStyle HorizontalAlign="Right"></ItemStyle>
                                 </asp:TemplateField>
 
                                 <asp:TemplateField ShowHeader="False">
@@ -72,11 +63,16 @@
                                 </asp:TemplateField>
                                                                
                             </Columns>
-                            <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
-                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
+                            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+                             <RowStyle BackColor="#FFE0C0" />
+                             <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
             <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#F58220" />
+            <EditRowStyle BackColor="#7C6F57" />
+                            <SortedAscendingCellStyle BackColor="#F8FAFA" />
+                            <SortedAscendingHeaderStyle BackColor="#246B61" />
+                            <SortedDescendingCellStyle BackColor="#D4DFE1" />
+                            <SortedDescendingHeaderStyle BackColor="#15524A" />
                         </asp:GridView>
                       <asp:ObjectDataSource ID="odsMisSolicitudesSC" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="MisSolicitudesSCFiltroA_GetDataBy1" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter">
                         <SelectParameters>
