@@ -1,4 +1,6 @@
-﻿Public Class frmMisSolicitudesSCR
+﻿Imports CrystalDecisions.CrystalReports.Engine
+Imports CrystalDecisions.Shared
+Public Class frmMisSolicitudesSCR
     Inherits System.Web.UI.Page
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -40,6 +42,10 @@
     Private Sub GridView1_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridView1.RowCommand
         Dim taPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
         Dim td As New dsProduccion.CXP_PagosDataTable
+        Dim contrato As Boolean = False
+        Dim fecha As String = ""
+        Dim idCuentas As Integer = 0
+
         LabelError.Visible = False
         If e.CommandName = "Select" Then
             HiddenID.Value = e.CommandSource.Text
@@ -56,8 +62,70 @@
                                rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, False, rows.noContrato, rows.idAutoriza2, rows.naAutoriza2,
                                rows.naAutoriza1, rows.cCostos, rows.fPago, rows.idCuentas)
                 taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
+
+                contrato = rows.contrato
+                fecha = rows.fechaSolicitud.ToString("yyyyMMddhhmm")
+                idCuentas = rows.idCuentas
             Next
             Response.Redirect("~/frmMisSolicitudesSCR.aspx")
+
+            '/////Genera PDF Cancelado
+            Dim rptSolPago As New ReportDocument
+            Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesAllTableAdapter
+            Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
+            Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+
+            Dim dtSolPDF As DataTable
+            dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesAllDataTable
+            Dim dtSolPDFSD As DataTable
+            dtSolPDFSD = New dsProduccion.Vw_CXP_AutorizacionesAllDataTable
+            Dim dtSolPDFND As DataTable
+            dtSolPDFND = New dsProduccion.Vw_CXP_AutorizacionesAllDataTable
+
+            Dim dtObsSol As DataTable
+            dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
+            taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), HiddenID.Value)
+            taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), HiddenID.Value, "Cancelada")
+            taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), HiddenID.Value)
+            taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), HiddenID.Value)
+
+            Dim dtCtasBanco As DataTable
+            dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
+            taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, idCuentas)
+
+            Dim var_observaciones As Integer = dtObsSol.Rows.Count
+            Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
+            rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoSCCopia.rpt"))
+            rptSolPago.SetDataSource(dtSolPDF)
+            rptSolPago.Subreports("rptSubObservaciones").SetDataSource(dtObsSol)
+            rptSolPago.Subreports("rptSubSolicitudSCND").SetDataSource(dtSolPDFND)
+            rptSolPago.Subreports("rptSubSolicitudSCSD").SetDataSource(dtSolPDFSD)
+            rptSolPago.Subreports("rptSubCtasBancarias").SetDataSource(dtCtasBanco)
+            rptSolPago.Refresh()
+
+            rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
+            rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
+            rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(fecha & Session.Item("Empresa") & HiddenID.Value.ToString))
+            rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
+            rptSolPago.SetParameterValue("var_contrato", contrato)
+            rptSolPago.SetParameterValue("var_idCuentas", idCuentas)
+
+            If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
+                rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
+            Else
+                rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/logoArfin.JPG"))
+            End If
+
+
+            Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("Empresa") & "-" & HiddenID.Value & ".pdf"
+            rptSolPago.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
+            Response.Write("<script>")
+            rutaPDF = rutaPDF.Replace("\", "/")
+            rutaPDF = rutaPDF.Replace("~", "..")
+            Response.Write("window.open('verPdf.aspx','popup','_blank','width=200,height=200')")
+            Response.Write("</script>")
+            rptSolPago.Dispose()
+
         Else
             LabelError.Visible = True
             LabelError.Text = UCase("Selecion no válida.")

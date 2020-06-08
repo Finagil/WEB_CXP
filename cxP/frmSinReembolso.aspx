@@ -176,7 +176,8 @@
         <table runat="server" id="tablaSelecciona" style="width:95%; border-color:lightgray; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style59">
         <tr>
             <td>
-                Pagar a:</td>
+                Pagar a:<asp:Button ID="Button4" runat="server" Text="Button" Visible="False" />
+            </td>
             <td>
                 Concepto:</td>
             <td>

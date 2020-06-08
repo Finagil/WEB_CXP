@@ -212,6 +212,15 @@ Partial Public Class frmSinReembolso
     Protected WithEvents tablaSelecciona As Global.System.Web.UI.HtmlControls.HtmlTable
     
     '''<summary>
+    '''Control Button4.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents Button4 As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
     '''Control ddlMismoDeudor.
     '''</summary>
     '''<remarks>
