@@ -68,6 +68,7 @@
                     End If
                 Next
 
+                Session.Item("mailUsuarioS") = rows.mail
                 Session.Item("rfcUsuario") = rows.rfc
                 Session.Item("idUsuario") = rows.idUsuario
                 Session.Item("Arreglo") = ""

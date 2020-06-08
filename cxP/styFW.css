@@ -1,15 +1,79 @@
-﻿.Botones {
-    background-color: #FF6401;
-    font-family:Arial;
-    font-size:medium;
-    color:white;
-    font-weight:bold;
+﻿
+.BotonesX {
+    background-color: #F58220;
+    font-family: Arial;
+    font-size: medium;
+    color: white;
+    font-weight:normal;
+    border:none;
 }
-
+   
 .BotonesA {
     background-color: #FF6401;
     font-family: Arial;
     font-size: medium;
     color: white;
     font-weight: bold;
+}
+
+.Botones {
+    text-decoration: none;
+    padding: 3px;
+    font-weight: 400;
+    font-size: 12px;
+    color: #ffffff;
+    background-color: #F58220;
+    border-radius: 3px;
+    border: 1px solid #0016b0;
+}
+    .Botones:hover {
+        color: #0016b0;
+        background-color: orangered;
+        cursor:pointer;
+    }
+    .Botones:disabled{
+        color: black;
+        background-color:lightgray;
+    }
+
+
+.BotonesGrid {
+    text-decoration: underline;
+    padding: 1px;
+    font-weight: 400;
+    font-size: 10px;
+    color: #ffffff;
+    background-color: #F58220;
+    border-radius: 2px;
+    border: 1px solid #0016b0;
+}
+
+    .BotonesGrid:hover {
+        color: #0016b0;
+        background-color: orangered;
+        cursor: pointer;
+    }
+
+    .BotonesGrid:disabled {
+        color: black;
+        background-color: lightgray;
+    }
+
+.tablasFinagil {
+    border-radius: 5px;
+    border-style: solid;
+    border-width: thin;
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 20px;
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #000000;
+    background-color: #FFE0C0;
+}
+.encabezadosFinagil {
+    font-family: Verdana;
+    font-size: medium;
+    color: darkblue;
+    background-color: #FFE0C0;
 }

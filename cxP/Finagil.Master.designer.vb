@@ -23,51 +23,6 @@ Partial Public Class Finagil
     Protected WithEvents head As Global.System.Web.UI.WebControls.ContentPlaceHolder
     
     '''<summary>
-    '''Control idDiv2.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents idDiv2 As Global.System.Web.UI.HtmlControls.HtmlTable
-    
-    '''<summary>
-    '''Control identificadorUnico1.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents identificadorUnico1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control lblLeyenda.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents lblLeyenda As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''Control identificadorUnico2.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents identificadorUnico2 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control imgURL.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents imgURL As Global.System.Web.UI.HtmlControls.HtmlImage
-    
-    '''<summary>
     '''Control identificadorUnico15.
     '''</summary>
     '''<remarks>
@@ -284,6 +239,15 @@ Partial Public Class Finagil
     Protected WithEvents ContentPlaceHolder1 As Global.System.Web.UI.WebControls.ContentPlaceHolder
     
     '''<summary>
+    '''Control pieMaster.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents pieMaster As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
     '''Control identificadorUnico16.
     '''</summary>
     '''<remarks>
@@ -318,4 +282,22 @@ Partial Public Class Finagil
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents lblSucursal As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''Control identificadorUnico1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents identificadorUnico1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    
+    '''<summary>
+    '''Control lblLeyenda.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lblLeyenda As Global.System.Web.UI.WebControls.Label
 End Class

@@ -41,6 +41,15 @@ Partial Public Class frmMisSolicitudesSCR
     Protected WithEvents LabelError As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
+    '''Control tablaMisSolicitudes.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents tablaMisSolicitudes As Global.System.Web.UI.HtmlControls.HtmlTable
+    
+    '''<summary>
     '''Control GridView1.
     '''</summary>
     '''<remarks>

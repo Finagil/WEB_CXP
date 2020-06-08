@@ -27,12 +27,12 @@
     </style>
 </head>
 
-<body background="imagenes/fondoconteblanco.png" onload="window.history.fordward();">
+<body background="imagenes/Final_1.gif" onload="window.history.fordward();" style="background-size: 100% auto; ">
         <link href="styFW.css" rel="stylesheet" type="text/css" />
     <form id="form1" runat="server">
         <div class="auto-style1">
             <br />
-            <asp:Image ID="Image1" runat="server" Height="187px" ImageUrl="~/imagenes/LOGO FINAGIL.JPG" Width="397px" />
+            <asp:Image ID="Image1" runat="server" Height="187px" ImageUrl="~/imagenes/logo-small.png" Width="397px" />
             <br />
             <br />
             <span class="auto-style2">SOLICITUD DE PAGOS<br />

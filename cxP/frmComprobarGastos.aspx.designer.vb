@@ -203,31 +203,13 @@ Partial Public Class frmComprobarGastos
     Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
     
     '''<summary>
-    '''Control id1.
+    '''Control tablaBuscar.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents id1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control id2.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents id2 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control ddlFolioSolicitud.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ddlFolioSolicitud As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents tablaBuscar As Global.System.Web.UI.HtmlControls.HtmlTable
     
     '''<summary>
     '''Control odbSolicitudes2.
@@ -239,6 +221,24 @@ Partial Public Class frmComprobarGastos
     Protected WithEvents odbSolicitudes2 As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
+    '''Control txtDescripcion.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtDescripcion As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control ddlFolioSolicitud.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlFolioSolicitud As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
     '''Control btnSeleccionar.
     '''</summary>
     '''<remarks>
@@ -246,15 +246,6 @@ Partial Public Class frmComprobarGastos
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents btnSeleccionar As Global.System.Web.UI.WebControls.Button
-    
-    '''<summary>
-    '''Control hlkPdf.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents hlkPdf As Global.System.Web.UI.WebControls.HyperLink
     
     '''<summary>
     '''Control lblFechaSolicitud.
@@ -284,24 +275,6 @@ Partial Public Class frmComprobarGastos
     Protected WithEvents lblSaldo As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''Control id3.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents id3 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control txtDescripcion.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents txtDescripcion As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
     '''Control odsProveedores.
     '''</summary>
     '''<remarks>
@@ -311,22 +284,13 @@ Partial Public Class frmComprobarGastos
     Protected WithEvents odsProveedores As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
-    '''Control id4.
+    '''Control hlkPdf.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents id4 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control ddlAutorizo.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ddlAutorizo As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents hlkPdf As Global.System.Web.UI.WebControls.HyperLink
     
     '''<summary>
     '''Control odsAutoriza.
@@ -336,15 +300,6 @@ Partial Public Class frmComprobarGastos
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents odsAutoriza As Global.System.Web.UI.WebControls.ObjectDataSource
-    
-    '''<summary>
-    '''Control id9.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents id9 As Global.System.Web.UI.HtmlControls.HtmlTableCell
     
     '''<summary>
     '''Control odsSolicitudes.
@@ -363,6 +318,15 @@ Partial Public Class frmComprobarGastos
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents txtDestinoNacional As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control ddlAutorizo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlAutorizo As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
     '''Control txtFechaSalida.
@@ -401,40 +365,22 @@ Partial Public Class frmComprobarGastos
     Protected WithEvents cexFechaLlegada As Global.AjaxControlToolkit.CalendarExtender
     
     '''<summary>
-    '''Control id5.
+    '''Control tablaAsignarFacturas.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents id5 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tablaAsignarFacturas As Global.System.Web.UI.HtmlControls.HtmlTable
     
     '''<summary>
-    '''Control id6.
+    '''Control odsCFDI.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents id6 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control id7.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents id7 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
-    '''<summary>
-    '''Control id8.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents id8 As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents odsCFDI As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control txtBuscar.
@@ -473,51 +419,6 @@ Partial Public Class frmComprobarGastos
     Protected WithEvents btnAsignar As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
-    '''Control ModalPopupExtender1.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ModalPopupExtender1 As Global.AjaxControlToolkit.ModalPopupExtender
-    
-    '''<summary>
-    '''Control ModalPopupExtender2.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ModalPopupExtender2 As Global.AjaxControlToolkit.ModalPopupExtender
-    
-    '''<summary>
-    '''Control ModalPopupExtender3.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ModalPopupExtender3 As Global.AjaxControlToolkit.ModalPopupExtender
-    
-    '''<summary>
-    '''Control ModalPopupExtender4.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ModalPopupExtender4 As Global.AjaxControlToolkit.ModalPopupExtender
-    
-    '''<summary>
-    '''Control ModalPopupExtender5.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ModalPopupExtender5 As Global.AjaxControlToolkit.ModalPopupExtender
-    
-    '''<summary>
     '''Control GridView1.
     '''</summary>
     '''<remarks>
@@ -525,15 +426,6 @@ Partial Public Class frmComprobarGastos
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents GridView1 As Global.System.Web.UI.WebControls.GridView
-    
-    '''<summary>
-    '''Control odsCFDI.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents odsCFDI As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control btnAgregar.
@@ -635,6 +527,15 @@ Partial Public Class frmComprobarGastos
     Protected WithEvents GridView3 As Global.System.Web.UI.WebControls.GridView
     
     '''<summary>
+    '''Control tablaAceptar.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents tablaAceptar As Global.System.Web.UI.HtmlControls.HtmlTable
+    
+    '''<summary>
     '''Control lblTotalGastos.
     '''</summary>
     '''<remarks>
@@ -650,7 +551,7 @@ Partial Public Class frmComprobarGastos
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents btnComprobar As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnComprobar As Global.RoderoLib.BotonEnviar
     
     '''<summary>
     '''Control btncancelarComprobacion.
@@ -660,4 +561,49 @@ Partial Public Class frmComprobarGastos
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents btncancelarComprobacion As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
+    '''Control ModalPopupExtender1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ModalPopupExtender1 As Global.AjaxControlToolkit.ModalPopupExtender
+    
+    '''<summary>
+    '''Control ModalPopupExtender2.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ModalPopupExtender2 As Global.AjaxControlToolkit.ModalPopupExtender
+    
+    '''<summary>
+    '''Control ModalPopupExtender3.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ModalPopupExtender3 As Global.AjaxControlToolkit.ModalPopupExtender
+    
+    '''<summary>
+    '''Control ModalPopupExtender4.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ModalPopupExtender4 As Global.AjaxControlToolkit.ModalPopupExtender
+    
+    '''<summary>
+    '''Control ModalPopupExtender5.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ModalPopupExtender5 As Global.AjaxControlToolkit.ModalPopupExtender
 End Class

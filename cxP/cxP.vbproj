@@ -115,8 +115,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="configuration.svcinfo" />
+    <Content Include="aut2TwoPrvCtas.aspx" />
     <Content Include="css\calendar-blue.css" />
     <Content Include="css\estilos.css" />
+    <Content Include="css\estilos_gridview.css" />
     <Content Include="css\estilo_n.css" />
     <Content Include="css\fontello.css" />
     <Content Include="Default.aspx" />
@@ -148,6 +150,9 @@
     <Content Include="imagenes\calender.png" />
     <Content Include="imagenes\check1.JPG" />
     <Content Include="imagenes\fondoconteblanco.png" />
+    <Content Include="imagenes\grd_alt.png" />
+    <Content Include="imagenes\grd_head.png" />
+    <Content Include="imagenes\grd_pgr.png" />
     <Content Include="imagenes\LOGO FINAGIL.JPG" />
     <Content Include="imagenes\logo-shop-primary.png" />
     <Content Include="imagenes\logo-sin-fondo_web.png" />
@@ -218,6 +223,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="aut2TwoPrvCtas.aspx.designer.vb">
+      <DependentUpon>aut2TwoPrvCtas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aut2TwoPrvCtas.aspx.vb">
+      <DependentUpon>aut2TwoPrvCtas.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="ClaseHash.vb" />
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -229,6 +241,9 @@
     <Compile Include="dsProduccion.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>dsProduccion.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsProduccion.vb">
       <DependentUpon>dsProduccion.xsd</DependentUpon>
     </Compile>
     <Compile Include="dsSeguridad.Designer.vb">

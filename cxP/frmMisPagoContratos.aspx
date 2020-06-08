@@ -15,9 +15,11 @@
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div style="height: 450px" >
-              <div class="auto-style14">
-                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataSourceID="odsMisSolicitudesSC" Height="16px" Width="1349px" ForeColor="#333333" HorizontalAlign="Center" Font-Names="Arial" CellPadding="4" GridLines="None">
+              <div style="overflow-x:auto;overflow-y:auto;">
+                  <table runat="server" id="tablaMisSolicitudes" style="border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width:95%; height:90%; margin-left:auto; margin-right:auto; margin-bottom:3%; margin-top:3%;">
+                                <tr>
+                                    <td>
+                                                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" Font-Names="Verdana" BorderColor="Gray" BorderWidth="2px" Font-Size="Smaller" CellSpacing="2" CellPadding="4" BorderStyle="None" AutoGenerateColumns="False" GridLines="None" DataSourceID="odsMisSolicitudesSC" Height="16px" Width="1230px" ForeColor="#333333" HorizontalAlign="Center">
                             <AlternatingRowStyle BackColor="White" />
                             <Columns>
                                 <asp:BoundField DataField="folioSolicitud" HeaderText="Folio Solicitud" ItemStyle-HorizontalAlign="Right" HeaderStyle-HorizontalAlign="Center" SortExpression="folioSolicitud">
@@ -83,12 +85,13 @@
                             <SortedDescendingCellStyle BackColor="#D4DFE1" />
                             <SortedDescendingHeaderStyle BackColor="#15524A" />
                         </asp:GridView>
-                      <br />
-                    <asp:ObjectDataSource ID="odsMisSolicitudesSC" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisPagosContratosTableAdapter">
+                                                                                </td>
+                                </tr>
+                            </table>
+                   </div>
+              <asp:ObjectDataSource ID="odsMisSolicitudesSC" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisPagosContratosTableAdapter">
                         <SelectParameters>
                             <asp:SessionParameter Name="idEmpresas" SessionField="Empresa" Type="Decimal" />
                         </SelectParameters>
-         </asp:ObjectDataSource>
-              </div>
-    </div>
+              </asp:ObjectDataSource>
 </asp:Content>

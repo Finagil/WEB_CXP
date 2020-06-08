@@ -2,7 +2,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <div style="height: 100%" class="auto-style8">
+    <div style="height: 100%;text-align:center;">
         <br />
         <br />
         <br />
@@ -19,9 +19,7 @@
     </asp:Content>
 <asp:Content ID="Content1" runat="server" contentplaceholderid="head">
     <style type="text/css">
-    .auto-style8 {
-        text-align: center;
-    }
+   
 </style>
 </asp:Content>
 

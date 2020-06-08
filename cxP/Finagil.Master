@@ -4,6 +4,9 @@
 
 <html>
 <head runat="server">
+    
+
+
     <script Language="JavaScript">if(history.forward(1)){history.replace(history.forward(1));}</script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Solicitud de Pago</title>
@@ -12,26 +15,15 @@
        location.replace( history.forward(1) );
     }
     </script>
+
+
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <link rel="stylesheet" href="css/estilos.css" />
     <link rel="stylesheet" href="css/fontello.css" />
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <style type="text/css">
-        .auto-style1 {
-            width: 159%;
-            height: 54px;
-        }
-        .auto-style2 {
-            width: auto;
-            height: 54px;
-        }
-        .auto-style3 {
-            height: 74px;
-            width: 271px;
-            margin-left: 138px;
-            margin-bottom: 0px;
-        }
         .auto-style4 {
             height: 7px;
         }
@@ -43,10 +35,6 @@
             width: 156px;
         }
        
-        .auto-style7 {
-            height: 500px;
-            width: 775px;
-        }
         .auto-styleFT{
          position:fixed;
          left:0px;
@@ -55,19 +43,25 @@
 
         }
        
+        .auto-style8 {
+            width: 100%;
+            position: static;
+        }
+        .auto-style10 {
+            height: 30px;
+            width: 624px;
+        }
+       
+        .auto-style11 {
+            height: 30px;
+            width: 623px;
+        }
+       
     </style>
 </head>
-<body onload="window.history.fordward();">
-    <table style="width: 100%" id="idDiv2" runat="server" >
-                <tr>
-                    <td id="identificadorUnico1" runat="server" class="labels10">
-                        <asp:Label ID="lblLeyenda" runat="server" Font-Bold="True" Font-Names="Verdana" ForeColor="White" Text="Label" Width="152%"></asp:Label>
-                    </td>
-                    <td class="auto-style2" style="background-color: #F58220; text-align: right;" ID="identificadorUnico2">
-                        <img src="imagenes/logo-shop-primary.png" class="auto-style3" ID="imgURL" runat="server"/></td>
-                </tr>
-            </table>
-    <header id="identificadorUnico15" runat="server">
+<body onload="window.history.fordward();" style="overflow-y:auto; height:90%">
+
+    <header id="identificadorUnico15" runat="server" class="auto-styleFT">
             <input type="checkbox" id="btn-menu" />
                 <label for="submenu" class="icon-menu" ></label>
                 <nav class="menu">
@@ -109,39 +103,44 @@
             </header>
     <script src="menu.js"></script>
     <form id="form1" runat="server">
-        <div runat="server" id="idDiv1">            
+        <div runat="server" id="idDiv1" style="overflow-x:auto; overflow-y:auto; height:100%; width:100%; margin-bottom:70px">            
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
         </div>
     </form>    
     
-    <footer class="auto-styleFT">
-    <table style="width: 100%; position: static;">
+    <footer class="auto-styleFT" id="pieMaster" runat="server">
+    <table class="auto-style8"">
         <tr>
-            <td style="height: 30px; background-color: #F58220" id="identificadorUnico16" runat="server">
-                <table class="width:100%;" >
+            <td id="identificadorUnico16" runat="server" class="auto-style11">
+                <table class="width:100%;">
                     <tr >
-                        <td  class="auto-style5" style="font-size: x-small; font-family: 'Arial Black'; ">Usuario:</td>
+                        <td  class="auto-style5" style="font-size: x-small; font-family: Verdana; font-weight: 600;">Usuario:</td>
                         <td class="auto-style4" style="font-family: 'Arial Black'; font-size: x-small" >
-                            <asp:Label ID="lblUsuario" runat="server" Font-Names="Arial Black" Font-Size="XX-Small" ForeColor="Navy" Text="Label" Font-Bold="True"></asp:Label>
+                            <asp:Label ID="lblUsuario" runat="server" Font-Names="Verdana" Font-Size="XX-Small" ForeColor="Navy" Text="Label" Font-Bold="True"></asp:Label>
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style6" style="font-size: x-small; font-family: 'Arial Black'; " >Departamento:</td>
+                        <td class="auto-style6" style="font-size: x-small; font-family: Verdana; font-weight: 600;" >Departamento:</td>
                         <td style="font-family: 'Arial Black'; font-size: x-small">
-                            <asp:Label ID="lblDepartamento" runat="server" Font-Names="Arial Black" Font-Size="XX-Small" ForeColor="Navy" Text="Label" Font-Bold="True"></asp:Label>
+                            <asp:Label ID="lblDepartamento" runat="server" Font-Names="Verdana" Font-Size="XX-Small" ForeColor="Navy" Text="Label" Font-Bold="True"></asp:Label>
                         </td>
                     </tr>
                     <tr>
-                        <td class="auto-style6" style="font-size: x-small; font-family: 'Arial Black'; ">Sucursal:</td>
+                        <td class="auto-style6" style="font-size: x-small; font-family: Verdana; font-weight: 600;">Sucursal:</td>
                         <td style="font-family: 'Arial Black'; font-size: x-small">
-                            <asp:Label ID="lblSucursal" runat="server" Font-Names="Arial Black" Font-Size="XX-Small" ForeColor="Navy" Text="Label" Font-Bold="True"></asp:Label>
+                            <asp:Label ID="lblSucursal" runat="server" Font-Names="Verdana" Font-Size="XX-Small" ForeColor="Navy" Text="Label" Font-Bold="True"></asp:Label>
                         </td>
                     </tr>
                 </table>
             </td>
+            <td id="identificadorUnico1" runat="server" class="auto-style10" style="align-items:flex-end;">
+                        <asp:Label ID="lblLeyenda" runat="server" Font-Bold="True" Font-Names="Verdana" ForeColor="Navy" Text="Label" ></asp:Label>
+                    </td>
+                    
         </tr>
     </table>
     </footer>
+  
 </body>
 </html>

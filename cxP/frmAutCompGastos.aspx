@@ -75,12 +75,12 @@
 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                 </asp:TemplateField>
                             </Columns>
-                            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+                             <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+                             <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
                              <RowStyle BackColor="#FFE0C0" />
                              <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
-            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
-            <EditRowStyle BackColor="#7C6F57" />
+                             <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+                             <EditRowStyle BackColor="#7C6F57" />
                             <SortedAscendingCellStyle BackColor="#F8FAFA" />
                             <SortedAscendingHeaderStyle BackColor="#246B61" />
                             <SortedDescendingCellStyle BackColor="#D4DFE1" />

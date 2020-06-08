@@ -12,34 +12,26 @@
     <style type="text/css">
       .CajaDialogo
     {
-        background-color: #FFF700;
+        background-color: orangered;
         border-width: 4px;
         border-style: outset;
-        border-color: red;
+        border-color: darkblue;
         padding: 0px;
         width: 275px;
-        font-family: Arial
+        font-family: Arial;
+        font-weight:bold;
+        border-radius:8px;
     }
     .CajaDialogo div
     {
-        margin: 7px;
+        margin: 5px;
         text-align: center;
     }
         .auto-style8 {
             width: 488px;
         }
-        .auto-style9 {
-            width: 186px;
-        }
         .auto-style11 {
             width: 488px;
-            height: 79px;
-        }
-        .auto-style12 {
-            width: 186px;
-            height: 79px;
-        }
-        .auto-style13 {
             height: 79px;
         }
         .auto-style14 {
@@ -51,39 +43,36 @@
             overflow-x:auto;
             
         }
-        .auto-style17 {
-            width: 232px;
-        }
-        .auto-style18 {
-            width: 201px;
-        }
-        .auto-style20 {
-            height: 22px;
-        }
         .auto-style21 {
             text-align: center;
         }
         .auto-style25 {
             margin-left: 0px;
         }
-        .auto-style26 {
-            overflow-x: auto;
-            height: 100%;
+        .auto-style32 {
+            width: 1268px;
         }
-        .auto-style27 {
-            width: 148px;
+        .auto-style37 {
+            width: 252px;
         }
-        .auto-style28 {
-            height: 22px;
+        .auto-style38 {
+            width: 237px;
+        }
+        .auto-style39 {
+            width: 252px;
             text-align: center;
         }
-        .auto-style29 {
-            height: 22px;
+        .auto-style40 {
             text-align: left;
         }
-        .auto-style31 {
-            width: 186px;
-            height: 22px;
+        .auto-style41 {
+            width: 630px;
+        }
+        .auto-style42 {
+            width: 1264px;
+        }
+        .auto-style46 {
+            width: 253px;
         }
         </style>
 </asp:Content>
@@ -254,54 +243,90 @@
     </asp:ScriptManager>
        
      <link href="styFW.css" rel="stylesheet" type="text/css" />
-    <div class="auto-style26">
+    <div style="overflow-y:auto; height:90%; margin-bottom:5px;">
 
-        <table class="auto-style14">
+        
+        <table runat="server" id="tablaBuscar" style="border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style32">
             <tr>
-                <td id="id1" runat="server" class="auto-style8" style="font-family: Arial; font-size: medium; background-color: #F58220; font-weight: bold; color: #FFFFFF;" colspan="5">Solicitud:</td>
-                <td id="id2" runat="server" style="font-family: Arial; font-size: medium; background-color: #F58220; font-weight: bold; color: #FFFFFF;" colspan="3">Datos de la solicitud:</td>
-            </tr>
-            <tr>
-                <td class="auto-style11" style="font-family: Arial; font-size: medium" colspan="5">Folio de solicitud:<br />
-                    <asp:DropDownList ID="ddlFolioSolicitud" runat="server" DataSourceID="odbSolicitudes2" DataTextField="folioSolicitud" DataValueField="uuid" Width="200px" Height="20px">
-                    </asp:DropDownList>
-                    <asp:ObjectDataSource ID="odbSolicitudes2" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="MisSolicitudesSCXComp_GetDataBy1" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter">
+                <td class="auto-style37">
+
+                    Folio de solicitud:<asp:ObjectDataSource ID="odbSolicitudes2" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="MisSolicitudesSCXComp_GetDataBy1" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter">
                         <SelectParameters>
                             <asp:SessionParameter Name="usuario" SessionField="Usuario" Type="String" />
                             <asp:SessionParameter Name="empresa" SessionField="Empresa" Type="Decimal" />
                         </SelectParameters>
                     </asp:ObjectDataSource>
-                    &nbsp;<asp:Button ID="btnSeleccionar" runat="server" Text="Seleccionar" CssClass="Botones" Width="106px" />
-                    <asp:HyperLink ID="hlkPdf" Target="_blank" runat="server">Ver PDF</asp:HyperLink>
-                </td>
-                <td class="auto-style12" style="font-family: Arial; font-size: medium" colspan="2">Fecha de solicitud:<br />
-                    <asp:Label ID="lblFechaSolicitud" runat="server" Font-Bold="True"></asp:Label>
+                    </td>
+                <td class="auto-style38">
+
+                    Fecha de solicitud:</td>
+                <td class="auto-style38">
+
+                    Importe solicitado:</td>
+                <td class="auto-style38">
+
+                    Saldo:</td>
+                <td class="auto-style37" rowspan="5">
+
+                    Descripción:<br />
+                    <asp:TextBox ID="txtDescripcion" runat="server" Font-Bold="True" Height="50px" ReadOnly="True" Rows="2" TextMode="MultiLine" Width="294px" CssClass="auto-style25"></asp:TextBox>
+
                     <br />
-                    Descripción:</td>
-                <td style="font-family: Arial; font-size: medium" class="auto-style13">Importe solicitado:<br />
-                    <asp:Label ID="lblImporteSolicitado" runat="server" Font-Bold="True"></asp:Label>
-                    <br />
-                    Saldo:<br />
-                    <asp:Label ID="lblSaldo" runat="server" Font-Bold="True"></asp:Label>
+
                 </td>
             </tr>
             <tr>
-                <td id="id3" runat="server" class="auto-style8" style="font-family: Arial; font-size: medium; border-bottom-style: solid; border-bottom-color: #F58220; border-bottom-width: 3px;" colspan="5">
-                    <asp:TextBox ID="txtDescripcion" runat="server" Font-Bold="True" Height="41px" ReadOnly="True" Rows="2" TextMode="MultiLine" Width="399px" CssClass="auto-style25"></asp:TextBox>
+                <td class="auto-style39">
+
+                    <asp:DropDownList ID="ddlFolioSolicitud" runat="server" DataSourceID="odbSolicitudes2" DataTextField="folioSolicitud" DataValueField="uuid" Width="100px">
+                    </asp:DropDownList>
+                    &nbsp;<asp:Button ID="btnSeleccionar" runat="server" Text="Seleccionar" CssClass="Botones" Width="80px" PostBackUrl="#tablaAsignarFacturas" />
+
+                    </td>
+                <td class="auto-style38">
+
+                    <asp:Label ID="lblFechaSolicitud" runat="server" Font-Bold="True"></asp:Label>
+
+                </td>
+                <td class="auto-style38">
+
+                    <asp:Label ID="lblImporteSolicitado" runat="server" Font-Bold="True"></asp:Label>
+
+                </td>
+                <td class="auto-style38">
+
+                    <asp:Label ID="lblSaldo" runat="server" Font-Bold="True"></asp:Label>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style39">
+
                     <asp:ObjectDataSource ID="odsProveedores" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtProv_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_ProveedoresTableAdapter">
                         <SelectParameters>
                             <asp:SessionParameter Name="idSucursal" SessionField="idSucursal" Type="String" />
                             <asp:SessionParameter Name="empresa" SessionField="empresa" Type="String" />
                         </SelectParameters>
                     </asp:ObjectDataSource>
-                    </td>
-                <td id="id4" runat="server" class="auto-style9" style="font-family: Arial; font-size: small; border-bottom-style: solid; border-bottom-color: #F58220; border-bottom-width: 3px;" colspan="2">
-                    Autoriza:<asp:DropDownList ID="ddlAutorizo" runat="server" Height="20px" Width="221px" Enabled="False" DataSourceID="odsAutoriza" DataTextField="Nombre" DataValueField="id_correo">
-                        <asp:ListItem Selected="True"></asp:ListItem>
-                        <asp:ListItem>Valentin Cruz Barrios</asp:ListItem>
-                        <asp:ListItem>Elisander Pineda Rojas</asp:ListItem>
-                        <asp:ListItem>Gabriel Bello Hernández</asp:ListItem>
-                    </asp:DropDownList>
+
+                    &nbsp;
+
+                    <asp:HyperLink ID="hlkPdf" Target="_blank" runat="server">Ver PDF</asp:HyperLink>
+
+                </td>
+                <td class="auto-style38">
+
+                    &nbsp;</td>
+                <td class="auto-style38">
+
+                    &nbsp;</td>
+                <td class="auto-style38">
+
+                    &nbsp;</td>
+            </tr>
+            <tr>
+                <td class="auto-style39">
+
                     <asp:ObjectDataSource ID="odsAutoriza" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="NoMc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter" UpdateMethod="Update">
                         <DeleteParameters>
                             <asp:Parameter Name="Original_id_correo" Type="Decimal" />
@@ -320,68 +345,88 @@
                             <asp:Parameter Name="Original_id_correo" Type="Decimal" />
                         </UpdateParameters>
                     </asp:ObjectDataSource>
+
+                    <div class="auto-style40">
+
+                    Motivo de comprobación:</div>
+
                 </td>
-                <td id="id9" runat="server" style="font-family: Arial; font-size: medium; border-bottom-style: solid; border-bottom-color: #F58220; border-bottom-width: 3px;">
+                <td class="auto-style38">
+
+                    Autoriza:</td>
+                <td class="auto-style38">
+
+                    Fecha inicial:</td>
+                <td class="auto-style38">
+
+                    Fecha final:</td>
+            </tr>
+            <tr>
+                <td class="auto-style37">
+
                     <asp:ObjectDataSource ID="odsSolicitudes" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ConSaldo_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter">
                         <SelectParameters>
                             <asp:SessionParameter Name="usuario" SessionField="Usuario" Type="String" />
                             <asp:SessionParameter Name="empresa" SessionField="Empresa" Type="Decimal" />
                         </SelectParameters>
                     </asp:ObjectDataSource>
-                    </td>
-            </tr>
-            <tr>
-                <td style="font-family: Arial; font-size: small" colspan="3" rowspan="2">
-                    Motivo de comprobación:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-                <td style="font-family: Arial; font-size: small" class="auto-style27" colspan="2" rowspan="2">
+
                     <asp:TextBox ID="txtDestinoNacional" runat="server" Width="293px" Enabled="False"></asp:TextBox>
-                    </td>
-                <td style="font-family: Arial; font-size: small">
-                 Fecha inicial:
-                    &nbsp;</td>
-                <td style="font-family: Arial; font-size: small" colspan="2">
-               Fecha final:&nbsp; </td>
-            </tr>
-            <tr>
-                <td style="font-family: Arial; font-size: small" colspan="2" class="auto-style31">
+
+                </td>
+                <td class="auto-style38">
+
+                    <asp:DropDownList ID="ddlAutorizo" runat="server" Height="20px" Width="221px" Enabled="False" DataSourceID="odsAutoriza" DataTextField="Nombre" DataValueField="id_correo">
+                        <asp:ListItem Selected="True"></asp:ListItem>
+                        <asp:ListItem>Valentin Cruz Barrios</asp:ListItem>
+                        <asp:ListItem>Elisander Pineda Rojas</asp:ListItem>
+                        <asp:ListItem>Gabriel Bello Hernández</asp:ListItem>
+                    </asp:DropDownList>
+
+                </td>
+                <td class="auto-style38">
+
                     <asp:TextBox ID="txtFechaSalida" runat="server" Enabled="true" Width="100px" ForeColor="Black"></asp:TextBox>
                 <ajaxToolkit:CalendarExtender ID="cexFechaSalida" runat="server" TargetControlID="txtFechaSalida" TodaysDateFormat="MMMM, yyyy" Format="dd/MM/yyyy" />
                     </td>
-                <td style="font-family: Arial; font-size: small" class="auto-style20">
+                <td class="auto-style38">
+
                     <asp:TextBox ID="txtFechaLlegada" runat="server" Enabled="true" Width="100px"></asp:TextBox><ajaxToolkit:CalendarExtender ID="cexFechaLlegada" runat="server" TargetControlID="txtFechaLlegada" TodaysDateFormat="MMMM, yyyy" Format="dd/MM/yyyy"  />
                 </td>
             </tr>
+        </table>
+        <table runat="server" id="tablaAsignarFacturas" style="border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style32">
             <tr>
-                <td id="id5" runat="server" class="auto-style17" style="font-family: Arial; font-size: medium; background-color: #F58220; color: #FFFFFF;" colspan="2">Asignar facturas:</td>
-                <td id="id6" runat="server" class="auto-style18" style="font-family: Arial; font-size: medium; background-color: #F58220;" colspan="3">&nbsp;</td>
-                <td id="id7" runat="server" class="auto-style9" style="font-family: Arial; font-size: medium; background-color: #F58220;" colspan="2">&nbsp;</td>
-                <td id="id8" runat="server" style="font-family: Arial; font-size: medium; background-color: #F58220;">&nbsp;</td>
+                <td colspan="2">
+
+                    Asignar facturas:<asp:ObjectDataSource ID="odsCFDI" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCFDiXRfc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter">
+                        <SelectParameters>
+                            <asp:SessionParameter Name="rfcEmisor" SessionField="rfcEmisor" Type="String" />
+                            <asp:SessionParameter Name="meses" SessionField="mesesFacturas" Type="Decimal" />
+                        </SelectParameters>
+                    </asp:ObjectDataSource>
+                </td>
             </tr>
             <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="5">Buscar proveedor:&nbsp;
-                    <asp:TextBox ID="txtBuscar" runat="server" Width="174px" Enabled="False"></asp:TextBox>
-&nbsp;&nbsp;
+                <td class="auto-style41">
+
+                    <asp:TextBox ID="txtBuscar" runat="server" Width="200px" Enabled="False"></asp:TextBox>
+&nbsp;
                     <asp:Button ID="btnBuscar" runat="server" CssClass="Botones" Text="Buscar" Enabled="False" />
+
                 </td>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="3">
-                    <asp:DropDownList ID="ddlProveedor" runat="server" DataSourceID="odsProveedores" DataTextField="razonSocial" DataValueField="idProveedor" Height="20px" Width="400px" Enabled="False" Visible="False">
+                <td class="auto-style41">
+
+                    <asp:DropDownList ID="ddlProveedor" runat="server" DataSourceID="odsProveedores" DataTextField="razonSocial" DataValueField="idProveedor" Width="400px" Enabled="False" Visible="False">
                     </asp:DropDownList>
-&nbsp;&nbsp;
-                    <asp:Button ID="btnAsignar" runat="server" CssClass="Botones" Text="Seleccionar" Width="107px" Enabled="False" />
+&nbsp;
+                    <asp:Button ID="btnAsignar" runat="server" CssClass="Botones" Text="Seleccionar" Width="107px" Enabled="False" PostBackUrl="#divFacturas" />
+
                 </td>
             </tr>
-            <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="8">&nbsp;</td>
-                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje1" TargetControlID="errLabel17" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender2" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje2" TargetControlID="errLabel18" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender3" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje3" TargetControlID="errLabel19" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender4" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje4" TargetControlID="errLabel20" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender5" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje5" TargetControlID="errLabel21" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
-            </tr>
-            <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="8">
-                    <div style="height: 150px" class="auto-scroll">
-                        <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" CssClass="auto-style13" DataKeyNames="idXmlCfdi" DataSourceID="odsCFDI" Height="16px" Width="1226px" ForeColor="#333333" HorizontalAlign="Center" Visible="False" PageSize="5">
+        </table>
+        <div id="divFacturas" style="width:90%;height:100px;overflow-x:auto;overflow-y:auto;margin-left:auto;margin-right:auto;" >
+            <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="idXmlCfdi" DataSourceID="odsCFDI" Width="100%" Height="100%" ForeColor="#333333" HorizontalAlign="Center" Visible="False" PageSize="5">
                             <Columns>
                                 <asp:TemplateField HeaderText="-" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
@@ -506,159 +551,155 @@
             <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
             <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
-                    </div>
-                    <asp:ObjectDataSource ID="odsCFDI" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCFDiXRfc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter">
-                        <SelectParameters>
-                            <asp:SessionParameter Name="rfcEmisor" SessionField="rfcEmisor" Type="String" />
-                            <asp:SessionParameter Name="meses" SessionField="mesesFacturas" Type="Decimal" />
-                        </SelectParameters>
-                    </asp:ObjectDataSource>
-                </td>
-            </tr>
+        </div>
+        <table id="tablaFacturas" style="width:95%;margin-left:auto;margin-right:auto;">
             <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="8"></td>
-            </tr>
-            <tr>
-                <td style="font-family: Arial; vertical-align: bottom;">&nbsp;</td>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="5" class="auto-style21">
-                        <asp:Button ID="btnAgregar" runat="server" CssClass="Botones" Text="Agregar" Visible="False" />
-                &nbsp;&nbsp;
+                <td class="auto-style21">
+                    
+                        <asp:Button ID="btnAgregar" runat="server" CssClass="Botones" Text="Agregar" Visible="False" PostBackUrl="#tablaDesglose" />
+                &nbsp;
                         <asp:Button ID="btnCancelar" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" />
+                    
                 </td>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="2">
+            </tr>
+        </table>
+        <table id="tablaDesglose" style="width:90%; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px;  margin-left: auto; margin-right: auto; margin-bottom: 0;">
+            <tr>
+                <td class="auto-style21">
+
                         <asp:Label ID="lblError" runat="server" Font-Size="Small" ForeColor="#F58220" Font-Bold="True"></asp:Label>
+
                 </td>
             </tr>
             <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" class="auto-style20"></td>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="4" class="auto-style20">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </td>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="3" class="auto-style20">
-                    &nbsp;</td>
-            </tr>
-            <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="8" class="auto-style21">
-                    <ajaxToolkit:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="1" Visible="False">
-                        <ajaxToolkit:TabPanel ID="TabPanel1" runat="server" HeaderText="Deducibles" BackColor="#FFFFFF">
+                <td>
+
+                    <ajaxToolkit:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0" Visible="False" Width="100%">
+                        <ajaxToolkit:TabPanel ID="TabPanel1" runat="server" HeaderText="Deducibles" BackColor="White">
+                            <HeaderTemplate>
+                                Deducibles
+                            </HeaderTemplate>
                             <ContentTemplate>
                
-                                <asp:GridView ID="GridView2" runat="server" AllowSorting="True" Height="16px" Width="1111px" ForeColor="#333333" HorizontalAlign="Center" AutoGenerateColumns="False" ShowFooter="True" PageSize="2" Font-Size="Small">
-                            <Columns>
-                                <asp:BoundField DataField="serie" HeaderText="Serie">
-                                <ItemStyle HorizontalAlign="Right" Wrap="True" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="folio" HeaderText="Folio">
-                                <ItemStyle HorizontalAlign="Right" Wrap="True" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="uuid" HeaderText="UUID">
-                                <ItemStyle HorizontalAlign="Right" Wrap="True" Width="350px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="concepto" HeaderText="Descripción" />
-                                <asp:BoundField DataField="total1" DataFormatString="{0:c}" HeaderText="Total" />
-                                <asp:BoundField DataField="total" DataFormatString="{0:c}" HeaderText="Monto a Pagar Sugerido">
-                                <HeaderStyle Wrap="True" Font-Size="X-Small" />
-                                <ItemStyle HorizontalAlign="Right" Wrap="True" />
-                                </asp:BoundField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                         <asp:Button ID="btnEliminar" runat="server" Text="Eliminar"
-                                             CommandName="Eliminar" 
-                                             CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-            <EditRowStyle BackColor="#F58220" />
-                            <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
-            <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
-                             <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-                        </asp:GridView>
+                                <div class="auto-style21">
+                                    <asp:GridView ID="GridView2" runat="server" AllowSorting="True" AutoGenerateColumns="False" Font-Size="Small" ForeColor="#333333" Height="16px" HorizontalAlign="Center" PageSize="2" ShowFooter="True" Width="100%">
+                                        <Columns>
+                                            <asp:BoundField DataField="serie" HeaderText="Serie">
+                                            <ItemStyle HorizontalAlign="Right" Wrap="True" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="folio" HeaderText="Folio">
+                                            <ItemStyle HorizontalAlign="Right" Wrap="True" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="uuid" HeaderText="UUID">
+                                            <ItemStyle HorizontalAlign="Right" Width="350px" Wrap="True" />
+                                            </asp:BoundField>
+                                            <asp:BoundField DataField="concepto" HeaderText="Descripción" />
+                                            <asp:BoundField DataField="total1" DataFormatString="{0:c}" HeaderText="Total" />
+                                            <asp:BoundField DataField="total" DataFormatString="{0:c}" HeaderText="Monto a Pagar Sugerido">
+                                            <HeaderStyle Font-Size="X-Small" Wrap="True" />
+                                            <ItemStyle HorizontalAlign="Right" Wrap="True" />
+                                            </asp:BoundField>
+                                            <asp:TemplateField>
+                                                <ItemTemplate>
+                                                    <asp:Button ID="btnEliminar" runat="server" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>" CommandName="Eliminar" CssClass="BotonesGrid" PostBackUrl="#tablaDesglose" Text="Eliminar" />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                        <EditRowStyle BackColor="#F58220" />
+                                        <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
+                                        <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+                                        <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
+                                        <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
+                                    </asp:GridView>
+                                </div>
                             </ContentTemplate>
                         </ajaxToolkit:TabPanel>
-                        <ajaxToolkit:TabPanel ID="TabPanel2" runat="server" HeaderText="No Deducibles" BackColor="#FFFFFF" >
+                        <ajaxToolkit:TabPanel ID="TabPanel2" runat="server" HeaderText="No Deducibles" BackColor="White" >
                             <ContentTemplate>
                                                                      
-                                <table style="align-content: center ; width: 90%;">
-                                    <tr>
-                                        <td>&nbsp;</td>
-                                        <caption>
-                                            Descripción y /o concepto del gasto:<asp:TextBox ID="txtConceptoND" runat="server" Width="240px"></asp:TextBox>
-                                            Importe:
-                                            <asp:TextBox ID="txtImporteND" runat="server"></asp:TextBox>
-                                            <asp:Button ID="btnNoDeducible" runat="server" CssClass="Botones" Text="Agregar" />
+                                <table style="align-content: center; margin-left:auto;margin-right:auto;" class="auto-style42">
                                             <tr>
-                                                <td>&nbsp;</td>
-                                                <asp:GridView ID="GridView3" runat="server" AllowSorting="True" AutoGenerateColumns="False" Font-Size="Small" ForeColor="#333333" Height="16px" HorizontalAlign="Center" ShowFooter="True" Width="419px">
-                                                    <Columns>
-                                                        <asp:BoundField DataField="descripcion" HeaderText="Descripción y/o Concepto del Gasto">
-                                                        <ControlStyle Width="200px" />
-                                                        <HeaderStyle Wrap="False" />
-                                                        <ItemStyle HorizontalAlign="Left" Width="450px" Wrap="False" />
-                                                        </asp:BoundField>
-                                                        <asp:BoundField DataField="importe" DataFormatString="{0:c}" HeaderText="Importe">
-                                                        <ItemStyle HorizontalAlign="Center" Width="100px" Wrap="True" />
-                                                        </asp:BoundField>
-                                                        <asp:TemplateField HeaderText="Documentos adjuntos">
-                                                            <ItemTemplate>
-                                                                <asp:FileUpload ID="fupNoDeducibles" runat="server" />
-                                                            </ItemTemplate>
-                                                            <ItemStyle Width="150px" />
-                                                        </asp:TemplateField>
-                                                    </Columns>
-                                                    <EditRowStyle BackColor="#F58220" />
-                                                    <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
-                                                    <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
-                                                    <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
-                                                    <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
-                                                </asp:GridView>
+                                                <td class="auto-style37">
+                                                    Descripción y /o concepto del gasto:
+                                                </td>
+                                                <td class="auto-style37">
+                                                     <asp:TextBox ID="txtConceptoND" runat="server" Width="240px"></asp:TextBox>
+                                                </td>
+                                                <td class="auto-style37">
+                                                    Importe:
+                                                </td>
+                                                <td class="auto-style46">
+                                                    <asp:TextBox ID="txtImporteND" runat="server"></asp:TextBox>
+                                                </td>
+                                                <td class="auto-style46">
+                                                    <asp:Button ID="btnNoDeducible" runat="server" CssClass="Botones" Text="Agregar" PostBackUrl="#tablaDesglose" />
+                                                </td>
                                             </tr>
-                                        </caption>
-                                                                           </tr>
+                                            <tr>
+                                                <td colspan="5">
+                                                    <asp:GridView ID="GridView3" runat="server" AllowSorting="True" AutoGenerateColumns="False" Font-Size="Small" ForeColor="#333333" Height="16px" HorizontalAlign="Center" ShowFooter="True" Width="100%">
+                                                        <Columns>
+                                                            <asp:BoundField DataField="descripcion" HeaderText="Descripción y/o Concepto del Gasto">
+                                                            <ControlStyle Width="200px" />
+                                                            <HeaderStyle Wrap="False" />
+                                                            <ItemStyle HorizontalAlign="Left" Width="450px" Wrap="False" />
+                                                            </asp:BoundField>
+                                                            <asp:BoundField DataField="importe" DataFormatString="{0:c}" HeaderText="Importe">
+                                                            <ItemStyle HorizontalAlign="Center" Width="100px" Wrap="True" />
+                                                            </asp:BoundField>
+                                                            <asp:TemplateField HeaderText="Documentos adjuntos">
+                                                                <ItemTemplate>
+                                                                    <asp:FileUpload ID="fupNoDeducibles" runat="server" />
+                                                                </ItemTemplate>
+                                                                <ItemStyle Width="150px" />
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                        <EditRowStyle BackColor="#F58220" />
+                                                        <FooterStyle BackColor="#F58220" Font-Bold="True" ForeColor="Black" />
+                                                        <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
+                                                        <PagerStyle BackColor="#F58220" ForeColor="White" HorizontalAlign="Center" />
+                                                        <SelectedRowStyle BackColor="#FFCA33" Font-Bold="True" ForeColor="#3336FF" />
+                                                    </asp:GridView>
+                                                </td>
+                                            </tr>
                                 </table>                                                                                
-
-                               
-                              
-
-
-                            </ContentTemplate>
+                                </ContentTemplate>
                         </ajaxToolkit:TabPanel>
                     </ajaxToolkit:TabContainer>
                 </td>
             </tr>
-            <tr>
-                <td style="font-family: Arial; vertical-align: bottom;" colspan="8">
-                    
-                    &nbsp;</td>
-            </tr>
-            <tr>
-                <td style="font-family: Arial; " colspan="8" class="auto-style21">
-                    <br />
-                </td>
-            </tr>
-            <tr>
-                <td style="font-family: Arial; " colspan="4" class="auto-style28">
-                    &nbsp;&nbsp;&nbsp;
-                    <asp:Label ID="lblTotalGastos" runat="server" Font-Bold="True"></asp:Label>
-                </td>
-                <td style="font-family: Arial; " colspan="4" class="auto-style29">
-                    <asp:Button ID="btnComprobar" runat="server" CssClass="Botones" Text="Procesa Comprobación" Visible="False" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="btncancelarComprobacion" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="8" class="auto-style21">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;
-
-            </tr>
-            <tr>
-                <td style="font-family: Arial; vertical-align: super;" colspan="8">
-                    &nbsp;</td>
-            </tr>
         </table>
 
+        <table runat="server" id="tablaAceptar" style="position:relative;bottom:auto; width:50%; background-color:##FFE0C0;margin-left:auto;margin-right:auto; color:navy;font-family:Verdana;font-size:small;">
+            <tr>
+                <td class="auto-style21">
+
+                    <asp:Label ID="lblTotalGastos" runat="server" Font-Bold="True"></asp:Label>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style21">
+
+                    <cc1:BotonEnviar ID="btnComprobar" runat="server" CssClass="Botones" Text="Procesa Comprobación" Visible="False" />
+                    &nbsp;
+                    <asp:Button ID="btncancelarComprobacion" runat="server" CssClass="Botones" Text="Cancelar" Visible="False" />
+
+                </td>
+            </tr>
+        </table>
+        <table class="auto-style14">
+            <tr>
+                <td style="font-family: Arial; vertical-align: bottom;" colspan="8">&nbsp;</td>
+                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje1" TargetControlID="errLabel17" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
+                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender2" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje2" TargetControlID="errLabel18" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
+                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender3" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje3" TargetControlID="errLabel19" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
+                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender4" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje4" TargetControlID="errLabel20" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
+                <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender5" runat="server" OkControlID="btnAceptar" PopupControlID="pnlMensaje5" TargetControlID="errLabel21" BackgroundCssClass="FondoAplicacion" OnOkScript="mpeMensajeOnOk()"></ajaxToolkit:ModalPopupExtender>
+            </tr>
+            
+            
+        </table>
 
     </div>
 </asp:Content>

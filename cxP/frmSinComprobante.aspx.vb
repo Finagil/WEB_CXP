@@ -14,66 +14,17 @@ Public Class frmSinComprobante
     Dim totalGastoas As Decimal = 0
     Dim taSucursales As New dsProduccionTableAdapters.CXP_SucursalesTableAdapter
     Dim taFormaPago As New dsProduccionTableAdapters.CXP_tipoDocumentoSatTableAdapter
+    Dim idCuentas As Integer = 0
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
             Response.Redirect("~/Login.aspx")
             Exit Sub
         End If
-        If Session.Item("Empresa") = "24" Then
-            id0.Attributes.Add("style", "background-color: #4BA5FF;")
-            id0.Attributes.Add("class", "labelsA")
-            id1.Attributes.Add("style", "background-color: #4BA5FF;")
-            id1.Attributes.Add("class", "labelsA")
-            id2.Attributes.Add("style", "background-color: #4BA5FF;")
-            id2.Attributes.Add("class", "labelsA")
-            id3.Attributes.Add("style", "background-color: #4BA5FF;")
-            id3.Attributes.Add("class", "labelsA")
-            id4.Attributes.Add("style", "background-color: #4BA5FF;")
-            id4.Attributes.Add("class", "labelsA")
-            'id5.Attributes.Add("style", "background-color: #4BA5FF;")
-            'id5.Attributes.Add("class", "labelsA")
-            id6.Attributes.Add("style", "background-color: #4BA5FF;")
-            id6.Attributes.Add("class", "labelsA")
-            id7.Attributes.Add("style", "background-color: #4BA5FF;")
-            id7.Attributes.Add("class", "labelsA")
-            id8.Attributes.Add("style", "background-color: #4BA5FF;")
-            id8.Attributes.Add("class", "labelsA")
-            id9.Attributes.Add("style", "background-color: #4BA5FF;")
-            id9.Attributes.Add("class", "labelsA")
-            id10.Attributes.Add("style", "background-color: #4BA5FF;")
-            id10.Attributes.Add("class", "labelsA")
-            id11.Attributes.Add("style", "background-color: #4BA5FF;")
-            id11.Attributes.Add("class", "labelsA")
-            id12.Attributes.Add("style", "background-color: #4BA5FF;")
-            id12.Attributes.Add("class", "labelsA")
-            id13.Attributes.Add("style", "background-color: #4BA5FF;")
-            id13.Attributes.Add("class", "labelsA")
-            id14.Attributes.Add("style", "background-color: #4BA5FF;")
-            id14.Attributes.Add("class", "labelsA")
-            id15.Attributes.Add("style", "background-color: #4BA5FF;")
-            id15.Attributes.Add("class", "labelsA")
-            id16.Attributes.Add("style", "background-color: #4BA5FF;")
-            id16.Attributes.Add("class", "labelsA")
-            id17.Attributes.Add("style", "background-color: #4BA5FF;")
-            id17.Attributes.Add("class", "labelsA")
-            id18.Attributes.Add("style", "background-color: #4BA5FF;")
-            id18.Attributes.Add("class", "labelsA")
-            'id19.Attributes.Add("style", "background-color: #4BA5FF;")
-            'id19.Attributes.Add("class", "labelsA")
-            btnBuscar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnCancelar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnRevisar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnSolicitar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnBuscar0.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnAsignar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnAgregar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnSolicitar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            'fupCartaNeteo.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
 
-            GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView2.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView3.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+
+        If Session.Item("Empresa") = "24" Then
+            formato()
         End If
         Dim rows As dsProduccion.CXP_ProveedoresRow
         Dim dtDeudor As New dsProduccion.CXP_ProveedoresDataTable
@@ -87,63 +38,68 @@ Public Class frmSinComprobante
             odsCuentasBancarias.FilterExpression = "idProveedor = 0"
 
             If ddlConcepto.Items.Count = -1 Then
-                'Response.Redirect("~/Default.aspx")
                 lblErrorGeneral.Text = "El usuario: " & Session.Item("Usuario") & " no tiene conceptos relacionados. Favor de verificarlo con el área contable."
                 ModalPopupExtender1.Show()
                 Exit Sub
             End If
 
             txtFechaPago.Text = Date.Now.ToShortDateString
-                lblFechaSolicitud.Text = Date.Now.ToShortDateString
-                ddlMoneda.SelectedValue = "MXN"
-                Session.Item("Leyenda") = "Solicitud de pagos sin comprobante fiscal"
-                If Session.Item("rfcEmpresa") = "SAR951230N5A" Then
-                    Session.Item("rutaCFDI") = "ARFIN/Todos/Procesados"
-                Else
-                    Session.Item("rutaCFDI") = "FINAGIL/Todos/Procesados"
-                End If
+            lblFechaSolicitud.Text = Date.Now.ToShortDateString
+            ddlMoneda.SelectedValue = "MXN"
+            Session.Item("Leyenda") = "Solicitud de pagos sin comprobante fiscal"
+            If Session.Item("rfcEmpresa") = "SAR951230N5A" Then
+                Session.Item("rutaCFDI") = "ARFIN/Todos/Procesados"
+            Else
+                Session.Item("rutaCFDI") = "FINAGIL/Todos/Procesados"
+            End If
 
-                taCXProveedores.ObtDeudor_FillBy(dtDeudor, Session.Item("rfcUsuario"))
+            taCXProveedores.ObtDeudor_FillBy(dtDeudor, Session.Item("rfcUsuario"))
 
             If dtDeudor.Rows.Count > 0 Then
                 rows = dtDeudor.Rows(0)
                 txtDeudor.Text = rows.razonSocial
                 Session.Item("idDeudor") = rows.idProveedor
+                validaEstatusProveedor(rows.idProveedor)
             Else
                 lblErrorGeneral.Text = "El usuario no existe en el catálogo de proveedores"
                 ModalPopupExtender1.Show()
                 Exit Sub
             End If
 
-            odsContratos.FilterExpression = "cliente ='" & ddlClientes.SelectedValue & "'"
+            odsContratos.FilterExpression = "cliente = '" & ddlClientes.SelectedValue & "'"
             cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
             cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
 
             dtDetalleB = New DataTable("ComprobantesComprobacion")
-                dtDetalleB.Columns.Add("descripcion", Type.GetType("System.String"))
-                dtDetalleB.Columns.Add("importe", Type.GetType("System.Decimal"))
+            dtDetalleB.Columns.Add("descripcion", Type.GetType("System.String"))
+            dtDetalleB.Columns.Add("importe", Type.GetType("System.Decimal"))
 
 
-                dtDetalleA = New DataTable("ComprobantesA")
+            dtDetalleA = New DataTable("ComprobantesA")
 
-                dtDetalleA.Columns.Add("serie", Type.GetType("System.String"))
-                dtDetalleA.Columns.Add("folio", Type.GetType("System.String"))
-                dtDetalleA.Columns.Add("uuid", Type.GetType("System.String"))
-                dtDetalleA.Columns.Add("concepto", Type.GetType("System.String"))
-                dtDetalleA.Columns.Add("total", Type.GetType("System.Decimal"))
-                dtDetalleA.Columns.Add("total1", Type.GetType("System.Decimal"))
+            dtDetalleA.Columns.Add("serie", Type.GetType("System.String"))
+            dtDetalleA.Columns.Add("folio", Type.GetType("System.String"))
+            dtDetalleA.Columns.Add("uuid", Type.GetType("System.String"))
+            dtDetalleA.Columns.Add("concepto", Type.GetType("System.String"))
+            dtDetalleA.Columns.Add("total", Type.GetType("System.Decimal"))
+            dtDetalleA.Columns.Add("total1", Type.GetType("System.Decimal"))
 
-                txtBuscar.Visible = False
-                btnBuscar0.Visible = False
-                ddlProveedor0.Visible = False
-                btnAsignar.Visible = False
-                TabContainer1.Visible = False
-                contenedorID.Attributes.Add("style", "overflow-y: auto; height: 500px;")
-                contenedorID.Attributes.Add("class", "alturaCorta")
-                contenedor2ID.Visible = False
+            txtBuscar.Visible = False
+            btnBuscar0.Visible = False
+            ddlProveedor0.Visible = False
+            btnAsignar.Visible = False
+            TabContainer1.Visible = False
+            contenedorID.Attributes.Add("style", "overflow-y: auto; height: 500px;")
+            contenedorID.Attributes.Add("class", "alturaCorta")
+            contenedor2ID.Visible = False
 
-
+            If ddlMismoDeudor.SelectedIndex = 1 Then
+                chkContrato.Enabled = False
+            Else
+                chkContrato.Enabled = True
             End If
+
+        End If
     End Sub
 
     Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
@@ -207,6 +163,31 @@ Public Class frmSinComprobante
 
     Protected Sub btnSolicitar_Click(sender As Object, e As EventArgs) Handles btnSolicitar.Click
         Try
+            If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = False Then
+                lblErrorGeneral.Text = "No se ha seleccionado ninguna Carta Neteo como archivo adjunto"
+                ModalPopupExtender1.Show()
+                Exit Sub
+            End If
+
+            'Insertar registro de datos bancarios para crédito simple y liquidez inmediata
+            Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
+            'MsgBox(lblTipar.Text)
+            If Not IsNothing(lblTipar) Then
+                If chkContrato.Checked = True Then
+                    If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                        Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+                        idCuentas = taCuentasProv.NuevaCuentaScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, "", "", True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim)
+                    Else
+                        idCuentas = 0
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            lblErrorGeneral.Text = ex.ToString
+            ModalPopupExtender1.Show()
+        End Try
+
+        Try
             btnSolicitar.Enabled = False
             Dim guuid As String = Guid.NewGuid.ToString
             Dim guuidCN As String = Guid.NewGuid.ToString
@@ -227,11 +208,7 @@ Public Class frmSinComprobante
             Dim folSolPagoFinagil As Integer = 0
             Dim folioPolizaDiario As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
 
-            If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = False Then
-                lblErrorGeneral.Text = "No se ha seleccionado ninguna Carta Neteo como archivo adjunto"
-                ModalPopupExtender1.Show()
-                Exit Sub
-            End If
+
 
             Dim mail As String = "#" & taGenFasesCorreo.ObtieneCorreo_ScalarQuery(ddlAutorizo.SelectedValue)
             Dim nombreAutorizante2 As String = taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("OPERACIONES_CXP") 'taGenFasesCorreo.ObtienNombre_ScalarQuery(ddlAutorizo.SelectedValue)
@@ -242,9 +219,9 @@ Public Class frmSinComprobante
                     taEmpresas.ConsumeFolio(Session.Item("Empresa"))
                     If ddlMismoDeudor.SelectedValue = "Elegir proveedor" Then
                         If chkContrato.Checked = True Then
-                            taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                            taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                             If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = True Then
-                                taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "CN", "CARTA NETEO", guuidCN, "0", "-" & txtImporteCartaNeteto.Text, 0, 0, "CARTA NETEO", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "CN", "CARTA NETEO", guuidCN, "0", "-" & txtImporteCartaNeteto.Text, 0, 0, "CARTA NETEO", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                 Dim archivoPDF As HttpPostedFile = fupCarteNeteo.PostedFile
                                 If Session.Item("Empresa") = "23" Then
                                     archivoPDF.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
@@ -257,21 +234,21 @@ Public Class frmSinComprobante
                             subirArchivosAdjuntos(folSolPagoFinagil, ddlProveedor.SelectedItem.Value)
                         Else
                             If ddlConcepto.SelectedValue <> taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) Then
-                                taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", txtMontoSolicitado.Text, 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", txtMontoSolicitado.Text, 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                             Else
                                 '//Inserta documentos digitales CFDI y ND
-                                taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                 Dim contador As Integer = 0
                                 For Each rows As GridViewRow In GridView2.Rows
                                     taUUIDPagos.ObtDatosFactura_FillBy(dtDatosFactura, GridView2.Rows(contador).Cells(2).Text)
                                     For Each rowsa As dsProduccion.vw_CXP_XmlCfdi2_grpUuidRow In dtDatosFactura.Rows
                                         Dim percentPago As Decimal = CDec(GridView2.Rows(contador).Cells(5).Text) / CDec(GridView2.Rows(contador).Cells(4).Text)
-                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                     Next
                                     Dim contadorND As Integer = 0
                                     For Each rowsND As GridViewRow In GridView3.Rows
                                         'taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), "ND", CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "", "")
-                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now.ToLongDateString, "", "ND", Guid.NewGuid.ToString, 0, CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, 0, GridView3.Rows(contadorND).Cells(0).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, "MXN", Date.Now.ToLongDateString, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now.ToLongDateString, "", "ND", Guid.NewGuid.ToString, 0, CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, 0, GridView3.Rows(contadorND).Cells(0).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, "MXN", Date.Now.ToLongDateString, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                         contadorND += 1
                                     Next
                                 Next
@@ -291,9 +268,9 @@ Public Class frmSinComprobante
                                 Session.Item("idCDeudor") = rowsD.idProveedor
                             End If
                             '********************
-                            taCXPPagos.Insert(Session.Item("idCDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                            taCXPPagos.Insert(Session.Item("idCDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                             If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = True Then
-                                taCXPPagos.Insert(Session.Item("idCDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "CN", "CARTA NETEO", guuidCN, "0", "-" & txtImporteCartaNeteto.Text, 0, 0, "CARTA NETEO ( " & txtDesccartaNeteo.Text & " )", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                taCXPPagos.Insert(Session.Item("idCDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "CN", "CARTA NETEO", guuidCN, "0", "-" & txtImporteCartaNeteto.Text, 0, 0, "CARTA NETEO ( " & txtDesccartaNeteo.Text & " )", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                 Dim archivoPDF As HttpPostedFile = fupCarteNeteo.PostedFile
                                 If Session.Item("Empresa") = "23" Then
                                     archivoPDF.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
@@ -307,21 +284,21 @@ Public Class frmSinComprobante
 
                         Else
                             If ddlConcepto.SelectedValue <> taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) Then
-                                taCXPPagos.Insert(Session.Item("idDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", txtMontoSolicitado.Text, 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                taCXPPagos.Insert(Session.Item("idDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", txtMontoSolicitado.Text, 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                             Else
                                 '**************************************
-                                taCXPPagos.Insert(Session.Item("idDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                taCXPPagos.Insert(Session.Item("idDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                 Dim contador As Integer = 0
                                 For Each rows As GridViewRow In GridView2.Rows
                                     taUUIDPagos.ObtDatosFactura_FillBy(dtDatosFactura, GridView2.Rows(contador).Cells(2).Text)
                                     For Each rowsa As dsProduccion.vw_CXP_XmlCfdi2_grpUuidRow In dtDatosFactura.Rows
                                         Dim percentPago As Decimal = CDec(GridView2.Rows(contador).Cells(5).Text) / CDec(GridView2.Rows(contador).Cells(4).Text)
-                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                     Next
                                     Dim contadorND As Integer = 0
                                     For Each rowsND As GridViewRow In GridView3.Rows
                                         'taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), "ND", CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, GridView3.Rows(contadorND).Cells(0).Text, txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, "", "")
-                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now.ToLongDateString, "", "ND", Guid.NewGuid.ToString, 0, CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, 0, GridView3.Rows(contadorND).Cells(0).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, "MXN", Date.Now.ToLongDateString, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                                        taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now.ToLongDateString, "", "ND", Guid.NewGuid.ToString, 0, CDec(GridView3.Rows(contadorND).Cells(1).Text), 0, 0, GridView3.Rows(contadorND).Cells(0).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", Session.Item("mailJefe"), mail.Replace("#", ""), Nothing, Nothing, "MXN", Date.Now.ToLongDateString, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                                         contadorND += 1
                                     Next
                                 Next
@@ -331,13 +308,11 @@ Public Class frmSinComprobante
 
                     subirArchivosAdjuntos(folSolPagoFinagil, Session.Item("idCDeudor"))
 
-                    'Valida evento contable en concepto y contrato
-                    If taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = False And chkContrato.Checked = False Then
-                        taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
-                    End If
+
 
                     Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
                     Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
+                    Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
 
                     Dim dtSolPDF As DataTable
                     dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
@@ -353,13 +328,23 @@ Public Class frmSinComprobante
                     taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CDec(folSolPagoFinagil))
                     taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CDec(folSolPagoFinagil))
 
+                    Dim dtCtasBanco As DataTable
+                    dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
+                    taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, idCuentas)
+
                     Dim var_observaciones As Integer = dtObsSol.Rows.Count
                     Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
                     rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoSCCopia.rpt"))
                     rptSolPago.SetDataSource(dtSolPDF)
+                    'rptSolPago.Subreports(1).SetDataSource(dtObsSol)
+                    'rptSolPago.Subreports(2).SetDataSource(dtSolPDFND)
+                    'rptSolPago.Subreports(3).SetDataSource(dtSolPDFSD)
+                    'rptSolPago.Subreports(0).SetDataSource(dtCtasBanco)
+
                     rptSolPago.Subreports(0).SetDataSource(dtObsSol)
                     rptSolPago.Subreports(1).SetDataSource(dtSolPDFND)
                     rptSolPago.Subreports(2).SetDataSource(dtSolPDFSD)
+                    rptSolPago.Subreports(3).SetDataSource(dtCtasBanco)
                     rptSolPago.Refresh()
 
                     rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
@@ -367,6 +352,7 @@ Public Class frmSinComprobante
                     rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folSolPagoFinagil))
                     rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
                     rptSolPago.SetParameterValue("var_contrato", chkContrato.Checked)
+                    rptSolPago.SetParameterValue("var_idCuentas", idCuentas)
 
                     If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
                         rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
@@ -385,12 +371,18 @@ Public Class frmSinComprobante
                     rptSolPago.Dispose()
 
                     'Evento contable
+                    'Valida evento contable en concepto y contrato
+                    'If taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = False And chkContrato.Checked = False Then
+                    '    taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                    'End If
+
                     Try
                         If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = False Then
-                            If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 Then
-                                taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), 0, ddlProveedor.SelectedItem.Text, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, ddlConcepto.SelectedValue)
-                                taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), 0, CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), ddlProveedor.SelectedValue, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, ddlConcepto.SelectedValue)
-                            End If
+                            'If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 Then
+                            taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), 0, ddlProveedor.SelectedItem.Text, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, ddlConcepto.SelectedValue)
+                            taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), 0, CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), ddlProveedor.SelectedValue, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, ddlConcepto.SelectedValue)
+                            taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                            'End If
                         End If
                     Catch ex As Exception
                         lblErrorGeneral.Text = ex.ToString.Substring(1, 100)
@@ -398,10 +390,10 @@ Public Class frmSinComprobante
                     End Try
 
                     cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
-                        cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
+                    cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
 
-                    Else
-                        lblErrorGeneral.Text = "El importe solicitado no es numérico"
+                Else
+                    lblErrorGeneral.Text = "El importe solicitado no es numérico"
                     ModalPopupExtender1.Show()
                 End If
             Else
@@ -409,6 +401,7 @@ Public Class frmSinComprobante
                 ModalPopupExtender1.Show()
             End If
             limpiar()
+
         Catch ex As Exception
             lblErrorGeneral.Text = ex.ToString
             ModalPopupExtender1.Show()
@@ -424,11 +417,11 @@ Public Class frmSinComprobante
                 If Session.Item("Empresa") = "23" Then
                     files.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
                     taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                 Else
                     files.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
                     taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue)
+                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
                 End If
             Next
         End If
@@ -457,7 +450,8 @@ Public Class frmSinComprobante
         chkContrato.Checked = False
         odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
         'odsConceptos.FilterExpression = "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
-        odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+        'odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+        odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
         ddlMismoDeudor.SelectedIndex = 1
         TabContainer1.Visible = False
         GridView1.Visible = False
@@ -473,6 +467,34 @@ Public Class frmSinComprobante
         txtImporteCartaNeteto.Text = "0"
         lblAdjuntos.Visible = False
         fup1.Visible = False
+        idCuentas = 0
+
+        odsClientes.DataBind()
+        chkContrato.Checked = False
+        odsBancos.DataBind()
+        txtCuenta.Text = ""
+        txtClabe.Text = ""
+        txtReferencia.Text = ""
+
+        tablaDatosSol.Visible = False
+        tablaReferenciaBancaria.Visible = False
+        tablaContratos.Visible = False
+        tablaAutorizante.Visible = False
+
+        tablaReferenciaBancaria.Visible = False
+        divRevisar.Visible = False
+
+        ddlAutorizo.Enabled = True
+
+        cexFechaPago.Enabled = True
+        txtFechaPago.Enabled = True
+
+        cmbCuentasBancarias.Enabled = True
+        ddlMoneda.Enabled = True
+        txtMontoSolicitado.Enabled = True
+        txtDescripcionPago.Enabled = True
+
+        validaEstatusProveedor(Session.Item("idDeudor"))
     End Sub
 
     Public Sub validaExisteProveedor(ByVal cliente As String)
@@ -489,15 +511,23 @@ Public Class frmSinComprobante
             rowsc = dtClientes.Rows(0)
             Session.Item("rfcCliente") = rowsc.RFC
             If taProveedores.ExisteRFC_ScalarQuery(rowsc.RFC) = "NE" Then
-                taProveedores.Insert(rowsc.RFC, Nothing, Nothing, rowsc.Descr, Nothing, False, Nothing, Nothing, Nothing, Nothing, System.Data.SqlTypes.SqlDateTime.Null, Nothing, Nothing, Nothing, Nothing, Nothing)
+                'inserta datos del cliente, pero ahora como proveedor, se difereniará de otro tipo de proveedor, por el campo activo = true
+                taProveedores.Insert(rowsc.RFC, Nothing, rowsc.CURP, rowsc.Descr, Nothing, False, Nothing, Nothing, Nothing, Nothing, Date.Now, rowsc.EMail1, Nothing, Nothing, Nothing, Nothing, True, False, rowsc.Calle, rowsc.Colonia, rowsc.Colonia, rowsc.Delegacion, rowsc.Estado, "MEX", rowsc.Copos, "NO ACTIVO", "NO AUTORIZADO", Nothing, Nothing, Nothing, Nothing)
             End If
 
         End If
     End Sub
 
     Protected Sub btnRevisar_Click(sender As Object, e As EventArgs) Handles btnRevisar.Click
+        Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
         If ddlAutorizo.SelectedItem.Text <> "" Then
             If IsNumeric(txtMontoSolicitado.Text) Then
+
+                'If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = False Then
+                '    lblErrorGeneral.Text = "No se ha seleccionado ninguna Carta Neteo como archivo adjunto"
+                '    ModalPopupExtender1.Show()
+                '    Exit Sub
+                'End If
 
                 Dim proveedor As String
 
@@ -516,7 +546,61 @@ Public Class frmSinComprobante
                 Else
                     proveedor = "Proveedor: " & ddlProveedor.SelectedItem.Text
                 End If
+
+                'Valida cuenta
+                Dim datosBancarios As String
+                'If ddlMismoDeudor.SelectedIndex <> 2 Then
+                If ddlConcepto.SelectedValue <> "" Then
+
+                    If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) And taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
+                        Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
+
+                        If chkContrato.Checked = False Then
+                            If cmbCuentasBancarias.SelectedIndex = -1 Then
+                                lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
+                                ModalPopupExtender1.Show()
+                                Exit Sub
+                            Else
+                                idCuentas = cmbCuentasBancarias.SelectedValue
+                                datosBancarios = cmbCuentasBancarias.SelectedItem.Text
+                            End If
+                        Else
+                            If Not IsNothing(lblTipar) Then
+                                If lblTipar.Text = "L" Or lblTipar.Text = "S" Then
+                                    datosBancarios = "Banco: " & ddlBancos.SelectedItem.Text & " Cuenta: " & txtCuenta.Text.Trim & " CLABE: " & txtClabe.Text.Trim & " Referencia: " & txtReferencia.Text.Trim
+                                Else
+                                    datosBancarios = "SIN DATOS BANCARIOS"
+                                    cmbCuentasBancarias.Enabled = False
+                                    idCuentas = 0
+                                End If
+                            End If
+                        End If
+                    Else
+                        datosBancarios = "SIN DATOS BANCARIOS"
+                        cmbCuentasBancarias.Enabled = False
+                        idCuentas = 0
+                    End If
+                Else
+                    lblErrorGeneral.Text = "No existe un concepto asignado a este usuario"
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+                'Else
+                '    obtieneSaldos(ddlContratos.SelectedValue)
+                '    cmbCuentasBancarias.Enabled = False
+                '    idCuentas = 0
+                'End If
+
+
+
+
                 If chkContrato.Checked = True And CDec(txtImporteCartaNeteto.Text) = 0 Then
+                    Dim lbl As Label = CType(FormView1.FindControl("saldoContrato"), Label)
+                    If CDec(txtMontoSolicitado.Text.Trim) > CDec(lbl.Text.Trim) Then
+                        lblErrorGeneral.Text = "El monto solicitado no puede ser mayor al Saldo del Contrato"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
                     Dim taAnexos As New dsProduccionTableAdapters.AnexosTableAdapter
                     txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
                            "Importe solicitado: $ " & txtMontoSolicitado.Text & vbNewLine &
@@ -527,10 +611,11 @@ Public Class frmSinComprobante
                            "Cliente: " & ddlClientes.SelectedItem.Text & vbNewLine &
                            "Descripción carta neteo: " & txtDesccartaNeteo.Text & vbNewLine &
                            "Sucursal (CC): " & cmbCentroDeCostos.SelectedItem.Text & vbNewLine &
-                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text
+                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text & vbNewLine &
+                           "Datos bancarios: " & datosBancarios
                 ElseIf chkContrato.Checked = True And CDec(txtImporteCartaNeteto.Text) > 0 Then
                     txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
-                           "Importe solicitado: $ " & CDec(txtMontoSolicitado.Text & vbNewLine) - CDec(txtImporteCartaNeteto.Text) & vbNewLine &
+                           "Importe solicitado: $ " & CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text) & vbNewLine &
                            "Moneda: " & ddlMoneda.SelectedValue & vbNewLine &
                            proveedor & vbNewLine &
                            "Fecha de solicitud: " & lblFechaSolicitud.Text & vbNewLine &
@@ -538,7 +623,8 @@ Public Class frmSinComprobante
                            "Cliente: " & ddlClientes.SelectedItem.Text & vbNewLine &
                            "Descripción carta neteo: " & txtDesccartaNeteo.Text & vbNewLine &
                            "Sucursal (CC): " & cmbCentroDeCostos.SelectedItem.Text & vbNewLine &
-                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text
+                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text & vbNewLine &
+                           "Datos bancarios: " & datosBancarios
                 ElseIf ddlConcepto.SelectedValue = taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) Then
                     If CDec(txtMontoSolicitado.Text & vbNewLine) <> (totala + totalb) Then
                         lblErrorGeneral.Text = "El importe a reembolsar es distinto al monto solicitado"
@@ -546,14 +632,15 @@ Public Class frmSinComprobante
                         Exit Sub
                     End If
                     txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
-                           "Importe solicitado: $ " & CDec(txtMontoSolicitado.Text & vbNewLine) & vbNewLine &
+                           "Importe solicitado: $ " & CDec(txtMontoSolicitado.Text) & vbNewLine &
                            "Moneda: " & ddlMoneda.SelectedValue & vbNewLine &
                            proveedor & vbNewLine &
                            "Fecha de solicitud: " & lblFechaSolicitud.Text & vbNewLine &
                            "Importe deducible: " & totala.ToString("c") & vbNewLine &
                            "Importe no deducible: " & totalb.ToString("c") & vbNewLine &
                            "Sucursal (CC): " & cmbCentroDeCostos.SelectedItem.Text & vbNewLine &
-                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text
+                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text & vbNewLine &
+                           "Datos bancarios: " & datosBancarios
                 Else
                     txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
                            "Importe solicitado: $ " & txtMontoSolicitado.Text & vbNewLine &
@@ -561,21 +648,27 @@ Public Class frmSinComprobante
                            proveedor & vbNewLine &
                            "Fecha de solicitud: " & lblFechaSolicitud.Text & vbNewLine &
                            "Sucursal (CC): " & cmbCentroDeCostos.SelectedItem.Text & vbNewLine &
-                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text
+                           "Forma de Pago: " & cmbFormaPago.SelectedItem.Text & vbNewLine &
+                           "Datos bancarios: " & datosBancarios
                 End If
+
+
+
                 btnRevisar.Visible = False
                 btnSolicitar.Visible = True
                 txtRevision.Visible = True
                 btnCancelar.Visible = True
+                divRevisar.Visible = True
             Else
                 lblErrorGeneral.Text = "El importe solicitado no es numérico"
                 ModalPopupExtender1.Show()
-
+                limpiar()
             End If
 
             If IsNumeric(txtImporteCartaNeteto.Text) > 0 Then
                 lblErrorGeneral.Text = "El importe solicitado para la carta neteo no es numérico"
                 ModalPopupExtender1.Show()
+                limpiar()
             End If
             If IsNumeric(txtImporteCartaNeteto.Text) Then
                 If CDec(txtImporteCartaNeteto.Text) > 0 Then
@@ -590,14 +683,46 @@ Public Class frmSinComprobante
         End If
         lblAdjuntos.Visible = True
         fup1.Visible = True
-        'cmbCentroDeCostos.Enabled = False
-        'cmbFormaPago.Enabled = False
+        cmbCentroDeCostos.Enabled = False
+        cmbFormaPago.Enabled = False
+        ddlAutorizo.Enabled = False
+        cexFechaPago.Enabled = False
+        txtFechaPago.Enabled = False
+        cmbCuentasBancarias.Enabled = False
+        ddlMoneda.Enabled = False
+        txtMontoSolicitado.Enabled = False
+        txtDescripcionPago.Enabled = False
+        txtDesccartaNeteo.Enabled = False
         'cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"), CDec(Session.Item("Empresa")))
         'cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
     End Sub
 
     Protected Sub btnCancelar_Click(sender As Object, e As EventArgs) Handles btnCancelar.Click
         limpiar()
+        divRevisar.Visible = False
+        tablaAutorizante.Visible = False
+        tablaContratos.Visible = False
+        tablaDatosSol.Visible = False
+        btnSeleccionarProv.Enabled = False
+        validaEstatusProveedor(Session.Item("idDeudor"))
+        cmbCuentasBancarias.Enabled = True
+
+        cmbCentroDeCostos.Enabled = True
+        cmbFormaPago.Enabled = True
+        ddlAutorizo.Enabled = True
+        cexFechaPago.Enabled = True
+        txtFechaPago.Enabled = True
+
+        ddlMoneda.Enabled = True
+        txtMontoSolicitado.Enabled = True
+        txtDescripcionPago.Enabled = True
+
+        tablaReferenciaBancaria.Visible = False
+
+
+        odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+
+
     End Sub
 
     Protected Sub chkContrato_CheckedChanged(sender As Object, e As EventArgs) Handles chkContrato.CheckedChanged
@@ -616,16 +741,22 @@ Public Class frmSinComprobante
             ddlContratos.Enabled = True
             odsContratos.FilterExpression = "cliente ='" & ddlClientes.SelectedValue & "'"
             fupCarteNeteo.Enabled = True
+            fupCarteNeteo.Visible = True
             txtImporteCartaNeteto.Enabled = True
+            txtDesccartaNeteo.Enabled = True
             odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
             'odsConceptos.FilterExpression = "idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
             'odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
             odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
+            'tablaReferenciaBancaria.Visible = True
+            idCuentas = 0
+            cmbCuentasBancarias.Enabled = False
         Else
             ddlClientes.Enabled = False
             ddlContratos.Enabled = False
             fupCarteNeteo.Enabled = False
             txtImporteCartaNeteto.Enabled = False
+            txtDesccartaNeteo.Enabled = False
             odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
             'odsConceptos.FilterExpression = "idConcepto = '" & drDatosEmpresa.idConceptoGastos & "'"
             'odsConceptos.FilterExpression = "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
@@ -636,18 +767,58 @@ Public Class frmSinComprobante
 
     Protected Sub ddlClientes_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlClientes.SelectedIndexChanged
         odsContratos.FilterExpression = "cliente ='" & ddlClientes.SelectedValue & "'"
+
+
+        'obtieneSaldos(ddlContratos.SelectedValue)
+
+        'activaReferencias()
     End Sub
 
     Protected Sub ddlMismoDeudor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlMismoDeudor.SelectedIndexChanged
+        tablaAutorizante.Visible = False
+        tablaContratos.Visible = False
+        'tablaDatos.Visible = False
         If ddlMismoDeudor.SelectedIndex = 1 Or ddlMismoDeudor.SelectedIndex = 2 Then
             txtBuscarProveedor.Enabled = False
             btnBuscar.Enabled = False
             ddlProveedor.Enabled = False
+            btnSeleccionarProv.Enabled = False
         Else
             txtBuscarProveedor.Enabled = True
             btnBuscar.Enabled = True
             ddlProveedor.Enabled = True
+            btnSeleccionarProv.Enabled = True
+            'tablaAutorizante.Visible = False
+            'tablaContratos.Visible = False
+            'tablaDatos.Visible = False
         End If
+        If ddlMismoDeudor.SelectedIndex <> 2 Then
+            cmbCuentasBancarias.Enabled = True
+
+            If ddlMismoDeudor.SelectedIndex = 1 Then 'mismo deudor
+                validaEstatusProveedor(Session.Item("idDeudor"))
+            ElseIf ddlMismoDeudor.SelectedIndex = 0 Then ' proveedor
+                validaEstatusProveedor(ddlProveedor.SelectedValue)
+            End If
+        Else
+            tablaAutorizante.Visible = True
+            tablaContratos.Visible = True
+            tablaDatosSol.Visible = True
+            cmbCuentasBancarias.Enabled = False
+        End If
+
+        If ddlMismoDeudor.SelectedIndex = 1 Then
+            chkContrato.Enabled = False
+        Else
+            chkContrato.Enabled = True
+        End If
+
+
+
+        odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+        odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+        cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
+        cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
     End Sub
 
     Protected Sub ddlConcepto_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlConcepto.SelectedIndexChanged
@@ -657,8 +828,8 @@ Public Class frmSinComprobante
             ddlProveedor0.Visible = True
             btnAsignar.Visible = True
             TabContainer1.Visible = True
-            contenedorID.Attributes.Add("style", "overflow-y: auto; height: 700px;")
-            contenedorID.Attributes.Add("class", "alturaLarga")
+            'contenedorID.Attributes.Add("style", "overflow-y: auto; height: 700px;")
+            'contenedorID.Attributes.Add("class", "alturaLarga")
             contenedor2ID.Visible = True
             chkContrato.Enabled = False
             fupCarteNeteo.Enabled = False
@@ -668,8 +839,8 @@ Public Class frmSinComprobante
             ddlProveedor0.Visible = False
             btnAsignar.Visible = False
             TabContainer1.Visible = False
-            contenedorID.Attributes.Add("style", "overflow-y: auto; height: 500px;")
-            contenedorID.Attributes.Add("class", "alturaCorta")
+            'contenedorID.Attributes.Add("style", "overflow-y: auto; height: 500px;")
+            'contenedorID.Attributes.Add("class", "alturaCorta")
             contenedor2ID.Visible = False
             chkContrato.Enabled = True
             fupCarteNeteo.Enabled = True
@@ -832,12 +1003,67 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        subirArchivosAdjuntos(1, 0)
+        'subirArchivosAdjuntos(1, 0)
+        Dim rptSolPago As New ReportDocument
+        Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
+        Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
+        Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+
+        Dim dtSolPDF As DataTable
+        dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
+        Dim dtSolPDFSD As DataTable
+        dtSolPDFSD = New dsProduccion.Vw_CXP_AutorizacionesDataTable
+        Dim dtSolPDFND As DataTable
+        dtSolPDFND = New dsProduccion.Vw_CXP_AutorizacionesDataTable
+
+        Dim dtObsSol As DataTable
+        dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
+        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), 2067)
+        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 2067, "No Pagada")
+        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), 2067)
+        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), 2067)
+
+        Dim dtCtasBanco As DataTable
+        dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
+        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, 0)
+
+        Dim var_observaciones As Integer = dtObsSol.Rows.Count
+        Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
+        rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoSCCopia.rpt"))
+        rptSolPago.SetDataSource(dtSolPDF)
+        rptSolPago.Subreports(0).SetDataSource(dtObsSol)
+        rptSolPago.Subreports(1).SetDataSource(dtSolPDFND)
+        rptSolPago.Subreports(2).SetDataSource(dtSolPDFSD)
+        rptSolPago.Subreports(3).SetDataSource(dtCtasBanco)
+        dtCtasBanco.WriteXml("E:\VS_Proj\WEB_cxp\cxP\TmpFinagil\ctas.xml")
+        rptSolPago.Refresh()
+
+        rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
+        rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
+        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 2062))
+        rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
+        rptSolPago.SetParameterValue("var_contrato", True)
+        rptSolPago.SetParameterValue("var_idCuentas", 101)
+
+        If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
+            rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
+        Else
+            rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/logoArfin.JPG"))
+        End If
+
+
+        Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("namePDF") & ".pdf"
+        rptSolPago.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
+        Response.Write("<script>")
+        rutaPDF = rutaPDF.Replace("\", "/")
+        rutaPDF = rutaPDF.Replace("~", "..")
+        Response.Write("window.open('verPdf.aspx','popup','_blank','width=200,height=200')")
+        Response.Write("</script>")
+        rptSolPago.Dispose()
     End Sub
 
     Protected Sub ddlProveedor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlProveedor.SelectedIndexChanged
-        odsCuentasBancarias.FilterExpression = "idProveedor =" & ddlProveedor.SelectedValue
-        valida_Proveedor()
+
     End Sub
 
     Private Function valida_Proveedor2()
@@ -886,4 +1112,196 @@ Public Class frmSinComprobante
             End If
         Next
     End Function
+
+    Private Sub cmbFormaPago_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFormaPago.SelectedIndexChanged
+        If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
+            cmbCuentasBancarias.Enabled = True
+        Else
+            cmbCuentasBancarias.Enabled = False
+        End If
+    End Sub
+
+    Protected Sub btnSeleccionarProv_Click(sender As Object, e As EventArgs) Handles btnSeleccionarProv.Click
+        'If taProveedor.EsActivo_ScalarQuery(ddlProveedor.SelectedValue) = "NO" Then
+        '    lblErrorGeneral.Text = "El proveedor no está activo o autorizado"
+        '    ModalPopupExtender1.Show()
+        '    Exit Sub
+        'Else
+        '    odsCuentasBancarias.FilterExpression = "idProveedor = '" & ddlProveedor.SelectedValue & "' AND vigente = true"
+        '    valida_Proveedor()
+        'End If
+        validaEstatusProveedor(ddlProveedor.SelectedValue)
+        'limpiar()
+
+        odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+        'odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1)" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+        'odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
+        cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
+        cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
+
+    End Sub
+
+    Protected Sub validaEstatusProveedor(idProveedor As String)
+        If idProveedor <> String.Empty Then
+            If taProveedor.EsActivo_ScalarQuery(idProveedor) = "NO" Then
+                lblErrorGeneral2.Text = "El proveedor no está activo o autorizado"
+                ModalPopupExtender4.Show()
+                tablaAutorizante.Visible = False
+                tablaContratos.Visible = False
+                tablaDatosSol.Visible = False
+                Session.Item("solicitud") = "OK"
+                Session.Item("noProveedor") = idProveedor
+                Exit Sub
+            Else
+                odsCuentasBancarias.FilterExpression = "idProveedor = '" & idProveedor & "' AND estatus = 11"
+                tablaAutorizante.Visible = True
+                tablaContratos.Visible = True
+                tablaDatosSol.Visible = True
+                If btnSeleccionarProv.Enabled = True Then
+                    valida_Proveedor()
+                End If
+                If chkContrato.Checked = False Then
+                    cmbCuentasBancarias.Enabled = True
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub ddlContratos_TextChanged(sender As Object, e As EventArgs) Handles ddlContratos.TextChanged
+        'obtieneSaldos(ddlContratos.SelectedValue)
+    End Sub
+
+    Protected Sub obtieneSaldos(anexo As String)
+        Dim tableAdapterSaldosContratos As New dsProduccionTableAdapters.AnexosTableAdapter
+        Dim datatableSaldosContratos As New dsProduccion.AnexosDataTable
+        Dim rowSaldoContratos As dsProduccion.AnexosRow
+
+        tableAdapterSaldosContratos.SaldosAnexos_FillBy(datatableSaldosContratos, anexo)
+
+        If datatableSaldosContratos.Rows.Count = 1 Then
+            rowSaldoContratos = datatableSaldosContratos.Rows(0)
+
+            If txtMontoSolicitado.Text <> String.Empty Then
+                If CDec(txtMontoSolicitado.Text) > rowSaldoContratos.SaldoContrato Then
+                    lblErrorGeneral.Text = "El saldo del contrato " & ddlContratos.SelectedValue & " es menor al monto solicitado."
+                    ModalPopupExtender1.Show()
+                    tablaAutorizante.Visible = True
+                    tablaContratos.Visible = True
+                    tablaDatosSol.Visible = True
+                    divRevisar.Visible = False
+                    'activaReferencias()
+                    'Else
+                    'activaReferencias()
+                End If
+            End If
+        End If
+
+    End Sub
+
+
+    Private Sub FormView3_DataBound(sender As Object, e As EventArgs) Handles FormView3.DataBound
+        Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
+        If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
+            If Not IsNothing(lblTipar) Then
+                If chkContrato.Checked = True Then
+                    If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                        tablaReferenciaBancaria.Visible = True
+                    Else
+                        tablaReferenciaBancaria.Visible = False
+                    End If
+                Else
+                    tablaReferenciaBancaria.Visible = False
+                    If ddlMismoDeudor.SelectedIndex = 2 Then
+                        cmbCuentasBancarias.Enabled = True
+                        'obtieneDatosBancariosClienteProveedor()
+                    ElseIf ddlMismoDeudor.SelectedIndex = 0 Then
+                        cmbCuentasBancarias.Enabled = True
+                        'obtieneDatosBancariosClienteProveedor()
+                    ElseIf ddlMismoDeudor.SelectedIndex = 1 Then
+                        cmbCuentasBancarias.Enabled = False
+                    End If
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub obtieneDatosBancariosClienteProveedor()
+        Dim taClientes As New dsProduccionTableAdapters.ClientesTableAdapter
+        Dim dtClientes As New dsProduccion.ClientesDataTable
+        Dim rwClientes As dsProduccion.ClientesRow
+
+        Dim taProveedores As New dsProduccionTableAdapters.CXP_ProveedoresTableAdapter
+        Dim dtProveedores As New dsProduccion.CXP_ProveedoresDataTable
+        Dim rwProveedores As dsProduccion.CXP_ProveedoresRow
+
+        taClientes.ObtDatosCliente_FillBy(dtClientes, ddlClientes.SelectedValue)
+        If dtClientes.Rows.Count > 0 Then
+            rwClientes = dtClientes.Rows(0)
+            taProveedores.ObtDeudor_FillBy(dtProveedores, rwClientes.RFC)
+            If dtProveedores.Rows.Count > 0 Then
+                rwProveedores = dtProveedores.Rows(0)
+                'validaEstatusProveedor(rwProveedores.idProveedor)
+                If taProveedor.EsActivo_ScalarQuery(rwProveedores.idProveedor) = "NO" Then
+                    lblErrorGeneral2.Text = "El cliente no está activo o autorizado"
+                    ModalPopupExtender4.Show()
+                    'tablaAutorizante.Visible = False
+                    'tablaContratos.Visible = False
+                    'tablaDatosSol.Visible = False
+                    Session.Item("solicitud") = "OK"
+                    Session.Item("noProveedor") = rwProveedores.idProveedor
+                    Exit Sub
+                Else
+                    odsCuentasBancarias.FilterExpression = "idProveedor = '" & rwProveedores.idProveedor & "' AND estatus = 11"
+                    'tablaAutorizante.Visible = True
+                    'tablaContratos.Visible = True
+                    'tablaDatosSol.Visible = True
+                    'If btnSeleccionarProv.Enabled = True Then
+                    '    valida_Proveedor()
+                    'End If
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub formato()
+        btnBuscar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnCancelar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnRevisar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnSolicitar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnBuscar0.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnAsignar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnAgregar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnSolicitar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnSeleccionarProv.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+
+        GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView2.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView3.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+
+        tablaSelecciona.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
+        tablaSelecciona.Attributes.Add("class", "labelsA")
+
+        tablabuscar.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
+        tablaBuscar.Attributes.Add("class", "labelsA")
+
+        tablaAutorizante.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
+        tablaAutorizante.Attributes.Add("class", "labelsA")
+
+        tablaContratos.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
+        tablaContratos.Attributes.Add("class", "labelsA")
+
+        tablaReferenciaBancaria.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
+        tablaReferenciaBancaria.Attributes.Add("class", "labelsA")
+
+        tablaDatosSol.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
+        tablaDatosSol.Attributes.Add("class", "labelsA")
+
+        tablaRevisar.Attributes.Add("style", "position:fixed;top:30%;left:20%; width:60%; padding:5px; border-radius:5px; border-style: groove; border-width: 5px; border-color: navy; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 9%, rgba(252,252,252,1) 10%, rgba(246,246,246,1) 12%, rgba(187,218,249,1) 32%, rgba(75,165,255,1) 70%, rgba(75,165,255,1) 87%);")
+        tablaRevisar.Attributes.Add("class", "labelsA")
+    End Sub
+
+    Protected Sub FormView3_PageIndexChanging(sender As Object, e As FormViewPageEventArgs) Handles FormView3.PageIndexChanging
+
+    End Sub
 End Class
+

@@ -18,41 +18,7 @@ Public Class frmComprobarGastos
             Exit Sub
         End If
         If Session.Item("Empresa") = 24 Then
-            id1.Attributes.Add("style", "background-color: #4BA5FF;")
-            id1.Attributes.Add("class", "labelsA")
-            id2.Attributes.Add("style", "background-color: #4BA5FF;")
-            id2.Attributes.Add("class", "labelsA")
-            id3.Attributes.Add("style", "background-color: #4BA5FF;")
-            id3.Attributes.Add("class", "labelsA")
-            id4.Attributes.Add("style", "background-color: #4BA5FF;")
-            id4.Attributes.Add("class", "labelsA")
-            id5.Attributes.Add("style", "background-color: #4BA5FF;")
-            id5.Attributes.Add("class", "labelsA")
-            id6.Attributes.Add("style", "background-color: #4BA5FF;")
-            id6.Attributes.Add("class", "labelsA")
-            id7.Attributes.Add("style", "background-color: #4BA5FF;")
-            id7.Attributes.Add("class", "labelsA")
-            id8.Attributes.Add("style", "background-color: #4BA5FF;")
-            id8.Attributes.Add("class", "labelsA")
-            id9.Attributes.Add("style", "background-color: #4BA5FF;")
-            id9.Attributes.Add("class", "labelsA")
-            btnAceptar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnAgregar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnAsignar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnBuscar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnCancelar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btncancelarComprobacion.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnComprobar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnSeleccionar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            btnNoDeducible.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView2.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView3.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView1.FooterStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView2.FooterStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView3.FooterStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView2.BackColor = System.Drawing.Color.FromArgb(255, 255, 255)
-            GridView3.BackColor = System.Drawing.Color.FromArgb(255, 255, 255)
+            formato
         End If
         Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_EmpresasTableAdapter
         Session.Item("Leyenda") = "Comprobación de gastos"
@@ -71,6 +37,31 @@ Public Class frmComprobarGastos
         Else
         End If
     End Sub
+
+    Private Sub formato()
+        tablaBuscar.Attributes.Add("style", "width:95%; background-color: #4BA5FF;border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; margin-left: auto; margin-right: auto; margin-bottom: 0;")
+        tablaBuscar.Attributes.Add("class", "labelsA")
+        tablaAsignarFacturas.Attributes.Add("style", "width:95%;background-color: #4BA5FF;border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; margin-left: auto; margin-right: auto; margin-bottom: 0;")
+        tablaAsignarFacturas.Attributes.Add("class", "labelsA")
+        btnAceptar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnAgregar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnAsignar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnBuscar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnCancelar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btncancelarComprobacion.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnComprobar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnSeleccionar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnNoDeducible.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView2.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView3.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView1.FooterStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView2.FooterStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView3.FooterStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        GridView2.BackColor = System.Drawing.Color.FromArgb(255, 255, 255)
+        GridView3.BackColor = System.Drawing.Color.FromArgb(255, 255, 255)
+    End Sub
+
 
     Protected Sub btnSeleccionar_Click(sender As Object, e As EventArgs) Handles btnSeleccionar.Click
 
@@ -171,6 +162,12 @@ Public Class frmComprobarGastos
                 rowA("total1") = GridView1.Rows(conta).Cells(11).Text.Replace("$", "")
                 rowA("total") = CDec(txtTot.Text)
 
+                If txtCon.Text.Trim = String.Empty Then
+                    errLabel17.Text = "Falta incluir una descripción en la factura relacionada"
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+
                 If (totala + CDec(txtTot.Text)) > CDec(lblSaldo.Text) And (totala + CDec(txtTot.Text)) < CDec(lblSaldo.Text) + importeOtrosIngresos Then
                     'Inserta ND
                     'rowA = dtDetalleA.NewRow
@@ -190,6 +187,8 @@ Public Class frmComprobarGastos
                     rowComp("descripcion") = "Otros Ingresos"
                     rowComp("importe") = (CDec(txtTot.Text) - CDec(lblSaldo.Text)) * -1
                     totalb = totalb + rowComp("importe")
+
+
 
                     dtDetalleB.Rows.Add(rowComp)
 
@@ -324,7 +323,7 @@ Public Class frmComprobarGastos
                 For Each rowsa As dsProduccion.vw_CXP_XmlCfdi2_grpUuidRow In dtDatosFactura.Rows
 
                     Dim percentPago As Decimal = CDec(GridView2.Rows(contador).Cells(5).Text) / CDec(GridView2.Rows(contador).Cells(4).Text)
-                    taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, ddlFolioSolicitud.SelectedItem.Text, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "CompGtos", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), Nothing, Nothing)
+                    taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, ddlFolioSolicitud.SelectedItem.Text, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "CompGtos", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), Nothing, Nothing, Nothing)
                     taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), rowsa.uuid, CDec(GridView2.Rows(contador).Cells(5).Text), 0, GridView2.Rows(contador).Cells(3).Text.Replace("&nbsp;", ""), txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, rowsa.folio, rowsa.serie, "Activo")
                     '***
                     taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rowsa.uuid.ToString)
@@ -513,6 +512,4 @@ Public Class frmComprobarGastos
         lblTotalGastos.Visible = False
         btnAgregar.Visible = False
     End Sub
-
-
 End Class

@@ -51,6 +51,7 @@ Public Class frmMisSolicitudes
         Dim taPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
         Dim td As New dsProduccion.CXP_PagosDataTable
         Dim contrato As Boolean = False
+        Dim idCuentas As Integer = 0
         Dim fecha As String = ""
         LabelError.Visible = False
 
@@ -63,10 +64,11 @@ Public Class frmMisSolicitudes
         ElseIf e.CommandName = "Cancelar" And HiddenID.Value > "" Then
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
             For Each rows As dsProduccion.CXP_PagosRow In td
-                taPagos.Insert(rows.idProveedor, rows.idUsuario, rows.folioSolicitud, Date.Now.ToLongDateString, rows.fechaSolicitud, rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1, (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1, rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, rows.contrato, Nothing, Nothing, Nothing, Nothing, rows.cCostos, rows.fPago)
+                taPagos.Insert(rows.idProveedor, rows.idUsuario, rows.folioSolicitud, Date.Now.ToLongDateString, rows.fechaSolicitud, rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1, (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1, rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, rows.contrato, Nothing, Nothing, Nothing, Nothing, rows.cCostos, rows.fPago, rows.idCuentas)
                 taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
                 contrato = rows.contrato
                 fecha = rows.fechaSolicitud.ToString("yyyyMMddhhmm")
+                idCuentas = rows.idCuentas
             Next
 
             '/////Genera PDF Cancelado
@@ -74,6 +76,7 @@ Public Class frmMisSolicitudes
             Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesAllTableAdapter
             Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
             Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
+            Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
 
             Dim dtSolPDF As DataTable
             dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesAllDataTable
@@ -84,17 +87,22 @@ Public Class frmMisSolicitudes
             dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
             taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), HiddenID.Value)
 
+            Dim dtCtasBanco As DataTable
+            dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
+            taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, idCuentas)
+
             Dim var_observaciones As Integer = dtObsSol.Rows.Count
 
             rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoCopia.rpt"))
             rptSolPago.SetDataSource(dtSolPDF)
             rptSolPago.Subreports(0).SetDataSource(dtObsSol)
+            rptSolPago.Subreports(1).SetDataSource(dtCtasBanco)
             rptSolPago.Refresh()
 
             rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(fecha & Session.Item("Empresa") & HiddenID.Value))
             rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
             rptSolPago.SetParameterValue("var_contrato", contrato)
-
+            rptSolPago.SetParameterValue("var_idCuentas", idCuentas)
 
             If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
                 rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
@@ -116,5 +124,6 @@ Public Class frmMisSolicitudes
             LabelError.Text = UCase("Selecion no válida.")
         End If
     End Sub
+
 
 End Class

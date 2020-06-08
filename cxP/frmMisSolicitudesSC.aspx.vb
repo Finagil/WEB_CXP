@@ -60,6 +60,7 @@ Public Class frmMisSolicitudesSC
         Dim td As New dsProduccion.CXP_PagosDataTable
         Dim contrato As Boolean = False
         Dim fecha As String = ""
+        Dim idCuentas As Integer = 0
         LabelError.Visible = False
         If e.CommandName = "Select" Then
             HiddenID.Value = e.CommandSource.Text
@@ -104,9 +105,11 @@ Public Class frmMisSolicitudesSC
                 nRowCXPPagos.naAutoriza1 = rows.naAutoriza1
                 nRowCXPPagos.cCostos = rows.cCostos
                 nRowCXPPagos.fPago = rows.fPago
+                nRowCXPPagos.idCuentas = rows.idCuentas
 
                 contrato = nRowCXPPagos.contrato
                 fecha = nRowCXPPagos.fechaSolicitud.ToString("yyyyMMddhhmm")
+                idCuentas = nRowCXPPagos.idCuentas
 
                 dsProd.CXP_Pagos.AddCXP_PagosRow(nRowCXPPagos)
                 dsProd.CXP_Pagos.GetChanges()
@@ -120,6 +123,7 @@ Public Class frmMisSolicitudesSC
             Dim rptSolPago As New ReportDocument
             Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesAllTableAdapter
             Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
+            Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
 
             Dim dtSolPDF As DataTable
             dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesAllDataTable
@@ -135,6 +139,10 @@ Public Class frmMisSolicitudesSC
             taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), HiddenID.Value)
             taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), HiddenID.Value)
 
+            Dim dtCtasBanco As DataTable
+            dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
+            taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, idCuentas)
+
             Dim var_observaciones As Integer = dtObsSol.Rows.Count
             Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
             rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoSCCopia.rpt"))
@@ -142,6 +150,7 @@ Public Class frmMisSolicitudesSC
             rptSolPago.Subreports(0).SetDataSource(dtObsSol)
             rptSolPago.Subreports(1).SetDataSource(dtSolPDFND)
             rptSolPago.Subreports(2).SetDataSource(dtSolPDFSD)
+            rptSolPago.Subreports(3).SetDataSource(dtCtasBanco)
             rptSolPago.Refresh()
 
             rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
@@ -149,6 +158,7 @@ Public Class frmMisSolicitudesSC
             rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(fecha & Session.Item("Empresa") & HiddenID.Value.ToString))
             rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
             rptSolPago.SetParameterValue("var_contrato", contrato)
+            rptSolPago.SetParameterValue("var_idCuentas", idCuentas)
 
             If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
                 rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))

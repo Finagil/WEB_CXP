@@ -54,7 +54,7 @@
                                rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1,
                                (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1,
                                rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, False, rows.noContrato, rows.idAutoriza2, rows.naAutoriza2,
-                               rows.naAutoriza1, rows.cCostos, rows.fPago)
+                               rows.naAutoriza1, rows.cCostos, rows.fPago, rows.idCuentas)
                 taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
             Next
             Response.Redirect("~/frmMisSolicitudesSCR.aspx")
