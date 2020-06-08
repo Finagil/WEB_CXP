@@ -111,9 +111,9 @@ Public Class ValidaCfdi
                         Dim var As String = "Sin errores en XSD"
                         Try
                             'var = resXML.Valida_SAT(resXML.LeeXML(rootPath & "\" & GU.ToString & "." & ext(ext.Length - 1), "RFCE"), resXML.LeeXML(rootPath & "\" & GU.ToString & "." & ext(ext.Length - 1), "RFCR"), resXML.LeeXML(rootPath & "\" & GU.ToString & "." & ext(ext.Length - 1), "Total"), resXML.LeeXML(rootPath & "\" & GU.ToString & "." & ext(ext.Length - 1), "UUID"))
-                            resXSD.LoadValidatedXmlDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\Pagos10.xsd")
-                            resXSD.LoadValidatedXDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\Pagos10.xsd")
-                            resXSD.LoadXml(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\Pagos10.xsd")
+                            resXSD.LoadValidatedXmlDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\Pagos10.xsd", rootPath + "\terceros11.xsd")
+                            resXSD.LoadValidatedXDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\Pagos10.xsd", rootPath + "\terceros11.xsd")
+                            resXSD.LoadXml(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\Pagos10.xsd", rootPath + "\terceros11.xsd")
 
                         Catch ex As Exception
                             'lblError.Visible = True
