@@ -147,10 +147,10 @@ Public Class frmMisSolicitudesSC
             Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
             rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoSCCopia.rpt"))
             rptSolPago.SetDataSource(dtSolPDF)
-            rptSolPago.Subreports(0).SetDataSource(dtObsSol)
-            rptSolPago.Subreports(1).SetDataSource(dtSolPDFND)
-            rptSolPago.Subreports(2).SetDataSource(dtSolPDFSD)
-            rptSolPago.Subreports(3).SetDataSource(dtCtasBanco)
+            rptSolPago.Subreports("rptSubObservaciones").SetDataSource(dtObsSol)
+            rptSolPago.Subreports("rptSubSolicitudSCND").SetDataSource(dtSolPDFND)
+            rptSolPago.Subreports("rptSubSolicitudSCSD").SetDataSource(dtSolPDFSD)
+            rptSolPago.Subreports("rptSubCtasBancarias").SetDataSource(dtCtasBanco)
             rptSolPago.Refresh()
 
             rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)

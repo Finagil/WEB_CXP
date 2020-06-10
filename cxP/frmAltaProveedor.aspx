@@ -233,6 +233,8 @@
             <td class="auto-style23">RFC:</td>
             <td class="auto-style23">
                 <asp:TextBox ID="txtRfc" runat="server"></asp:TextBox>
+            &nbsp;
+                <asp:CheckBox ID="chkClientProv" runat="server" AutoPostBack="True" Text="¿Cliente?" />
             </td>
             <td class="auto-style23">Calle:</td>
             <td class="auto-style23">

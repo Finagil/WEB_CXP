@@ -95,8 +95,8 @@ Public Class frmMisSolicitudes
 
             rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoCopia.rpt"))
             rptSolPago.SetDataSource(dtSolPDF)
-            rptSolPago.Subreports(0).SetDataSource(dtObsSol)
-            rptSolPago.Subreports(1).SetDataSource(dtCtasBanco)
+            rptSolPago.Subreports("rptSubObservaciones").SetDataSource(dtObsSol)
+            rptSolPago.Subreports("rptSubCuentas").SetDataSource(dtCtasBanco)
             rptSolPago.Refresh()
 
             rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(fecha & Session.Item("Empresa") & HiddenID.Value))

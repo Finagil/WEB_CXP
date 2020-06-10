@@ -3,6 +3,7 @@
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="ajaxToolkit" %>
 <% @ Register assembly = "AjaxControlToolkit" namespace = "AjaxControlToolkit"  tagprefix = "asp"  %>
 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="js/jquery-1.4.1.min.js" type="text/javascript"></script>
     <script src="js/jquery.dynDateTime.min.js" type="text/javascript"></script>
@@ -431,6 +432,7 @@
             <td class="auto-style81">Referencia:
 
              </td>
+            <td class="auto-style81">Adjunto:</td>
         </tr>
         <tr>
             <td class="auto-style80">
@@ -446,6 +448,11 @@
             </td>
             <td class="auto-style81">
                 <asp:TextBox ID="txtReferencia" runat="server" Width="200px"></asp:TextBox>
+            </td>
+            <td class="auto-style81">
+              
+                <ajaxToolkit:AsyncFileUpload ID="afuAdjuntoCta" runat="server" />
+              
             </td>
         </tr>
       </table>

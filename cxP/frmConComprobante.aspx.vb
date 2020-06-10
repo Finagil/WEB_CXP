@@ -712,8 +712,8 @@ Public Class frmConComprobante
         'dtDetalle.WriteXml("C:\Files\dtDetalle.xml", XmlWriteMode.WriteSchema)
         rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoCopia.rpt"))
         rptSolPago.SetDataSource(dtSolPDF)
-        rptSolPago.Subreports(0).SetDataSource(dtObsSol)
-        rptSolPago.Subreports(1).SetDataSource(dtCtasBanco)
+        rptSolPago.Subreports("rptSubObservaciones").SetDataSource(dtObsSol)
+        rptSolPago.Subreports("rptSubCuentas").SetDataSource(dtCtasBanco)
         rptSolPago.Refresh()
 
 

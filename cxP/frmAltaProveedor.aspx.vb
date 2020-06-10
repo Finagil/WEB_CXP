@@ -108,14 +108,19 @@ Public Class frmAltaProveedor
             txtNit.Text = rowsProveedores2.nit
             txtCurp.Text = rowsProveedores2.curp
             txtMail.Text = rowsProveedores2.mail
-
-            If taUsuarios.ExisteUsuario_ScalarQuery(rowsProveedores2.rfc) <> "NE" Then
-                Session.Item("rfcEmpleado") = rowsProveedores2.rfc
+            If IsNothing(rowsProveedores2.activo) Then
+                chkClientProv.Checked = False
             Else
-                Session.Item("rfcEmpleado") = "NE"
+                chkClientProv.Checked = rowsProveedores2.activo
             End If
 
-        End If
+            If taUsuarios.ExisteUsuario_ScalarQuery(rowsProveedores2.rfc) <> "NE" Then
+                    Session.Item("rfcEmpleado") = rowsProveedores2.rfc
+                Else
+                    Session.Item("rfcEmpleado") = "NE"
+                End If
+
+            End If
 
         If tableProveedores2.Rows.Count = 0 Then
             tablaCuentas.Visible = False
@@ -183,6 +188,7 @@ Public Class frmAltaProveedor
         txtLocalidad.Text = ""
         txtRazonSocial.Text = ""
         txtRfc.Text = ""
+        txtCurp.Text = ""
         ddlPais.SelectedIndex = 0
         txtNit.Text = ""
         txtRfc.Text = ""
@@ -201,6 +207,7 @@ Public Class frmAltaProveedor
         txtEstado.Enabled = True
         ddlPais.Enabled = True
         txtCp.Enabled = True
+        chkClientProv.Enabled = True
     End Sub
 
     Public Sub activarNuevosDatos()
@@ -230,6 +237,7 @@ Public Class frmAltaProveedor
         txtEstado.Enabled = True
         ddlPais.Enabled = True
         txtCp.Enabled = True
+        chkClientProv.Enabled = True
     End Sub
 
     Public Sub desactivarNuevosDatos()
@@ -259,6 +267,7 @@ Public Class frmAltaProveedor
         txtEstado.Enabled = False
         ddlPais.Enabled = False
         txtCp.Enabled = False
+        chkClientProv.Enabled = False
     End Sub
 
     Public Sub desactivarProceso()
@@ -296,7 +305,7 @@ Public Class frmAltaProveedor
 
         Dim validacion As String = "SI"
         'valida RFC
-        If txtRfc.Text <> String.Empty Then
+        If txtRfc.Text.Trim <> String.Empty Then
             If Regex.IsMatch(txtRfc.Text.Trim, "^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$") = False Then
                 lblErrorGeneral.Text = "Estructura del RFC incorrecta."
                 ModalPopupExtender1.Show()
@@ -306,7 +315,7 @@ Public Class frmAltaProveedor
         End If
 
         'valida CURP
-        If txtCurp.Text <> String.Empty Then
+        If txtCurp.Text.Trim <> String.Empty Then
             If Regex.IsMatch(txtCurp.Text.Trim, "^([a-zA-Z]{4,4}[0-9]{6}[a-zA-Z]{6,6}[0-9]{2})$") = False Then
                 lblErrorGeneral.Text = "Estructura de la clave CURP incorrecta."
                 ModalPopupExtender1.Show()
@@ -384,7 +393,10 @@ Public Class frmAltaProveedor
                 Session.Item("tipoPersona") = "C"
             End If
         Else
-                Session.Item("tipoPersona") = "E"
+            Session.Item("tipoPersona") = "E"
+        End If
+        If chkClientProv.Checked = True Then
+            Session.Item("tipoPersona") = "C"
         End If
         GridView3.DataBind()
     End Sub
@@ -415,7 +427,7 @@ Public Class frmAltaProveedor
             End If
 
             If validacion = "SI" Then
-                tableAdapterProveedores2.ActualizaProveedor_UpdateQuery(txtRfc.Text.Trim, txtNit.Text.Trim, txtCurp.Text.Trim, txtRazonSocial.Text.Trim, txtMail.Text.Trim, txtCalle.Text.Trim, txtColonia.Text.Trim, txtLocalidad.Text.Trim, txtDelegacion.Text.Trim, txtEstado.Text.Trim, ddlPais.SelectedValue, txtCp.Text.Trim, txtNoProveedor.Text.Trim)
+                tableAdapterProveedores2.ActualizaProveedor_UpdateQuery(txtRfc.Text.Trim, txtNit.Text.Trim, txtCurp.Text.Trim, txtRazonSocial.Text.Trim, txtMail.Text.Trim, txtCalle.Text.Trim, txtColonia.Text.Trim, txtLocalidad.Text.Trim, txtDelegacion.Text.Trim, txtEstado.Text.Trim, ddlPais.SelectedValue, txtCp.Text.Trim, txtNoProveedor.Text.Trim, chkClientProv.Checked)
             End If
             'btnActualizar.Enabled = False
         End If
@@ -609,6 +621,7 @@ Public Class frmAltaProveedor
                         "</tr></table><HR width=20%>" &
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
+                tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", Session.Item("mailUsuarioS"), "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 txtAutorizado.Text = "EN PROCESO"
@@ -913,6 +926,55 @@ Public Class frmAltaProveedor
             End If
         End If
 
+    End Sub
+
+    Protected Sub chkClientProv_CheckedChanged(sender As Object, e As EventArgs) Handles chkClientProv.CheckedChanged
+        Dim tableAdapterProveedores As New dsProduccionTableAdapters.CXP_ProveedoresTableAdapter
+        Dim taClientes As New dsProduccionTableAdapters.ClientesTableAdapter
+        Dim dtClientes As New dsProduccion.ClientesDataTable
+        Dim rwClientes As dsProduccion.ClientesRow
+
+        If chkClientProv.Checked = True Then
+            'valida RFC
+            If txtRfc.Text <> String.Empty Then
+                If tableAdapterProveedores.ExisteRFC_ScalarQuery(txtRfc.Text.Trim) = "NE" Then
+                    If Regex.IsMatch(txtRfc.Text.Trim, "^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$") = False Then
+                        lblErrorGeneral.Text = "Estructura del RFC incorrecta."
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    Else
+                        taClientes.ClientesAntiguos_FillBy(dtClientes, txtRfc.Text.Trim)
+                        If dtClientes.Rows.Count > 0 Then
+                            rwClientes = dtClientes.Rows(0)
+
+                            txtRfc.Text = rwClientes.RFC
+                            txtRazonSocial.Text = rwClientes.Descr
+                            txtColonia.Text = rwClientes.Colonia
+                            txtCalle.Text = rwClientes.Calle
+                            txtLocalidad.Text = rwClientes.Colonia
+                            txtDelegacion.Text = rwClientes.Delegacion
+                            txtEstado.Text = rwClientes.Estado
+
+                            ddlPais.SelectedValue = "MEX"
+
+                            txtCp.Text = rwClientes.Copos
+                            txtActivo.Text = "NO ACTIVO"
+                            txtAutorizado.Text = "NO AUTORIZADO"
+
+                            txtCurp.Text = rwClientes.CURP
+                            txtMail.Text = rwClientes.EMail1
+
+                            chkClientProv.Checked = True
+                        Else
+                            lblErrorGeneral.Text = "El RFC no existe como cliente en el sistema de Finagil"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
+                    End If
+                Else
+                End If
+            End If
+            End If
     End Sub
 End Class
 

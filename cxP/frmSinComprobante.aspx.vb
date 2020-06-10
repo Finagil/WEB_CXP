@@ -2,6 +2,7 @@
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
 Imports System.IO
+Imports AjaxControlToolkit
 
 Public Class frmSinComprobante
     Inherits System.Web.UI.Page
@@ -162,12 +163,15 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub btnSolicitar_Click(sender As Object, e As EventArgs) Handles btnSolicitar.Click
+        Dim guuidAdjuntoCtas As String = Guid.NewGuid.ToString
         Try
+
             If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = False Then
                 lblErrorGeneral.Text = "No se ha seleccionado ninguna Carta Neteo como archivo adjunto"
                 ModalPopupExtender1.Show()
                 Exit Sub
             End If
+
 
             'Insertar registro de datos bancarios para crédito simple y liquidez inmediata
             Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
@@ -176,7 +180,7 @@ Public Class frmSinComprobante
                 If chkContrato.Checked = True Then
                     If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
                         Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
-                        idCuentas = taCuentasProv.NuevaCuentaScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, "", "", True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim)
+                        idCuentas = taCuentasProv.NuevaCuentaScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, "", guuidAdjuntoCtas, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim)
                     Else
                         idCuentas = 0
                     End If
@@ -309,7 +313,6 @@ Public Class frmSinComprobante
                     subirArchivosAdjuntos(folSolPagoFinagil, Session.Item("idCDeudor"))
 
 
-
                     Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
                     Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
                     Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
@@ -341,10 +344,16 @@ Public Class frmSinComprobante
                     'rptSolPago.Subreports(3).SetDataSource(dtSolPDFSD)
                     'rptSolPago.Subreports(0).SetDataSource(dtCtasBanco)
 
-                    rptSolPago.Subreports(0).SetDataSource(dtObsSol)
-                    rptSolPago.Subreports(1).SetDataSource(dtSolPDFND)
-                    rptSolPago.Subreports(2).SetDataSource(dtSolPDFSD)
-                    rptSolPago.Subreports(3).SetDataSource(dtCtasBanco)
+                    'rptSolPago.Subreports(0).SetDataSource(dtObsSol)
+                    'rptSolPago.Subreports(1).SetDataSource(dtSolPDFND)
+                    'rptSolPago.Subreports(2).SetDataSource(dtSolPDFSD)
+                    'rptSolPago.Subreports(3).SetDataSource(dtCtasBanco)
+
+                    rptSolPago.Subreports("rptSubObservaciones").SetDataSource(dtObsSol)
+                    rptSolPago.Subreports("rptSubSolicitudSCND").SetDataSource(dtSolPDFND)
+                    rptSolPago.Subreports("rptSubSolicitudSCSD").SetDataSource(dtSolPDFSD)
+                    rptSolPago.Subreports("rptSubCtasBancarias").SetDataSource(dtCtasBanco)
+
                     rptSolPago.Refresh()
 
                     rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
@@ -425,6 +434,17 @@ Public Class frmSinComprobante
                 End If
             Next
         End If
+
+        If IsNothing(Session("afuArchivoCtas")) = False Then
+            If Session.Item("Empresa") = "23" Then
+                taCFDI.Insert("", "", 0, "", 0, Session.Item("guuidArchivoCtas"), "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                taCXPPagos.Insert(Session.Item("idCDeudor"), 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", Session.Item("guuidArchivoCtas"), 0, 0, 0, 0, "Cta Pago", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
+            Else
+                taCFDI.Insert("", "", 0, "", 0, Session.Item("guuidArchivoCtas"), "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                taCXPPagos.Insert(Session.Item("idCDeudor"), 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", Session.Item("guuidArchivoCtas"), 0, 0, 0, 0, "Cta Pago", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
+            End If
+            'afuAdjuntoCta.SaveAs(MapPath("~/TmpFinagil/FilesProv/" & Convert.ToString(Session.Item("guuidArchivoCtas")) & ".pdf"))
+        End If
     End Sub
 
     Public Sub limpiar()
@@ -495,6 +515,8 @@ Public Class frmSinComprobante
         txtDescripcionPago.Enabled = True
 
         validaEstatusProveedor(Session.Item("idDeudor"))
+
+        Session("afuArchivoCtas") = Nothing
     End Sub
 
     Public Sub validaExisteProveedor(ByVal cliente As String)
@@ -568,6 +590,28 @@ Public Class frmSinComprobante
                             If Not IsNothing(lblTipar) Then
                                 If lblTipar.Text = "L" Or lblTipar.Text = "S" Then
                                     datosBancarios = "Banco: " & ddlBancos.SelectedItem.Text & " Cuenta: " & txtCuenta.Text.Trim & " CLABE: " & txtClabe.Text.Trim & " Referencia: " & txtReferencia.Text.Trim
+                                    If IsNothing(Session("afuArchivoCtas")) Then
+                                        lblErrorGeneral.Text = "No se ha ingresado el archivo de soporte de los datos bancarios"
+                                        ModalPopupExtender1.Show()
+                                        Exit Sub
+                                    Else
+                                        If txtClabe.Text.Trim = String.Empty And txtCuenta.Text.Trim = String.Empty And txtReferencia.Text.Trim = String.Empty Then
+                                            lblErrorGeneral.Text = "No se ha ingresado al menos uno de los siguientes datos: CLABE, Cuenta o Referencia"
+                                            ModalPopupExtender1.Show()
+                                            Exit Sub
+                                        Else
+                                            If txtClabe.Text.Trim <> String.Empty And txtClabe.Text.Trim.Length <> 18 Then
+                                                lblErrorGeneral.Text = "La CLABE debe de ser de 18 digitos"
+                                                ModalPopupExtender1.Show()
+                                                Exit Sub
+                                            End If
+                                            If txtCuenta.Text.Trim <> String.Empty And txtCuenta.Text.Trim.Length <> 10 Then
+                                                lblErrorGeneral.Text = "La cuenta debe de ser de 10 digitos"
+                                                ModalPopupExtender1.Show()
+                                                Exit Sub
+                                            End If
+                                        End If
+                                    End If
                                 Else
                                     datosBancarios = "SIN DATOS BANCARIOS"
                                     cmbCuentasBancarias.Enabled = False
@@ -1018,32 +1062,32 @@ Public Class frmSinComprobante
 
         Dim dtObsSol As DataTable
         dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), 2067)
-        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 2067, "No Pagada")
-        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), 2067)
-        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), 2067)
+        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), 2091)
+        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 2091, "No Pagada")
+        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), 2091)
+        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), 2091)
 
         Dim dtCtasBanco As DataTable
         dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
-        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, 0)
+        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, 112)
 
         Dim var_observaciones As Integer = dtObsSol.Rows.Count
         Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
         rptSolPago.Load(Server.MapPath("~/rptSolicitudDePagoSCCopia.rpt"))
         rptSolPago.SetDataSource(dtSolPDF)
-        rptSolPago.Subreports(0).SetDataSource(dtObsSol)
-        rptSolPago.Subreports(1).SetDataSource(dtSolPDFND)
-        rptSolPago.Subreports(2).SetDataSource(dtSolPDFSD)
-        rptSolPago.Subreports(3).SetDataSource(dtCtasBanco)
+        rptSolPago.Subreports("rptSubObservaciones").SetDataSource(dtObsSol)
+        rptSolPago.Subreports("rptSubSolicitudSCND").SetDataSource(dtSolPDFND)
+        rptSolPago.Subreports("rptSubSolicitudSCSD").SetDataSource(dtSolPDFSD)
+        rptSolPago.Subreports("rptSubCtasBancarias").SetDataSource(dtCtasBanco)
         dtCtasBanco.WriteXml("E:\VS_Proj\WEB_cxp\cxP\TmpFinagil\ctas.xml")
         rptSolPago.Refresh()
 
         rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
         rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
-        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 2062))
+        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 2091))
         rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
         rptSolPago.SetParameterValue("var_contrato", True)
-        rptSolPago.SetParameterValue("var_idCuentas", 101)
+        rptSolPago.SetParameterValue("var_idCuentas", 112)
 
         If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
             rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
@@ -1281,7 +1325,7 @@ Public Class frmSinComprobante
         tablaSelecciona.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
         tablaSelecciona.Attributes.Add("class", "labelsA")
 
-        tablabuscar.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
+        tablaBuscar.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
         tablaBuscar.Attributes.Add("class", "labelsA")
 
         tablaAutorizante.Attributes.Add("style", "border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width: 95%; margin: 0 auto; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #00BFFF;")
@@ -1300,8 +1344,30 @@ Public Class frmSinComprobante
         tablaRevisar.Attributes.Add("class", "labelsA")
     End Sub
 
-    Protected Sub FormView3_PageIndexChanging(sender As Object, e As FormViewPageEventArgs) Handles FormView3.PageIndexChanging
+    Private Sub afuAdjuntoCta_UploadedComplete(sender As Object, e As AsyncFileUploadEventArgs) Handles afuAdjuntoCta.UploadedComplete
+        'Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
+        'Dim taCFDI As New dsProduccionTableAdapters.CXP_XmlCfdi2TableAdapter
+        Dim guuidAdjuntoCtas As String = Guid.NewGuid.ToString
+
+
+        If afuAdjuntoCta.HasFile Then
+                If Session.Item("Empresa") = "23" Then
+                    afuAdjuntoCta.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidAdjuntoCtas & ".pdf"))
+                    'taCFDI.Insert("", "", 0, "", 0, guuidAdjuntoCtas, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                    'taCXPPagos.Insert(Session.Item("idCDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidAdjuntoCtas, 0, 0, 0, 0, "Cta Pago", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
+                Else
+                    afuAdjuntoCta.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidAdjuntoCtas & ".pdf"))
+                    'taCFDI.Insert("", "", 0, "", 0, guuidAdjuntoCtas, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                    'taCXPPagos.Insert(Session.Item("idCDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidAdjuntoCtas, 0, 0, 0, 0, "Cta Pago", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
+                End If
+                'Dim filePath As String = "~/TmpFinagil/FilesProv/" & Convert.ToString(guuidAdjuntoCtas) & ".pdf"
+                afuAdjuntoCta.SaveAs(MapPath("~/TmpFinagil/FilesProv/" & Convert.ToString(guuidAdjuntoCtas) & ".pdf"))
+            End If
+            Session("afuArchivoCtas") = afuAdjuntoCta
+            Session("nameAfuArchivoCtas") = afuAdjuntoCta.FileName
+            Session.Item("guuidArchivoCtas") = guuidAdjuntoCtas
 
     End Sub
+
 End Class
 

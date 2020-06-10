@@ -34,14 +34,15 @@ Public Class validaXSD
         End If
     End Function
 
-    Public Function LoadValidatedXmlDocument(xmlFilePath As String, xsdFilePath As String, xsdFilePathT As String, xsdFilePathIL As String, xsdPagos As String, xsdPagoTerceros As String) As XmlDocument
+    Public Function LoadValidatedXmlDocument(xmlFilePath As String, xsdFilePath As String, xsdFilePathT As String, xsdFilePathIL As String, xsdPagoTerceros As String, xsdRegistroFiscal As String) As XmlDocument
         Dim doc As New XmlDocument()
         doc.Load(xmlFilePath)
         doc.Schemas.Add(Nothing, xsdFilePath)
         doc.Schemas.Add(Nothing, xsdFilePathT)
         doc.Schemas.Add(Nothing, xsdFilePathIL)
-        doc.Schemas.Add(Nothing, xsdPagos)
+        'doc.Schemas.Add(Nothing, xsdPagos)
         doc.Schemas.Add(Nothing, xsdPagoTerceros)
+        doc.Schemas.Add(Nothing, xsdRegistroFiscal)
         Dim errorBuilder As New validaXSD()
         doc.Validate(New ValidationEventHandler(AddressOf errorBuilder.ValidationEventHandler))
         Dim errorsText As String = errorBuilder.GetErrors()
@@ -52,13 +53,14 @@ Public Class validaXSD
 
     End Function
 
-    Public Sub LoadXml(xmlFilePath As String, xsdFilePath As String, xsdFilePathT As String, xsdFilePathIL As String, xsdPagos As String, xsdPagoTerceros As String)
+    Public Sub LoadXml(xmlFilePath As String, xsdFilePath As String, xsdFilePathT As String, xsdFilePathIL As String, xsdPagoTerceros As String, xsdRegistroFiscal As String)
         Dim settings As New XmlReaderSettings()
         settings.Schemas.Add(Nothing, xsdFilePath)
         settings.Schemas.Add(Nothing, xsdFilePathT)
         settings.Schemas.Add(Nothing, xsdFilePathIL)
-        settings.Schemas.Add(Nothing, xsdPagos)
+        'settings.Schemas.Add(Nothing, xsdPagos)
         settings.Schemas.Add(Nothing, xsdPagoTerceros)
+        settings.Schemas.Add(Nothing, xsdRegistroFiscal)
         settings.ValidationType = ValidationType.Schema
         Dim errorBuilder As New validaXSD()
         AddHandler settings.ValidationEventHandler, New ValidationEventHandler(AddressOf errorBuilder.ValidationEventHandler)
@@ -71,14 +73,15 @@ Public Class validaXSD
         reader.Close()
     End Sub
 
-    Public Function LoadValidatedXDocument(xmlFilePath As String, xsdFilePath As String, xsdFilePathT As String, xsdFilePathIL As String, xsdPagos As String, xsdPagoTerceros As String) As XDocument
+    Public Function LoadValidatedXDocument(xmlFilePath As String, xsdFilePath As String, xsdFilePathT As String, xsdFilePathIL As String, xsdPagoTerceros As String, xsdRegistroFiscal As String) As XDocument
         Dim doc As XDocument = XDocument.Load(xmlFilePath)
         Dim schemas As New XmlSchemaSet()
         schemas.Add(Nothing, xsdFilePath)
         schemas.Add(Nothing, xsdFilePathT)
         schemas.Add(Nothing, xsdFilePathIL)
-        schemas.Add(Nothing, xsdPagos)
+        'schemas.Add(Nothing, xsdPagos)
         schemas.Add(Nothing, xsdPagoTerceros)
+        schemas.Add(Nothing, xsdRegistroFiscal)
         Dim errorBuilder As New validaXSD()
         doc.Validate(schemas, New ValidationEventHandler(AddressOf errorBuilder.ValidationEventHandler))
         Dim errorsText As String = errorBuilder.GetErrors()
@@ -92,3 +95,4 @@ Public Class validaXSD
 
 
 End Class
+

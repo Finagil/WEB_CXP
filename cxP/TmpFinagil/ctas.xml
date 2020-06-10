@@ -1,2 +1,14 @@
 <?xml version="1.0" standalone="yes"?>
-<DocumentElement />
+<DocumentElement>
+  <CXP_CuentasBancariasProv>
+    <idCuentas>112</idCuentas>
+    <idBanco>4</idBanco>
+    <cuenta />
+    <clabe>012767011756180882</clabe>
+    <descripcion>PAGO CTOS 047920003</descripcion>
+    <moneda />
+    <referencia />
+    <c_NombreMoneda />
+    <nombreCorto>BBVA BANCOMER</nombreCorto>
+  </CXP_CuentasBancariasProv>
+</DocumentElement>
