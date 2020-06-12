@@ -75,20 +75,26 @@
                 Session.Item("tipoPoliza") = taEmpresas.ObtPolizaDiario_ScalarQuery(DropDownList1.SelectedItem.Value)
                 Session.Item("mesesFacturas") = taEmpresas.ObtMesesFacturas_ScalarQuery(DropDownList1.SelectedItem.Value)
 
-                If txtUsuario.Text <> "" Then
-                    taUsuarios.ObtEmpresa_FillBy(t, txtUsuario.Text.Trim)
-                    If t.Rows.Count > 0 Then
-                        rowUsuarios = t.Rows(0)
-                        If rowUsuarios.Item("empresas").ToString.IndexOf(DropDownList1.SelectedItem.Value.ToString, 0) >= 0 Then
-                            Autentificacion = True
-                        Else
-                            Autentificacion = False
-                        End If
-                    End If
+                If Session.Item("Empresa") = 23 Then
+                    Session.Item("idPeriodo") = 1
+                Else
+                    Session.Item("idPeriodo") = 2
                 End If
 
+                If txtUsuario.Text <> "" Then
+                        taUsuarios.ObtEmpresa_FillBy(t, txtUsuario.Text.Trim)
+                        If t.Rows.Count > 0 Then
+                            rowUsuarios = t.Rows(0)
+                            If rowUsuarios.Item("empresas").ToString.IndexOf(DropDownList1.SelectedItem.Value.ToString, 0) >= 0 Then
+                                Autentificacion = True
+                            Else
+                                Autentificacion = False
+                            End If
+                        End If
+                    End If
+
+                End If
             End If
-        End If
 
     End Function
 

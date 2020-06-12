@@ -427,7 +427,7 @@ Public Class frmAltaProveedor
             End If
 
             If validacion = "SI" Then
-                tableAdapterProveedores2.ActualizaProveedor_UpdateQuery(txtRfc.Text.Trim, txtNit.Text.Trim, txtCurp.Text.Trim, txtRazonSocial.Text.Trim, txtMail.Text.Trim, txtCalle.Text.Trim, txtColonia.Text.Trim, txtLocalidad.Text.Trim, txtDelegacion.Text.Trim, txtEstado.Text.Trim, ddlPais.SelectedValue, txtCp.Text.Trim, txtNoProveedor.Text.Trim, chkClientProv.Checked)
+                tableAdapterProveedores2.ActualizaProveedor_UpdateQuery(txtRfc.Text.Trim, txtNit.Text.Trim, txtCurp.Text.Trim, txtRazonSocial.Text.Trim, txtMail.Text.Trim, txtCalle.Text.Trim, txtColonia.Text.Trim, txtLocalidad.Text.Trim, txtDelegacion.Text.Trim, txtEstado.Text.Trim, ddlPais.SelectedValue, txtCp.Text.Trim, chkClientProv.Checked, txtNoProveedor.Text.Trim)
             End If
             'btnActualizar.Enabled = False
         End If
@@ -645,7 +645,7 @@ Public Class frmAltaProveedor
             contador += 1
         Next
         If afuDocumentacionProv.HasFile Then
-                    Dim guuidDcProv As String = Guid.NewGuid.ToString
+            Dim guuidDcProv As String = Guid.NewGuid.ToString
             Dim filePath As String = "~/TmpFinagil/FilesProv/" & Convert.ToString(guuidDcProv) & ".pdf"
             afuDocumentacionProv.SaveAs(MapPath(filePath))
 
@@ -671,12 +671,13 @@ Public Class frmAltaProveedor
             End Select
 
             GridView1.DataBind()
-                Else
-                    lblErrorGeneral.Text = "Es necesario adjuntar el archivo correspondiente al estado de cuenta bancario en formato PDF."
+        Else
+            lblErrorGeneral.Text = "Es necesario adjuntar el archivo correspondiente al estado de cuenta bancario en formato PDF."
                     ModalPopupExtender1.Show()
                     Exit Sub
                 End If
         GridView2.DataBind()
+        'btnActualizarArch.Enabled = False
     End Sub
 
     Private Sub GridView1_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridView1.RowDataBound
@@ -906,7 +907,7 @@ Public Class frmAltaProveedor
         Dim tipoPersona As String = ""
 
         If Session.Item("rfcEmpleado") = "NE" Or IsNothing(Session.Item("rfcEmpleado")) Then
-            If taProv.ObtClientProv_ScalarQuery(txtRfc.Text.Trim = False) Then
+            If taProv.ObtClientProv_ScalarQuery(txtRfc.Text.Trim) = False Then
                 If rfcP.Length = 12 Then
                     tipoPersona = "M"
                 ElseIf rfcP.Length = 13 Then

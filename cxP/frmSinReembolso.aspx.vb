@@ -1092,10 +1092,10 @@ Public Class frmSinReembolso
 
         Dim dtObsSol As DataTable
         dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(945))
-        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 945, "No Pagada")
-        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CDec(945))
-        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CDec(945))
+        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(977))
+        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 977, "No Pagada")
+        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CDec(977))
+        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CDec(977))
 
         Dim dtCtasBanco As DataTable
         dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
@@ -1114,7 +1114,7 @@ Public Class frmSinReembolso
 
         rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
         rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
-        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 945))
+        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 977))
         rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
         rptSolPago.SetParameterValue("var_contrato", chkContrato.Checked)
         rptSolPago.SetParameterValue("var_idCuentas", 0)

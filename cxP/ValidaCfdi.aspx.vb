@@ -110,9 +110,9 @@ Public Class ValidaCfdi
                         'lblValidacion.Visible = True
                         Dim var As String = "Sin errores en XSD"
                         Try
-                            resXSD.LoadValidatedXmlDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\terceros11.xsd", rootPath + "\cfdiregistrofiscal.xsd")
-                            resXSD.LoadValidatedXDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\terceros11.xsd", rootPath + "\cfdiregistrofiscal.xsd")
-                            resXSD.LoadXml(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\terceros11.xsd", rootPath + "\cfdiregistrofiscal.xsd")
+                            'resXSD.LoadValidatedXmlDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\terceros11.xsd", rootPath + "\cfdiregistrofiscal.xsd")
+                            'resXSD.LoadValidatedXDocument(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\terceros11.xsd", rootPath + "\cfdiregistrofiscal.xsd")
+                            'resXSD.LoadXml(rootPath + "\" & GU.ToString + "." & ext(ext.Length - 1), rootPath + "\cfdv33.xsd", rootPath + "\TimbreFiscalDigitalv11.xsd", rootPath + "\implocal.xsd", rootPath + "\terceros11.xsd", rootPath + "\cfdiregistrofiscal.xsd")
 
                         Catch ex As Exception
                             'lblError.Visible = True
