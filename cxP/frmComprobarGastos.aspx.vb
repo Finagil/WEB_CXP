@@ -287,6 +287,11 @@ Public Class frmComprobarGastos
     End Sub
 
     Protected Sub btnComprobar_Click(sender As Object, e As EventArgs) Handles btnComprobar.Click
+        If GridView2.Rows.Count = 0 And GridView3.Rows.Count = 0 Then
+            errLabel17.Text = "No se han ingresado datos..."
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End If
         Dim taUsuarios As New dsProduccionTableAdapters.UsuariosTableAdapter
         Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_EmpresasTableAdapter
 

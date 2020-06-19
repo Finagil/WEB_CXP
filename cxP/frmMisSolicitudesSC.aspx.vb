@@ -73,47 +73,47 @@ Public Class frmMisSolicitudesSC
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
             Dim nRowCXPPagos As dsProduccion.CXP_PagosRow
             For Each rows As dsProduccion.CXP_PagosRow In td
-                nRowCXPPagos = dsProd.CXP_Pagos.NewCXP_PagosRow
-                nRowCXPPagos.idProveedor = rows.idProveedor
-                nRowCXPPagos.idUsuario = rows.idUsuario
-                nRowCXPPagos.folioSolicitud = rows.folioSolicitud
-                nRowCXPPagos.fechaSolicitud = Date.Now.ToLongDateString()
-                nRowCXPPagos.fechaFactura = rows.fechaSolicitud
-                nRowCXPPagos.serie = rows.serie
-                nRowCXPPagos.folio = rows.folio
-                nRowCXPPagos.uuid = rows.uuid
-                nRowCXPPagos.subtotalPagado = (rows.subtotalPagado) * -1
-                nRowCXPPagos.totalPagado = (rows.totalPagado) * -1
-                nRowCXPPagos.trasladosPagados = (rows.trasladosPagados) * -1
-                nRowCXPPagos.retencionesPagadas = (rows.retencionesPagadas) * -1
-                nRowCXPPagos.decripcion = rows.decripcion
-                nRowCXPPagos.idConcepto = rows.idConcepto
-                nRowCXPPagos.parcialidad = -1
-                nRowCXPPagos.usuario = rows.usuario
-                nRowCXPPagos.idEmpresas = rows.idEmpresas
-                nRowCXPPagos.estatus = "Cancelacion"
-                nRowCXPPagos.autoriza1 = rows.autoriza1
-                nRowCXPPagos.autoriza2 = rows.autoriza2
-                nRowCXPPagos.ok1 = "CANCELADA"
-                nRowCXPPagos.ok2 = "CANCELADA"
-                nRowCXPPagos.moneda = rows.moneda
-                nRowCXPPagos.fechaPago = Date.Now.ToLongDateString()
-                nRowCXPPagos.contrato = False
-                nRowCXPPagos.noContrato = rows.noContrato
-                nRowCXPPagos.idAutoriza2 = rows.idAutoriza2
-                nRowCXPPagos.naAutoriza2 = rows.naAutoriza2
-                nRowCXPPagos.naAutoriza1 = rows.naAutoriza1
-                nRowCXPPagos.cCostos = rows.cCostos
-                nRowCXPPagos.fPago = rows.fPago
-                nRowCXPPagos.idCuentas = rows.idCuentas
+                'nRowCXPPagos = dsProd.CXP_Pagos.NewCXP_PagosRow
+                'nRowCXPPagos.idProveedor = rows.idProveedor
+                'nRowCXPPagos.idUsuario = rows.idUsuario
+                'nRowCXPPagos.folioSolicitud = rows.folioSolicitud
+                'nRowCXPPagos.fechaSolicitud = Date.Now.ToLongDateString()
+                'nRowCXPPagos.fechaFactura = rows.fechaSolicitud
+                'nRowCXPPagos.serie = rows.serie
+                'nRowCXPPagos.folio = rows.folio
+                'nRowCXPPagos.uuid = rows.uuid
+                'nRowCXPPagos.subtotalPagado = (rows.subtotalPagado) * -1
+                'nRowCXPPagos.totalPagado = (rows.totalPagado) * -1
+                'nRowCXPPagos.trasladosPagados = (rows.trasladosPagados) * -1
+                'nRowCXPPagos.retencionesPagadas = (rows.retencionesPagadas) * -1
+                'nRowCXPPagos.decripcion = rows.decripcion
+                'nRowCXPPagos.idConcepto = rows.idConcepto
+                'nRowCXPPagos.parcialidad = -1
+                'nRowCXPPagos.usuario = rows.usuario
+                'nRowCXPPagos.idEmpresas = rows.idEmpresas
+                'nRowCXPPagos.estatus = "Cancelacion"
+                'nRowCXPPagos.autoriza1 = rows.autoriza1
+                'nRowCXPPagos.autoriza2 = rows.autoriza2
+                'nRowCXPPagos.ok1 = "CANCELADA"
+                'nRowCXPPagos.ok2 = "CANCELADA"
+                'nRowCXPPagos.moneda = rows.moneda
+                'nRowCXPPagos.fechaPago = Date.Now.ToLongDateString()
+                'nRowCXPPagos.contrato = False
+                'nRowCXPPagos.noContrato = rows.noContrato
+                'nRowCXPPagos.idAutoriza2 = rows.idAutoriza2
+                'nRowCXPPagos.naAutoriza2 = rows.naAutoriza2
+                'nRowCXPPagos.naAutoriza1 = rows.naAutoriza1
+                'nRowCXPPagos.cCostos = rows.cCostos
+                'nRowCXPPagos.fPago = rows.fPago
+                'nRowCXPPagos.idCuentas = rows.idCuentas
 
-                contrato = nRowCXPPagos.contrato
-                fecha = nRowCXPPagos.fechaSolicitud.ToString("yyyyMMddhhmm")
-                idCuentas = nRowCXPPagos.idCuentas
+                'contrato = nRowCXPPagos.contrato
+                'fecha = nRowCXPPagos.fechaSolicitud.ToString("yyyyMMddhhmm")
+                'idCuentas = nRowCXPPagos.idCuentas
 
-                dsProd.CXP_Pagos.AddCXP_PagosRow(nRowCXPPagos)
-                dsProd.CXP_Pagos.GetChanges()
-                taPagos.Update(dsProd.CXP_Pagos)
+                'dsProd.CXP_Pagos.AddCXP_PagosRow(nRowCXPPagos)
+                'dsProd.CXP_Pagos.GetChanges()
+                'taPagos.Update(dsProd.CXP_Pagos)
 
                 taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
             Next
