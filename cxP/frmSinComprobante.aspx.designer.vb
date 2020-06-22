@@ -536,13 +536,13 @@ Partial Public Class frmSinComprobante
     Protected WithEvents tablaReferenciaBancaria As Global.System.Web.UI.HtmlControls.HtmlTable
     
     '''<summary>
-    '''Control odsBancos.
+    '''Control FormView5.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents odsBancos As Global.System.Web.UI.WebControls.ObjectDataSource
+    Protected WithEvents FormView5 As Global.System.Web.UI.WebControls.FormView
     
     '''<summary>
     '''Control FormView4.
@@ -552,6 +552,15 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents FormView4 As Global.System.Web.UI.WebControls.FormView
+    
+    '''<summary>
+    '''Control odsBancos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsBancos As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control ddlBancos.

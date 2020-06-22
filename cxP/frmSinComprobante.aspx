@@ -414,8 +414,26 @@
       <table visible="false" runat="server" id="tablaReferenciaBancaria" style="width:95%; padding:5px; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style75">
         <tr>
             <td class="auto-style80">Banco:
+                <asp:FormView ID="FormView5" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
+                    <ItemTemplate>
+                        <asp:Label ID="Banco" runat="server" Text='<%# Bind("Banco") %>' />
+                    </ItemTemplate>
+                </asp:FormView>
+            </td>
+            <td class="auto-style81">Cuenta:
 
-                <asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
+             </td>
+            <td class="auto-style81">CLABE:
+                <asp:FormView ID="FormView4" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
+                    <ItemTemplate>
+                        <asp:Label ID="CuentaCLABELabel" runat="server" Text='<%# Bind("CuentaCLABE") %>' />
+                    </ItemTemplate>
+                </asp:FormView>
+             </td>
+            <td class="auto-style81">Referencia:
+
+             </td>
+            <td class="auto-style81">Adjunto:<asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
                     <DeleteParameters>
                         <asp:Parameter Name="Original_idBancos" Type="Decimal" />
                     </DeleteParameters>
@@ -435,20 +453,6 @@
                 </asp:ObjectDataSource>
 
              </td>
-            <td class="auto-style81">Cuenta:
-
-             </td>
-            <td class="auto-style81">CLABE:
-                <asp:FormView ID="FormView4" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
-                                <ItemTemplate>
-                                    <asp:Label ID="CuentaCLABELabel" runat="server" Text='<%# Bind("CuentaCLABE") %>' />
-                                </ItemTemplate>
-                            </asp:FormView>
-             </td>
-            <td class="auto-style81">Referencia:
-
-             </td>
-            <td class="auto-style81">Adjunto:</td>
         </tr>
         <tr>
             <td class="auto-style80">

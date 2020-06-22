@@ -890,6 +890,9 @@ Public Class frmSinComprobante
                 tablaReferenciaBancaria.Visible = False
                 ddlClientes.Enabled = True
                 ddlContratos.Enabled = True
+                txtImporteCartaNeteto.Enabled = True
+                txtDesccartaNeteo.Enabled = True
+                fupCarteNeteo.Enabled = True
 
                 odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
                 odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
@@ -1302,22 +1305,25 @@ Public Class frmSinComprobante
     Private Sub FormView3_DataBound(sender As Object, e As EventArgs) Handles FormView3.DataBound
         Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
         Dim lblCta As Label = CType(FormView4.FindControl("CuentaCLABELabel"), Label)
+        Dim lblBco As Label = CType(FormView5.FindControl("Banco"), Label)
         If Not IsNothing(lblTipar) Then
             If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
                 If Not IsNothing(lblTipar) Then
                     If chkContrato.Checked = True Then
                         If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
                             tablaReferenciaBancaria.Visible = True
-                            If Not IsNothing(lblCta) Then
+                            If Not IsNothing(lblCta) And Not IsNothing(lblBco) Then
                                 If ddlMismoDeudor.SelectedIndex = 2 Then
-                                    txtClabe.Text = lblCta.Text
+                                    txtClabe.Text = lblCta.Text.Trim
+                                    odsBancos.FilterExpression = "nombreCorto = '" & lblBco.Text.Trim & "'"
                                     txtClabe.Enabled = False
                                     lblCta.Visible = False
+                                    ddlBancos.Enabled = False
                                 Else
                                     lblCta.Visible = False
                                 End If
                             End If
-                            Else
+                        Else
                             tablaReferenciaBancaria.Visible = False
                         End If
                     Else
@@ -1441,7 +1447,7 @@ Public Class frmSinComprobante
         Response.Redirect("~/frmSinComprobante.aspx")
     End Sub
 
-    Protected Sub FormView4_PageIndexChanging(sender As Object, e As FormViewPageEventArgs) Handles FormView4.PageIndexChanging
+    Protected Sub ddlContratos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlContratos.SelectedIndexChanged
 
     End Sub
 End Class
