@@ -689,8 +689,7 @@ Public Class frmConComprobante
         dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
         taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), folSol)
 
-        Dim dtCtasBanco As DataTable
-        dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
+        Dim dtCtasBanco As DataTable = New dsProduccion.CXP_CuentasBancariasProvDataTable
         taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, idCuentas)
         'dtCtasBanco.WriteXml("C:\Files\dtCtasDetalle.xml", XmlWriteMode.WriteSchema)
 

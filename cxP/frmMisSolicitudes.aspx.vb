@@ -52,6 +52,7 @@ Public Class frmMisSolicitudes
         Dim td As New dsProduccion.CXP_PagosDataTable
         Dim taRegCont As New dsProduccionTableAdapters.CXP_RegContTableAdapter
         Dim dtRegCont As New dsProduccion.CXP_RegContDataTable
+        Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
 
         Dim contrato As Boolean = False
         Dim idCuentas As Integer = 0
@@ -80,9 +81,11 @@ Public Class frmMisSolicitudes
             '////Genera registro contable de cancelación
             taRegCont.ObtDatosPoliza_FillBy(dtRegCont, CInt(Session.Item("Empresa")), HiddenID.Value)
             If dtRegCont.Rows.Count > 0 Then
+                Dim folioPoliza As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
                 For Each rwRegCont As dsProduccion.CXP_RegContRow In dtRegCont.Rows
-                    taRegCont.Insert(CDec(rwRegCont.idCuenta), CDec(rwRegCont.idProveedor), CDec(rwRegCont.abono), CDec(rwRegCont.cargo), rwRegCont.referencia, rwRegCont.concepto, CDec(rwRegCont.idTipoDocumento), CDec(rwRegCont.folioTipoDocumento), CDec(rwRegCont.idEmpresa), rwRegCont.uuid, CDec(rwRegCont.folioSolicitud), rwRegCont.fecha, rwRegCont.estatus, CDec(rwRegCont.idConcepto), CDec(rwRegCont.periodoEjercicio))
+                    taRegCont.Insert(CDec(rwRegCont.idCuenta), CDec(rwRegCont.idProveedor), CDec(rwRegCont.abono), CDec(rwRegCont.cargo), rwRegCont.referencia, rwRegCont.concepto, CDec(rwRegCont.idTipoDocumento), folioPoliza, CDec(rwRegCont.idEmpresa), rwRegCont.uuid, CDec(rwRegCont.folioSolicitud), rwRegCont.fecha, rwRegCont.estatus, CDec(rwRegCont.idConcepto), CDec(rwRegCont.periodoEjercicio))
                 Next
+                taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
             End If
 
             '/////Genera PDF Cancelado

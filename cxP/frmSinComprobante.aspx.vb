@@ -1447,8 +1447,6 @@ Public Class frmSinComprobante
         Response.Redirect("~/frmSinComprobante.aspx")
     End Sub
 
-    Protected Sub ddlContratos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlContratos.SelectedIndexChanged
 
-    End Sub
 End Class
 

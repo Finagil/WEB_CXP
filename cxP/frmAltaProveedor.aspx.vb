@@ -15,6 +15,9 @@ Public Class frmAltaProveedor
             formato()
         End If
 
+        ddlMoneda.SelectedValue = "MXN"
+        ddlPais.SelectedValue = "MEX"
+
         If Not IsPostBack Then
             Session.Item("Leyenda") = "Alta de proveedores"
             If Session.Item("solicitud") = "OK" Then
@@ -24,6 +27,8 @@ Public Class frmAltaProveedor
             GridView1.DataBind()
             GridView2.DataBind()
             desactivarNuevosDatos()
+
+
         End If
     End Sub
 
@@ -351,7 +356,7 @@ Public Class frmAltaProveedor
                 End If
             Else
                 If tableAdapterProveedores.ExisteRFC_ScalarQuery(txtRfc.Text.Trim) = "NE" Then
-                    Dim idProv As Decimal = tableAdapterProveedores2.NuevoProveedorScalarQuery(txtRfc.Text, txtNit.Text, txtCurp.Text, txtRazonSocial.Text, Nothing, 0, Nothing, 0, 0, Nothing, Date.Now.ToLongDateString, txtMail.Text, Nothing, "", "", "", 0, 0, txtCalle.Text, txtColonia.Text, txtLocalidad.Text, txtDelegacion.Text, txtEstado.Text, ddlPais.SelectedValue, txtCp.Text, "NO ACTIVO", "NO AUTORIZADO")
+                    Dim idProv As Decimal = tableAdapterProveedores2.NuevoProveedorScalarQuery(txtRfc.Text, txtNit.Text, txtCurp.Text, txtRazonSocial.Text, Nothing, 0, Nothing, 0, 0, Nothing, Date.Now.ToLongDateString, txtMail.Text, Nothing, "", "", "", chkClientProv.Checked, 0, txtCalle.Text, txtColonia.Text, txtLocalidad.Text, txtDelegacion.Text, txtEstado.Text, ddlPais.SelectedValue, txtCp.Text, "NO ACTIVO", "NO AUTORIZADO")
                     lblErrorGeneral.Text = "El número de proveedor es: " & idProv.ToString
                     ModalPopupExtender1.Show()
                     txtNoProveedor.Text = idProv.ToString
@@ -624,6 +629,9 @@ Public Class frmAltaProveedor
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", Session.Item("mailUsuarioS"), "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
+
+                tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
+                tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 txtAutorizado.Text = "EN PROCESO"
             Else
                 lblErrorGeneral.Text = "La documentación del proveedor es incompleta, favor de revisar el listado de documentos obligatorios"
@@ -816,6 +824,10 @@ Public Class frmAltaProveedor
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
+
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
     End Sub
 
     Protected Sub enviaCorreoDocumentos(documento As String)
@@ -839,6 +851,10 @@ Public Class frmAltaProveedor
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
     End Sub
 
     Protected Sub enviaCorreoCuentasBancariasActiv(banco As String, moneda As String, cuenta As String, clabe As String)
@@ -874,6 +890,10 @@ Public Class frmAltaProveedor
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de cuenta", mensaje, False, Date.Now.ToLongDateString, "")
+
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
     End Sub
 
     Protected Sub enviaCorreoDocumentosActive(documento As String)
@@ -897,6 +917,10 @@ Public Class frmAltaProveedor
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
     End Sub
 
     Protected Sub validaYCambiaEstatus(idProveedor As String, rfcP As String)
