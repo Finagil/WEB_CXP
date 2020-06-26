@@ -179,6 +179,7 @@ Public Class frmAltaProveedor
         GridView2.DataBind()
         divDetalles.Visible = False
         limpiarNuevo()
+        ddlPais.SelectedValue = "MEX"
     End Sub
 
     Public Sub limpiarNuevo()
