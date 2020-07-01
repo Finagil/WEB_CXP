@@ -460,16 +460,30 @@ Public Class frmAltaProveedor
             ModalPopupExtender1.Show()
             Exit Sub
         End If
-        If txtCuentaBancaria.Text.Trim.Length = 10 Then
-            If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
-                lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+        If ddlBanco.SelectedItem.Text = "SANTANDER" Then
+            If txtCuentaBancaria.Text.Trim.Length = 11 Then
+                If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
+                    lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+            Else
+                lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
                 ModalPopupExtender1.Show()
                 Exit Sub
             End If
         Else
-            lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
-            ModalPopupExtender1.Show()
-            Exit Sub
+            If txtCuentaBancaria.Text.Trim.Length = 10 Then
+                If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
+                    lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+            Else
+                lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
+                ModalPopupExtender1.Show()
+                Exit Sub
+            End If
         End If
         If txtClabe.Text.Trim.Length = 18 Then
             If IsNumeric(txtClabe.Text.Trim) = False Then

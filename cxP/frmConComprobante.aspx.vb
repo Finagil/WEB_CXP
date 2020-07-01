@@ -267,11 +267,11 @@ Public Class frmConComprobante
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             If cmbCuentasBancarias.SelectedIndex = -1 Then
                 '*****HABILITAR CUANDO SE ACTIVEN CUENTAS
-                'lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
-                'ModalPopupExtender1.Show()
-                'Exit Sub
+                lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Electrónica se debe seleccionar una cuenta bancaria de pago."
+                ModalPopupExtender1.Show()
+                Exit Sub
                 '****** DESHABILITAR CUANDO SE ACTIVEN CUENTAS
-                idCuentas = 0
+                'idCuentas = 0
             Else
                 idCuentas = cmbCuentasBancarias.SelectedValue
             End If
@@ -840,12 +840,12 @@ Public Class frmConComprobante
                 If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
                     If cmbCuentasBancarias.SelectedIndex = -1 Then
                         '***** HABILITAR CUANDO SE ACTIVEN CUENTAS
-                        'lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
-                        'ModalPopupExtender1.Show()
-                        'Exit Sub
+                        lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
+                        ModalPopupExtender1.Show()
+                        Exit Sub
 
                         '***** DESAHABILITAR CUANDO SE ACTIVEN CUENTAS
-                        idCuentas = 0
+                        'idCuentas = 0
                     Else
                         idCuentas = cmbCuentasBancarias.SelectedValue
                     End If

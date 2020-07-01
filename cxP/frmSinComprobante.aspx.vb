@@ -517,6 +517,7 @@ Public Class frmSinComprobante
         ddlMoneda.Enabled = True
         txtMontoSolicitado.Enabled = True
         txtDescripcionPago.Enabled = True
+        btnSolicitar.Enabled = True
 
         validaEstatusProveedor(Session.Item("idDeudor"))
 
@@ -583,7 +584,7 @@ Public Class frmSinComprobante
 
                         If chkContrato.Checked = False Then
                             If cmbCuentasBancarias.SelectedIndex = -1 Then
-                                lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
+                                lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Electrónica se debe seleccionar una cuenta bancaria de pago."
                                 ModalPopupExtender1.Show()
                                 Exit Sub
                             Else
@@ -1229,10 +1230,12 @@ Public Class frmSinComprobante
                 validaEstatusProveedor(ddlProveedor.SelectedValue)
             End If
             odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
+            ddlMoneda.SelectedValue = "MXN"
             'odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
         Else
             validaEstatusProveedor(ddlProveedor.SelectedValue)
             odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+            ddlMoneda.SelectedValue = "MXN"
         End If
         'limpiar()
 
@@ -1307,35 +1310,37 @@ Public Class frmSinComprobante
         Dim lblCta As Label = CType(FormView4.FindControl("CuentaCLABELabel"), Label)
         Dim lblBco As Label = CType(FormView5.FindControl("Banco"), Label)
         If Not IsNothing(lblTipar) Then
-            If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
-                If Not IsNothing(lblTipar) Then
-                    If chkContrato.Checked = True Then
-                        If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
-                            tablaReferenciaBancaria.Visible = True
-                            If Not IsNothing(lblCta) And Not IsNothing(lblBco) Then
-                                If ddlMismoDeudor.SelectedIndex = 2 Then
-                                    txtClabe.Text = lblCta.Text.Trim
-                                    odsBancos.FilterExpression = "nombreCorto = '" & lblBco.Text.Trim & "'"
-                                    txtClabe.Enabled = False
-                                    lblCta.Visible = False
-                                    ddlBancos.Enabled = False
-                                Else
-                                    lblCta.Visible = False
+            If cmbFormaPago.SelectedValue <> String.Empty Then
+                If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
+                    If Not IsNothing(lblTipar) Then
+                        If chkContrato.Checked = True Then
+                            If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                                tablaReferenciaBancaria.Visible = True
+                                If Not IsNothing(lblCta) And Not IsNothing(lblBco) Then
+                                    If ddlMismoDeudor.SelectedIndex = 2 Then
+                                        txtClabe.Text = lblCta.Text.Trim
+                                        odsBancos.FilterExpression = "nombreCorto = '" & lblBco.Text.Trim & "'"
+                                        txtClabe.Enabled = False
+                                        lblCta.Visible = False
+                                        ddlBancos.Enabled = False
+                                    Else
+                                        lblCta.Visible = False
+                                    End If
                                 End If
+                            Else
+                                tablaReferenciaBancaria.Visible = False
                             End If
                         Else
                             tablaReferenciaBancaria.Visible = False
-                        End If
-                    Else
-                        tablaReferenciaBancaria.Visible = False
-                        If ddlMismoDeudor.SelectedIndex = 2 Then
-                            cmbCuentasBancarias.Enabled = True
-                            'obtieneDatosBancariosClienteProveedor()
-                        ElseIf ddlMismoDeudor.SelectedIndex = 0 Then
-                            cmbCuentasBancarias.Enabled = True
-                            'obtieneDatosBancariosClienteProveedor()
-                        ElseIf ddlMismoDeudor.SelectedIndex = 1 Then
-                            cmbCuentasBancarias.Enabled = False
+                            If ddlMismoDeudor.SelectedIndex = 2 Then
+                                cmbCuentasBancarias.Enabled = True
+                                'obtieneDatosBancariosClienteProveedor()
+                            ElseIf ddlMismoDeudor.SelectedIndex = 0 Then
+                                cmbCuentasBancarias.Enabled = True
+                                'obtieneDatosBancariosClienteProveedor()
+                            ElseIf ddlMismoDeudor.SelectedIndex = 1 Then
+                                cmbCuentasBancarias.Enabled = False
+                            End If
                         End If
                     End If
                 End If
