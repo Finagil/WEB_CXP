@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="yes"?>
 <DocumentElement>
   <CXP_CuentasBancariasProv>
-    <idCuentas>112</idCuentas>
+    <idCuentas>170</idCuentas>
     <idBanco>4</idBanco>
     <cuenta />
-    <clabe>012767011756180882</clabe>
-    <descripcion>PAGO CTOS 047920003</descripcion>
+    <clabe>012233028670963482</clabe>
+    <descripcion>PAGO CTOS 055270001</descripcion>
     <moneda />
     <referencia />
     <c_NombreMoneda />

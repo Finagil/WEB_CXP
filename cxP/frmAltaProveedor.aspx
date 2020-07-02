@@ -132,7 +132,7 @@
         <link href="styFW.css" rel="stylesheet" type="text/css" />
         <div style="overflow-y:auto;height:90%; margin-bottom:10px;">
             
-            <table style="border-radius: 5px; border-style: solid; border-width: thin; width: 80%; margin: 0 auto; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; background-color: #FFE0C0;">
+            <table style="border-radius: 5px; border-style: solid; border-width: thin; width: 95%; margin: 0 auto; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; background-color: #FFE0C0;">
         <tr>
             <td class="auto-style16">
                 <asp:TextBox ID="txtBuscar" runat="server" Width="420px"></asp:TextBox>
@@ -228,7 +228,7 @@
         </tr>
         </table>
            
-            <table id="tablaDatos" runat="server" style="border-radius: 5px; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
+            <table id="tablaDatos" runat="server" style="border-radius: 5px; width:95%; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
         <tr>
             <td class="auto-style23">RFC:</td>
             <td class="auto-style23">
@@ -346,7 +346,7 @@
     </table>
 
             <div id="divDetalles" runat="server" visible="false">
-            <table style="border-style: none; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style25">
+            <table style="border-style: none; width:95%; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style25">
                 <tr>
                     <td class="auto-style26">
                         &nbsp;</td>
@@ -359,7 +359,7 @@
                 </tr>
             </table>
              
-            <table id="tablaCuentas" runat="server" style="border-radius: 5px; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
+            <table id="tablaCuentas" runat="server" style="border-radius: 5px; width:95%; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
         <tr>
             <td>
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="idCuentas" DataSourceID="odsCuentas" Width="100%">
@@ -398,10 +398,17 @@
                                     <HeaderStyle Width="35px"></HeaderStyle>
                         </asp:TemplateField>
                         <asp:BoundField DataField="status" HeaderText="Estatus" SortExpression="status" >
-                            <HeaderStyle Width="220px" />
+                            <HeaderStyle Width="120px" />
                         </asp:BoundField>
                         <asp:BoundField DataField="idEstatus" SortExpression="isEstatus">
                             <HeaderStyle Width="5px" />
+                        <ItemStyle ForeColor="#FFE0C0" Width="1px" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="convenio" HeaderText="Convenio" >
+                        <ItemStyle Width="120px" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="referencia" HeaderText="Referencia" >
+                        <ItemStyle Width="130px" />
                         </asp:BoundField>
                     </Columns>
                     <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
@@ -495,24 +502,28 @@
             </td>
         </tr>
         </table>
-            <table id="tablaCtas" style="border-radius: 5px; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
+            <table id="tablaCtas" style="border-radius: 5px; width:95%; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
                 <tr>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000;">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
                         Banco:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000;">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
                         Descripción:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000;">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
                         Moneda:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000;">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
                         Cuenta:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000;">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
                         CLABE.</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000;">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                        Convenio:</td>
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                        Referencia:</td>
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
                         Adjuntar EdoCta:</td>
                 </tr>
                 <tr>
                     <td>
-                        <asp:DropDownList ID="ddlBanco" runat="server" DataSourceID="odsBancos" DataTextField="nombreCorto" DataValueField="idBancos" Width="200px">
+                        <asp:DropDownList ID="ddlBanco" runat="server" DataSourceID="odsBancos" DataTextField="nombreCorto" DataValueField="idBancos" Width="150px">
                         </asp:DropDownList>
                         <asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
                             <DeleteParameters>
@@ -537,7 +548,7 @@
                         <asp:TextBox ID="txtDescipcion" runat="server" Width="150px" Wrap="False"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:DropDownList ID="ddlMoneda" runat="server" DataSourceID="odsMonedas" DataTextField="c_NombreMoneda" DataValueField="c_Moneda" Width="120px">
+                        <asp:DropDownList ID="ddlMoneda" runat="server" DataSourceID="odsMonedas" DataTextField="c_Moneda" DataValueField="c_Moneda" Width="80px">
                         </asp:DropDownList>
                         <asp:ObjectDataSource ID="odsMonedas" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_c_MonedaTableAdapter" UpdateMethod="Update">
                             <DeleteParameters>
@@ -564,18 +575,24 @@
                         <asp:TextBox ID="txtClabe" runat="server" Width="150px"></asp:TextBox>
                     </td>
                     <td>
-                        <ajaxToolkit:AsyncFileUpload ID="afuArcCta" runat="server" Width="200px" />
+                        <asp:TextBox ID="txtConvenio" runat="server" Width="80px"></asp:TextBox>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtReferencia" runat="server" Width="100px"></asp:TextBox>
+                    </td>
+                    <td>
+                        <ajaxToolkit:AsyncFileUpload ID="afuArcCta" runat="server" Width="180px" />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6" style="align-content:center" class="auto-style9">
+                    <td colspan="8" style="align-content:center" class="auto-style9">
                 <cc1:BotonEnviar ID="btnAgregarCta" runat="server" Text="Agregar" CssClass="Botones" PostBackUrl="#tablaCtas"/>
                     </td>
                 </tr>
             </table>
            
             <div id="divDocumentacionProv" runat="server">
-            <table id="tableDocumentacionPro" runat="server" style="border-radius: 5px; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
+            <table id="tableDocumentacionPro" runat="server" style="border-radius: 5px; width:95%; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
             <tr>
                 <td class="auto-style30" rowspan="3" style="vertical-align:top;">
                     <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" DataKeyNames="idDocAdjunto" DataSourceID="odsDocumentacion" GridLines="None" Width="100%" Height="100%" >
@@ -667,8 +684,12 @@
                             <asp:BoundField DataField="idDocAdjunto" SortExpression="idDocAdjunto" >
                             <ItemStyle Font-Size="XX-Small" ForeColor="White" Width="1px" />
                             </asp:BoundField>
-                            <asp:BoundField DataField="status" HeaderText="Estatus" ItemStyle-Width="220px" />
-                            <asp:BoundField DataField="idEstatus" ItemStyle-Width="5px" />
+                            <asp:BoundField DataField="status" HeaderText="Estatus" ItemStyle-Width="220px" >
+<ItemStyle Width="220px"></ItemStyle>
+                            </asp:BoundField>
+                            <asp:BoundField DataField="idEstatus" ItemStyle-Width="5px" >
+<ItemStyle Width="5px" ForeColor="#FFE0C0"></ItemStyle>
+                            </asp:BoundField>
                         </Columns>
                         <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
                              <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />

@@ -184,6 +184,8 @@ Public Class frmSinComprobante
                     Else
                         idCuentas = 0
                     End If
+                Else
+                    idCuentas = cmbCuentasBancarias.SelectedValue
                 End If
             End If
         Catch ex As Exception
@@ -844,6 +846,7 @@ Public Class frmSinComprobante
                 txtClabe.Enabled = True
                 chkContrato.Checked = False
                 tablaReferenciaBancaria.Visible = False
+                tablaContratos.Visible = True
 
                 odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
                 odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
@@ -1095,6 +1098,8 @@ Public Class frmSinComprobante
         Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+        Dim folio As String = "2283"
+        Dim cuenta As String = "170"
 
         Dim dtSolPDF As DataTable
         dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
@@ -1105,14 +1110,14 @@ Public Class frmSinComprobante
 
         Dim dtObsSol As DataTable
         dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), 2091)
-        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 2091, "No Pagada")
-        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), 2091)
-        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), 2091)
+        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), folio)
+        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), folio, "No Pagada")
+        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), folio)
+        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), folio)
 
         Dim dtCtasBanco As DataTable
         dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
-        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, 112)
+        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, cuenta)
 
         Dim var_observaciones As Integer = dtObsSol.Rows.Count
         Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
@@ -1127,10 +1132,10 @@ Public Class frmSinComprobante
 
         rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
         rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
-        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 2091))
+        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folio))
         rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
         rptSolPago.SetParameterValue("var_contrato", True)
-        rptSolPago.SetParameterValue("var_idCuentas", 112)
+        rptSolPago.SetParameterValue("var_idCuentas", cuenta)
 
         If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
             rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
@@ -1222,9 +1227,17 @@ Public Class frmSinComprobante
         If chkContrato.Checked = True Then
             If ddlMismoDeudor.SelectedIndex = 0 Then
                 Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
-                If lblTipar.Text.Trim <> "L" Or lblTipar.Text.Trim <> "S" Then
+                If lblTipar.Text.Trim <> "L" And lblTipar.Text.Trim <> "S" Then
 
                     validaEstatusProveedor(ddlProveedor.SelectedValue)
+                Else
+                    odsCuentasBancarias.FilterExpression = "idProveedor = '" & ddlProveedor.SelectedValue & "' AND estatus = 11"
+                    tablaAutorizante.Visible = True
+                    tablaContratos.Visible = True
+                    tablaDatosSol.Visible = True
+                    If btnSeleccionarProv.Enabled = True Then
+                        valida_Proveedor()
+                    End If
                 End If
             Else
                 validaEstatusProveedor(ddlProveedor.SelectedValue)
@@ -1452,6 +1465,8 @@ Public Class frmSinComprobante
         Response.Redirect("~/frmSinComprobante.aspx")
     End Sub
 
+    Protected Sub cmbCuentasBancarias_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCuentasBancarias.SelectedIndexChanged
 
+    End Sub
 End Class
 

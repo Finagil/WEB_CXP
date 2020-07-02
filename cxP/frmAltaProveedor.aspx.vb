@@ -461,40 +461,46 @@ Public Class frmAltaProveedor
             Exit Sub
         End If
         If ddlBanco.SelectedItem.Text = "SANTANDER" Then
-            If txtCuentaBancaria.Text.Trim.Length = 11 Then
-                If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
-                    lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+            If txtCuentaBancaria.Text.Trim <> String.Empty Then
+                If txtCuentaBancaria.Text.Trim.Length = 11 Then
+                    If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                Else
+                    lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
                     ModalPopupExtender1.Show()
                     Exit Sub
                 End If
-            Else
-                lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
-                ModalPopupExtender1.Show()
-                Exit Sub
             End If
         Else
-            If txtCuentaBancaria.Text.Trim.Length = 10 Then
-                If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
-                    lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+                If txtCuentaBancaria.Text.Trim <> String.Empty Then
+                If txtCuentaBancaria.Text.Trim.Length = 10 Then
+                    If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                Else
+                    lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
                     ModalPopupExtender1.Show()
                     Exit Sub
                 End If
-            Else
-                lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
-                ModalPopupExtender1.Show()
-                Exit Sub
             End If
         End If
-        If txtClabe.Text.Trim.Length = 18 Then
-            If IsNumeric(txtClabe.Text.Trim) = False Then
-                lblErrorGeneral.Text = "El valor ingresado como cuenta CLABE debe de ser numérico."
+        If txtClabe.Text.Trim <> String.Empty Then
+            If txtClabe.Text.Trim.Length = 18 Then
+                If IsNumeric(txtClabe.Text.Trim) = False Then
+                    lblErrorGeneral.Text = "El valor ingresado como cuenta CLABE debe de ser numérico."
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+            Else
+                lblErrorGeneral.Text = "La cuenta CLABE no tiene la longitud correcta."
                 ModalPopupExtender1.Show()
                 Exit Sub
             End If
-        Else
-            lblErrorGeneral.Text = "La cuenta CLABE no tiene la longitud correcta."
-            ModalPopupExtender1.Show()
-            Exit Sub
         End If
         If afuArcCta.HasFile Then
             Dim guuidCta As String = Guid.NewGuid.ToString
@@ -508,18 +514,18 @@ Public Class frmAltaProveedor
 
             Select Case txtAutorizado.Text.Trim
                 Case "AUTORIZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, Nothing)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                     enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text)
                 Case "PENDIENTE"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, Nothing)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                     enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text)
                 Case "NO AUTORIZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, Nothing)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                 Case "RECHAZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, Nothing)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                 Case ""
                     txtAutorizado.Text = "NO AUTORIZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, Nothing)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
             End Select
 
             GridView1.DataBind()
