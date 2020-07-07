@@ -3876,7 +3876,8 @@ GROUP BY estatus</CommandText>
                          CXP_CuentasBancariasProv.estatus, CXP_CuentasBancariasProv.fechaAutoriza1, CXP_CuentasBancariasProv.fechaAutoriza2, CXP_CuentasBancariasProv.fechaSolicita1, CXP_CuentasBancariasProv.fechaSolicita2, 
                          CXP_CuentasBancariasProv.idBanco, CXP_CuentasBancariasProv.idCuentas, CXP_CuentasBancariasProv.idProveedor, CXP_CuentasBancariasProv.moneda, CXP_CuentasBancariasProv.referencia, 
                          CXP_CuentasBancariasProv.usuarioAutoriza1, CXP_CuentasBancariasProv.usuarioAutoriza2, CXP_CuentasBancariasProv.usuarioSolicita1, CXP_CuentasBancariasProv.usuarioSolicita2, CXP_CuentasBancariasProv.vigente, 
-                         CXP_CuentasBancariasProv.descripcion + ' - ' + CXP_CuentasBancariasProv.cuenta + ' - ' + CXP_CuentasBancariasProv.clabe AS descrip
+                         CXP_CuentasBancariasProv.descripcion + ' - Cta: ' + ISNULL(CXP_CuentasBancariasProv.cuenta, '') + ' - CLABE: ' + ISNULL(CXP_CuentasBancariasProv.clabe, '') + ' - Convenio: ' + ISNULL(CXP_CuentasBancariasProv.convenio,
+                          '') + ' - Ref: ' + ISNULL(CXP_CuentasBancariasProv.referencia, '') AS descrip
 FROM            CXP_CuentasBancariasProv INNER JOIN
                          CXP_Bancos ON CXP_CuentasBancariasProv.idBanco = CXP_Bancos.idBancos</CommandText>
                     <Parameters />
@@ -7769,14 +7770,14 @@ ORDER BY idReg DESC</CommandText>
               <xs:element name="fechaAutoriza1" msprop:Generator_ColumnVarNameInTable="columnfechaAutoriza1" msprop:Generator_ColumnPropNameInRow="fechaAutoriza1" msprop:Generator_ColumnPropNameInTable="fechaAutoriza1Column" msprop:Generator_UserColumnName="fechaAutoriza1" type="xs:dateTime" minOccurs="0" />
               <xs:element name="fechaAutoriza2" msprop:Generator_ColumnVarNameInTable="columnfechaAutoriza2" msprop:Generator_ColumnPropNameInRow="fechaAutoriza2" msprop:Generator_ColumnPropNameInTable="fechaAutoriza2Column" msprop:Generator_UserColumnName="fechaAutoriza2" type="xs:dateTime" minOccurs="0" />
               <xs:element name="estatus" msprop:Generator_ColumnVarNameInTable="columnestatus" msprop:Generator_ColumnPropNameInRow="estatus" msprop:Generator_ColumnPropNameInTable="estatusColumn" msprop:Generator_UserColumnName="estatus" type="xs:decimal" minOccurs="0" />
-              <xs:element name="referencia" msprop:Generator_ColumnVarNameInTable="columnreferencia" msprop:Generator_ColumnPropNameInRow="referencia" msprop:Generator_ColumnPropNameInTable="referenciaColumn" msprop:Generator_UserColumnName="referencia" minOccurs="0">
+              <xs:element name="referencia" msprop:nullValue="_null" msprop:Generator_ColumnPropNameInRow="referencia" msprop:Generator_ColumnVarNameInTable="columnreferencia" msprop:Generator_ColumnPropNameInTable="referenciaColumn" msprop:Generator_UserColumnName="referencia" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="300" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="convenio" msprop:Generator_ColumnVarNameInTable="columnconvenio" msprop:Generator_ColumnPropNameInRow="convenio" msprop:Generator_ColumnPropNameInTable="convenioColumn" msprop:Generator_UserColumnName="convenio" minOccurs="0">
+              <xs:element name="convenio" msprop:nullValue="_null" msprop:Generator_ColumnPropNameInRow="convenio" msprop:Generator_ColumnVarNameInTable="columnconvenio" msprop:Generator_ColumnPropNameInTable="convenioColumn" msprop:Generator_UserColumnName="convenio" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="100" />

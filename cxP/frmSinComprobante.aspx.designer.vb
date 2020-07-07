@@ -311,15 +311,6 @@ Partial Public Class frmSinComprobante
     Protected WithEvents odsSaldosCts As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
-    '''Control cmbCuentasBancarias.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents cmbCuentasBancarias As Global.AjaxControlToolkit.ComboBox
-    
-    '''<summary>
     '''Control ddlClientes.
     '''</summary>
     '''<remarks>
@@ -444,6 +435,15 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents lbl69B As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''Control cmbCuentasBancarias.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cmbCuentasBancarias As Global.AjaxControlToolkit.ComboBox
     
     '''<summary>
     '''Control tablaAutorizante.

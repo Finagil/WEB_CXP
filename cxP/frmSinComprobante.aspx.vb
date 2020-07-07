@@ -838,7 +838,7 @@ Public Class frmSinComprobante
                 btnBuscar.Enabled = True
                 ddlProveedor.Enabled = True
                 btnSeleccionarProv.Enabled = True
-                cmbCuentasBancarias.Enabled = True
+                'cmbCuentasBancarias.Enabled = True
                 validaEstatusProveedor(ddlProveedor.SelectedValue)
                 tablaAutorizante.Visible = False
                 tablaDatosSol.Visible = False
@@ -847,11 +847,14 @@ Public Class frmSinComprobante
                 chkContrato.Checked = False
                 tablaReferenciaBancaria.Visible = False
                 tablaContratos.Visible = True
+                cmbCuentasBancarias.Enabled = False
 
                 odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
                 odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
                 cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
                 cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
+
+                'odsCuentasBancarias.FilterExpression = "idProveedor = '0'"
             Case 1 'mismo deudor
                 chkContrato.Enabled = False
                 txtBuscarProveedor.Enabled = False
@@ -906,9 +909,6 @@ Public Class frmSinComprobante
                 cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
                 cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
         End Select
-
-
-
     End Sub
 
     Protected Sub ddlConcepto_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlConcepto.SelectedIndexChanged
@@ -1276,11 +1276,14 @@ Public Class frmSinComprobante
                 tablaAutorizante.Visible = True
                 tablaContratos.Visible = True
                 tablaDatosSol.Visible = True
+
                 If btnSeleccionarProv.Enabled = True Then
                     valida_Proveedor()
                 End If
                 If chkContrato.Checked = False Then
                     cmbCuentasBancarias.Enabled = True
+                Else
+                    cmbCuentasBancarias.Enabled = False
                 End If
             End If
         End If
@@ -1349,11 +1352,43 @@ Public Class frmSinComprobante
                                 cmbCuentasBancarias.Enabled = True
                                 'obtieneDatosBancariosClienteProveedor()
                             ElseIf ddlMismoDeudor.SelectedIndex = 0 Then
-                                cmbCuentasBancarias.Enabled = True
+                                'cmbCuentasBancarias.Enabled = True
                                 'obtieneDatosBancariosClienteProveedor()
                             ElseIf ddlMismoDeudor.SelectedIndex = 1 Then
                                 cmbCuentasBancarias.Enabled = False
                             End If
+                        End If
+                    End If
+                End If
+            Else
+                If Not IsNothing(lblTipar) Then
+                    If chkContrato.Checked = True Then
+                        If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                            tablaReferenciaBancaria.Visible = True
+                            If Not IsNothing(lblCta) And Not IsNothing(lblBco) Then
+                                If ddlMismoDeudor.SelectedIndex = 2 Then
+                                    txtClabe.Text = lblCta.Text.Trim
+                                    odsBancos.FilterExpression = "nombreCorto = '" & lblBco.Text.Trim & "'"
+                                    txtClabe.Enabled = False
+                                    lblCta.Visible = False
+                                    ddlBancos.Enabled = False
+                                Else
+                                    lblCta.Visible = False
+                                End If
+                            End If
+                        Else
+                            tablaReferenciaBancaria.Visible = False
+                        End If
+                    Else
+                        tablaReferenciaBancaria.Visible = False
+                        If ddlMismoDeudor.SelectedIndex = 2 Then
+                            cmbCuentasBancarias.Enabled = True
+                            'obtieneDatosBancariosClienteProveedor()
+                        ElseIf ddlMismoDeudor.SelectedIndex = 0 Then
+                            'cmbCuentasBancarias.Enabled = True
+
+                        ElseIf ddlMismoDeudor.SelectedIndex = 1 Then
+                            cmbCuentasBancarias.Enabled = False
                         End If
                     End If
                 End If
@@ -1466,6 +1501,10 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub cmbCuentasBancarias_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCuentasBancarias.SelectedIndexChanged
+
+    End Sub
+
+    Protected Sub FormView3_PageIndexChanging(sender As Object, e As FormViewPageEventArgs) Handles FormView3.PageIndexChanging
 
     End Sub
 End Class

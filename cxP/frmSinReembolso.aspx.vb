@@ -437,15 +437,14 @@ Public Class frmSinReembolso
                         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) And taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
 
                             If cmbCuentasBancarias.SelectedIndex = -1 Then
-                                    lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
-                                    ModalPopupExtender1.Show()
-                                    Exit Sub
-                                Else
-                                    idCuentas = cmbCuentasBancarias.SelectedValue
-                                    datosBancarios = cmbCuentasBancarias.SelectedItem.Text
-                                End If
-
+                                lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
+                                ModalPopupExtender1.Show()
+                                Exit Sub
                             Else
+                                idCuentas = cmbCuentasBancarias.SelectedValue
+                                datosBancarios = cmbCuentasBancarias.SelectedItem.Text
+                            End If
+                        Else
                             datosBancarios = "SIN DATOS BANCARIOS"
                             cmbCuentasBancarias.Enabled = False
                             idCuentas = 0
@@ -1135,4 +1134,5 @@ Public Class frmSinReembolso
         Response.Write("</script>")
         rptSolPago.Dispose()
     End Sub
+
 End Class

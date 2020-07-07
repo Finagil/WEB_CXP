@@ -87,13 +87,7 @@
               text-align: center;
           }
           .auto-style71 {
-              width: 386px;
-          }
-          .auto-style72 {
-              width: 210px;
-          }
-          .auto-style74 {
-              width: 209px;
+              width: 548px;
           }
           .auto-style75 {
               width: 1187px;
@@ -105,10 +99,23 @@
           .auto-style81 {
               width: 295px;
           }
+          .auto-style83 {
+              width: 340px;
+          }
+          .auto-style84 {
+              width: 120px;
+          }
+          .auto-style85 {
+              width: 456px;
+          }
+          .auto-style86 {
+              width: 359px;
+              text-align: center;
+          }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    .<asp:ScriptManager ID="ScriptManager1" runat="server">
     </asp:ScriptManager>
         
     <div style="overflow-y:auto; height:90%; margin-bottom:5px;" id="contenedorID" runat="server">
@@ -238,12 +245,12 @@
                 </td></tr>
         </table>
 
-         <table runat="server" visible="false" id="tablaContratos" style="width: 95%;border-color:lightgray;; padding:5px; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style59">
-            <tr><td colspan="2" style="width: 25%">Contratos:&nbsp;
+         <table runat="server" visible="false" id="tablaContratos" style="width:95%; padding:5px; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style59">
+            <tr><td colspan="2" class="auto-style83">Contratos:&nbsp;
                     <asp:CheckBox ID="chkContrato" runat="server" Font-Names="Arial" Font-Size="Small" Text="¿Si?" AutoPostBack="True" />
                 &nbsp;
                 
-                </td><td class="auto-style72" style="width: 15%; font-size: small;">&nbsp;</td><td class="auto-style62" rowspan="2" style="width:50%;">Cuenta bancaria:<asp:ObjectDataSource ID="odsCuentasBancarias" runat="server" DeleteMethod="Delete" OldValuesParameterFormatString="original_{0}" SelectMethod="CuentasBancarias_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter">
+                </td><td class="auto-style69" style="font-size: small;">&nbsp;</td><td class="auto-style69" rowspan="2"><asp:ObjectDataSource ID="odsCuentasBancarias" runat="server" DeleteMethod="Delete" OldValuesParameterFormatString="original_{0}" SelectMethod="CuentasBancarias_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter">
                         <DeleteParameters>
                             <asp:Parameter Name="Original_idCuentas" Type="Decimal" />
                         </DeleteParameters>
@@ -263,14 +270,12 @@
                             <asp:ControlParameter ControlID="ddlContratos" Name="Anexo" PropertyName="SelectedValue" Type="String" DefaultValue="0" />
                         </SelectParameters>
                     </asp:ObjectDataSource>
-                    <ajaxToolkit:ComboBox ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: inline;" Width="500px" Font-Size="Small" DropDownStyle="DropDownList">
-                    </ajaxToolkit:ComboBox>
                     </td></tr>
-            <tr><td class="auto-style74" style="width: 25%">
-                    Cliente: <asp:DropDownList ID="ddlClientes" runat="server" AutoPostBack="True" DataSourceID="odsClientes" DataTextField="Descr" DataValueField="Cliente" Enabled="False" Width="250px">
+            <tr><td class="auto-style69">
+                    Cliente: <asp:DropDownList ID="ddlClientes" runat="server" AutoPostBack="True" DataSourceID="odsClientes" DataTextField="Descr" DataValueField="Cliente" Enabled="False" Width="300px">
                     </asp:DropDownList>
                 
-                        </td><td colspan="2" style="width: 15%">
+                        </td><td colspan="2" class="auto-style84">
                     Contrato:&nbsp;
                     <asp:DropDownList ID="ddlContratos" runat="server" DataSourceID="odsContratos" DataTextField="Anexo" DataValueField="Anexo" Enabled="False" AutoPostBack="True">
                     </asp:DropDownList>
@@ -288,7 +293,7 @@
                                     <asp:Label ID="saldoContrato" runat="server" Text='<%# Eval("SaldoContrato", "{0:C}") %>'></asp:Label><br />
                                 </ItemTemplate>
                             </asp:FormView>
-                            </td><td class="auto-style62" style="width:50%; font-size: small;">Tipo:<asp:FormView ID="FormView3" runat="server" DataSourceID="odsSaldosCts" EnableViewState="False" Font-Size="Small">
+                            </td><td class="auto-style69" style="font-size: small;">Tipo:<asp:FormView ID="FormView3" runat="server" DataSourceID="odsSaldosCts" EnableViewState="False" Font-Size="Small">
                                 <ItemTemplate>
                                     <asp:Label ID="tipoContrato" runat="server" Text='<%# Eval("Tipar") %>'></asp:Label><br />
                                 </ItemTemplate>
@@ -305,7 +310,7 @@
                     </asp:ObjectDataSource>
                 </td><td class="auto-style68" colspan="2">Estatus EFOS:<asp:ObjectDataSource ID="odsClientes" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ClientesAnexosActNoPagados_GetData" TypeName="cxP.dsProduccionTableAdapters.ClientesTableAdapter"></asp:ObjectDataSource>
                 </td></tr>
-            <tr><td class="auto-style69">
+            <tr><td class="auto-style85">
                     <asp:TextBox ID="txtBuscarProveedor" runat="server" Width="150px" Enabled="False"></asp:TextBox>
                     &nbsp;
                     <asp:Button ID="btnBuscar" runat="server" Text="    Buscar    " CssClass="Botones" Width="100px" Enabled="False" />
@@ -314,7 +319,7 @@
                     </asp:DropDownList>
                 &nbsp;&nbsp;&nbsp;
                     <asp:Button ID="btnSeleccionarProv" runat="server" Text="Seleccionar" CssClass="Botones" Width="90px" Enabled="False" />
-                </td><td class="auto-style70">
+                </td><td class="auto-style86">
                     <span style="color: rgb(0, 0, 0); font-family: Verdana; font-size: x-small; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Artículo 69 (Créditos fiscales)<br />
                     <asp:Label ID="lbl69" runat="server" ForeColor="Green" Font-Bold="True"></asp:Label>
                     </span>
@@ -323,6 +328,11 @@
                     <asp:Label ID="lbl69B" runat="server" ForeColor="Green" Font-Bold="True"></asp:Label>
                     </span>
                     </td></tr>
+            <tr><td class="auto-style85">
+                    Cuenta bancaria:</td><td colspan="3">
+                    <ajaxToolkit:ComboBox ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: inline;" Width="700px" Font-Size="Small" DropDownStyle="DropDownList" Enabled="False">
+                    </ajaxToolkit:ComboBox>
+                </td></tr>
         </table>
 
           <table visible="false" runat="server" id="tablaAutorizante" style="width: 95%;padding:5px; border-radius:3px; border-style: groove; border-width: 3px; border-color:lightgray; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style59">
