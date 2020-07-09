@@ -120,12 +120,12 @@ Public Class frmAltaProveedor
             End If
 
             If taUsuarios.ExisteUsuario_ScalarQuery(rowsProveedores2.rfc) <> "NE" Then
-                    Session.Item("rfcEmpleado") = rowsProveedores2.rfc
-                Else
-                    Session.Item("rfcEmpleado") = "NE"
-                End If
-
+                Session.Item("rfcEmpleado") = rowsProveedores2.rfc
+            Else
+                Session.Item("rfcEmpleado") = "NE"
             End If
+
+        End If
 
         If tableProveedores2.Rows.Count = 0 Then
             tablaCuentas.Visible = False
@@ -168,7 +168,7 @@ Public Class frmAltaProveedor
                 Session.Item("tipoPersona") = "C"
             End If
         Else
-                Session.Item("tipoPersona") = "E"
+            Session.Item("tipoPersona") = "E"
         End If
         divDetalles.Visible = True
     End Sub
@@ -448,7 +448,7 @@ Public Class frmAltaProveedor
                 Session.Item("tipoPersona") = "C"
             End If
         Else
-                Session.Item("tipoPersona") = "E"
+            Session.Item("tipoPersona") = "E"
         End If
     End Sub
 
@@ -460,41 +460,43 @@ Public Class frmAltaProveedor
             ModalPopupExtender1.Show()
             Exit Sub
         End If
-        If ddlBanco.SelectedItem.Text = "SANTANDER" Then
-            If txtCuentaBancaria.Text.Trim <> String.Empty Then
-                If txtCuentaBancaria.Text.Trim.Length = 11 Then
-                    If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
-                        lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    End If
-                Else
-                    lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
-                    ModalPopupExtender1.Show()
-                    Exit Sub
-                End If
-            End If
-        Else
-                If txtCuentaBancaria.Text.Trim <> String.Empty Then
-                If txtCuentaBancaria.Text.Trim.Length = 10 Then
-                    If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
-                        lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    End If
-                Else
-                    lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
-                    ModalPopupExtender1.Show()
-                    Exit Sub
-                End If
-            End If
-        End If
+        'If ddlBanco.SelectedItem.Text = "SANTANDER" Then
+        '    If txtCuentaBancaria.Text.Trim <> String.Empty Then
+        '        If txtCuentaBancaria.Text.Trim.Length = 11 Then
+        '            If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
+        '                lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+        '                ModalPopupExtender1.Show()
+        '                Exit Sub
+        '            End If
+        '        Else
+        '            lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
+        '            ModalPopupExtender1.Show()
+        '            Exit Sub
+        '        End If
+        '    End If
+        'Else
+        '    If txtCuentaBancaria.Text.Trim <> String.Empty Then
+        '        If txtCuentaBancaria.Text.Trim.Length = 10 Then
+        '            If IsNumeric(txtCuentaBancaria.Text.Trim) = False Then
+        '                lblErrorGeneral.Text = "El valor ingresado como cuenta bancaria debe de ser numérico."
+        '                ModalPopupExtender1.Show()
+        '                Exit Sub
+        '            End If
+        '        Else
+        '            lblErrorGeneral.Text = "La cuenta bancaria no tiene la longitud correcta."
+        '            ModalPopupExtender1.Show()
+        '            Exit Sub
+        '        End If
+        '    End If
+        'End If
         If txtClabe.Text.Trim <> String.Empty Then
             If txtClabe.Text.Trim.Length = 18 Then
                 If IsNumeric(txtClabe.Text.Trim) = False Then
                     lblErrorGeneral.Text = "El valor ingresado como cuenta CLABE debe de ser numérico."
                     ModalPopupExtender1.Show()
                     Exit Sub
+                Else
+                    txtCuentaBancaria.Text = txtClabe.Text.Substring(6, 11)
                 End If
             Else
                 lblErrorGeneral.Text = "La cuenta CLABE no tiene la longitud correcta."
@@ -529,8 +531,8 @@ Public Class frmAltaProveedor
             End Select
 
             GridView1.DataBind()
-            Else
-                lblErrorGeneral.Text = "Es necesario adjuntar el archivo correspondiente al estado de cuenta bancario en formato PDF."
+        Else
+            lblErrorGeneral.Text = "Es necesario adjuntar el archivo correspondiente al estado de cuenta bancario en formato PDF."
             ModalPopupExtender1.Show()
             Exit Sub
         End If
@@ -647,6 +649,29 @@ Public Class frmAltaProveedor
                         "</tr></table><HR width=20%>" &
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
+
+                'Notificación de alta por tesorería
+                If Session.Item("Usuario") = "atorres" Or Session.Item("Usuario") = "gisvazquez" Then
+                    mensaje = "<html><body><font size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" &
+                    "<h1><font size=3 align" & Chr(34) & "center" & Chr(34) & ">" & "Estimado (a), le notificamos que se ha generado la solicitud de alta del proveedor con los siguientes datos: </font></h1>" &
+                     "<table  align=" & Chr(34) & "center" & Chr(34) & " border=1 cellspacing=0 cellpadding=2>" &
+                    "<tr>" &
+                        "<td>Razón Social</td>" &
+                        "<td>RFC</td>" &
+                    "</tr>" &
+                    "<tr>" &
+                            "<td>" & txtRazonSocial.Text.Trim & "</td>" &
+                            "<td>" & txtRfc.Text.Trim & "</td>" &
+                        "</tr></table><HR width=20%>" &
+                   "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
+                     "</body></html>"
+
+                    tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@lamoderna.com.mx", "Solicitud de alta de proveedor (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+                    tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@finagil.com.mx", "Solicitud de alta de proveedor (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+                    tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de alta de proveedor (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+                    tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de alta de proveedor (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+                End If
+
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", Session.Item("mailUsuarioS"), "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
                 tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de alta de proveedor", mensaje, False, Date.Now.ToLongDateString, "")
@@ -702,9 +727,9 @@ Public Class frmAltaProveedor
             GridView1.DataBind()
         Else
             lblErrorGeneral.Text = "Es necesario adjuntar el archivo correspondiente al estado de cuenta bancario en formato PDF."
-                    ModalPopupExtender1.Show()
-                    Exit Sub
-                End If
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End If
         GridView2.DataBind()
         'btnActualizarArch.Enabled = False
     End Sub
@@ -849,6 +874,15 @@ Public Class frmAltaProveedor
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
+
+        'Notificación de alta por tesorería
+        If Session.Item("Usuario") = "atorres" Or Session.Item("Usuario") = "gisvazquez" Then
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@lamoderna.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+        End If
+
     End Sub
 
     Protected Sub enviaCorreoDocumentos(documento As String)
@@ -876,6 +910,13 @@ Public Class frmAltaProveedor
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+        'Notificación de alta por tesorería
+        If Session.Item("Usuario") = "atorres" Or Session.Item("Usuario") = "gisvazquez" Then
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de bloqueo de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@finagil.com.mx", "Solicitud de bloqueo de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+        End If
     End Sub
 
     Protected Sub enviaCorreoCuentasBancariasActiv(banco As String, moneda As String, cuenta As String, clabe As String)
@@ -915,6 +956,12 @@ Public Class frmAltaProveedor
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
+        If Session.Item("Usuario") = "atorres" Or Session.Item("Usuario") = "gisvazquez" Then
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+        End If
     End Sub
 
     Protected Sub enviaCorreoDocumentosActive(documento As String)
@@ -942,6 +989,13 @@ Public Class frmAltaProveedor
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
+
+        If Session.Item("Usuario") = "atorres" Or Session.Item("Usuario") = "gisvazquez" Then
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de activación de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@finagil.com.mx", "Solicitud de activación de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de documentos (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+        End If
     End Sub
 
     Protected Sub validaYCambiaEstatus(idProveedor As String, rfcP As String)
@@ -962,7 +1016,7 @@ Public Class frmAltaProveedor
                 tipoPersona = "C"
             End If
         Else
-                tipoPersona = "E"
+            tipoPersona = "E"
         End If
 
         If taDctos.ObtNoDoctsObligXProv_ScalarQuery(idProveedor) = taDocn.NoDoctosOblig_ScalarQuery(tipoPersona) Then
@@ -1020,7 +1074,11 @@ Public Class frmAltaProveedor
                 Else
                 End If
             End If
-            End If
+        End If
+    End Sub
+
+    Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
+
     End Sub
 End Class
 

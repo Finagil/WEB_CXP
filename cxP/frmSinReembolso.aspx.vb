@@ -153,6 +153,20 @@ Public Class frmSinReembolso
             Exit Sub
         End If
 
+        'Nuevo para cuentas bancarias
+        'Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
+        'MsgBox(lblTipar.Text)
+        'If Not IsNothing(lblTipar) Then
+
+        If taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
+                    idCuentas = cmbCuentasBancarias.SelectedValue
+                Else
+                    idCuentas = 0
+                End If
+
+        'End If
+        '/*****
+
         Dim mail As String = "#" & taGenFasesCorreo.ObtieneCorreo_ScalarQuery(ddlAutorizo.SelectedValue)
         Dim nombreAutorizante2 As String = taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("OPERACIONES_CXP") 'taGenFasesCorreo.ObtienNombre_ScalarQuery(ddlAutorizo.SelectedValue)
         If ddlAutorizo.SelectedItem.Text <> "" Then
@@ -1091,14 +1105,14 @@ Public Class frmSinReembolso
 
         Dim dtObsSol As DataTable
         dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(1030))
-        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 1030, "No Pagada")
-        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CDec(1030))
-        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CDec(1030))
+        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(1047))
+        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 1047, "No Pagada")
+        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CDec(1047))
+        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CDec(1047))
 
         Dim dtCtasBanco As DataTable
         dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
-        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, 0)
+        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, 216)
 
         Dim var_observaciones As Integer = dtObsSol.Rows.Count
         Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
@@ -1113,10 +1127,10 @@ Public Class frmSinReembolso
 
         rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
         rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
-        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 1030))
+        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 1047))
         rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
         rptSolPago.SetParameterValue("var_contrato", chkContrato.Checked)
-        rptSolPago.SetParameterValue("var_idCuentas", 0)
+        rptSolPago.SetParameterValue("var_idCuentas", 216)
 
         If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
             rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))

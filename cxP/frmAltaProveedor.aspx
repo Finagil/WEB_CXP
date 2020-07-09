@@ -377,7 +377,7 @@
                         </asp:BoundField>
                         <asp:TemplateField HeaderStyle-Width="35px">
                                     <ItemTemplate> 
-                                         <asp:HyperLink NavigateUrl='<%# Eval("archivo1", "~/TmpFinagil/FilesProv/" & "{0}.pdf") %>' ID="btnVerCta" runat="server" Text="VerPDF" CssClass="BotonesGrid" TextoEnviando="Env" Target="_blank"/>
+                                         <asp:HyperLink NavigateUrl='<%# Eval("archivo1", "~/TmpFinagil/FilesProv/" & "{0}.pdf#toolbar=0") %>' ID="btnVerCta" runat="server" Text="VerPDF" CssClass="BotonesGrid" TextoEnviando="Env" Target="_blank"/>
                                    </ItemTemplate>
                         <HeaderStyle Width="35px"></HeaderStyle>
                         </asp:TemplateField>
@@ -569,7 +569,7 @@
                         </asp:ObjectDataSource>
                     </td>
                     <td>
-                        <asp:TextBox ID="txtCuentaBancaria" runat="server" Width="100px"></asp:TextBox>
+                        <asp:TextBox ID="txtCuentaBancaria" runat="server" Width="100px" Enabled="False" ReadOnly="True"></asp:TextBox>
                     </td>
                     <td>
                         <asp:TextBox ID="txtClabe" runat="server" Width="150px"></asp:TextBox>
@@ -663,7 +663,7 @@
                             <asp:BoundField DataField="descripcion" HeaderText="Tipo Documento" SortExpression="uuid" />
                              <asp:TemplateField HeaderStyle-Width="35px">
                                     <ItemTemplate> 
-                                         <asp:HyperLink NavigateUrl='<%# Eval("uuid", "~/TmpFinagil/FilesProv/" & "{0}.pdf") %>' ID="btnVerProvArc" runat="server" Text="VerPDF" CssClass="BotonesGrid" TextoEnviando="Env" Target="_blank"/>
+                                         <asp:HyperLink NavigateUrl='<%# Eval("uuid", "~/TmpFinagil/FilesProv/" & "{0}.pdf#toolbar=0") %>' ID="btnVerProvArc" runat="server" Text="VerPDF" CssClass="BotonesGrid" TextoEnviando="Env" Target="_blank"/>
                                    </ItemTemplate>
                         <HeaderStyle Width="35px"></HeaderStyle>
                         </asp:TemplateField>

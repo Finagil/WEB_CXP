@@ -163,6 +163,7 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub btnSolicitar_Click(sender As Object, e As EventArgs) Handles btnSolicitar.Click
+        Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
         Dim guuidAdjuntoCtas As String = Guid.NewGuid.ToString
         Try
 
@@ -185,7 +186,11 @@ Public Class frmSinComprobante
                         idCuentas = 0
                     End If
                 Else
-                    idCuentas = cmbCuentasBancarias.SelectedValue
+                    If taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
+                        idCuentas = cmbCuentasBancarias.SelectedValue
+                    Else
+                        idCuentas = 0
+                    End If
                 End If
             End If
         Catch ex As Exception
@@ -202,7 +207,7 @@ Public Class frmSinComprobante
             Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
 
             Dim taRegContable As New dsProduccionTableAdapters.CXP_RegContTableAdapter
-            Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
+            'Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
             Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
             Dim taGenFasesCorreo As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
             Dim taCFDI As New dsProduccionTableAdapters.CXP_XmlCfdi2TableAdapter
