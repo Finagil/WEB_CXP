@@ -23,15 +23,6 @@ Partial Public Class frmSinComprobante
     Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
     
     '''<summary>
-    '''Control contenedorID.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents contenedorID As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-    
-    '''<summary>
     '''Control pnlMensajeError.
     '''</summary>
     '''<remarks>
@@ -302,15 +293,6 @@ Partial Public Class frmSinComprobante
     Protected WithEvents odsDatosCuenta As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
-    '''Control odsSaldosCts.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents odsSaldosCts As Global.System.Web.UI.WebControls.ObjectDataSource
-    
-    '''<summary>
     '''Control ddlClientes.
     '''</summary>
     '''<remarks>
@@ -318,6 +300,24 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents ddlClientes As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
+    '''Control lbl69.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbl69 As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''Control odsSaldosCts.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsSaldosCts As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control ddlContratos.
@@ -329,6 +329,15 @@ Partial Public Class frmSinComprobante
     Protected WithEvents ddlContratos As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
+    '''Control lbl69B.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbl69B As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
     '''Control FormView2.
     '''</summary>
     '''<remarks>
@@ -336,6 +345,15 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents FormView2 As Global.System.Web.UI.WebControls.FormView
+    
+    '''<summary>
+    '''Control odsFormaPago.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsFormaPago As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control FormView1.
@@ -419,85 +437,13 @@ Partial Public Class frmSinComprobante
     Protected WithEvents btnSeleccionarProv As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
-    '''Control lbl69.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents lbl69 As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''Control lbl69B.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents lbl69B As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
     '''Control cmbCuentasBancarias.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents cmbCuentasBancarias As Global.AjaxControlToolkit.ComboBox
-    
-    '''<summary>
-    '''Control tablaAutorizante.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents tablaAutorizante As Global.System.Web.UI.HtmlControls.HtmlTable
-    
-    '''<summary>
-    '''Control odsAutorizantes.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents odsAutorizantes As Global.System.Web.UI.WebControls.ObjectDataSource
-    
-    '''<summary>
-    '''Control odsCentroDeCostos.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents odsCentroDeCostos As Global.System.Web.UI.WebControls.ObjectDataSource
-    
-    '''<summary>
-    '''Control odsFormaPago.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents odsFormaPago As Global.System.Web.UI.WebControls.ObjectDataSource
-    
-    '''<summary>
-    '''Control ddlAutorizo.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ddlAutorizo As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''Control cmbCentroDeCostos.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents cmbCentroDeCostos As Global.AjaxControlToolkit.ComboBox
+    Protected WithEvents cmbCuentasBancarias As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
     '''Control cmbFormaPago.
@@ -506,7 +452,7 @@ Partial Public Class frmSinComprobante
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents cmbFormaPago As Global.AjaxControlToolkit.ComboBox
+    Protected WithEvents cmbFormaPago As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
     '''Control txtFechaPago.
@@ -525,6 +471,42 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents cexFechaPago As Global.AjaxControlToolkit.CalendarExtender
+    
+    '''<summary>
+    '''Control ddlAutorizo.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlAutorizo As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
+    '''Control odsAutorizantes.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsAutorizantes As Global.System.Web.UI.WebControls.ObjectDataSource
+    
+    '''<summary>
+    '''Control cmbCentroDeCostos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cmbCentroDeCostos As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
+    '''Control odsCentroDeCostos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsCentroDeCostos As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
     '''Control tablaReferenciaBancaria.
@@ -588,6 +570,15 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents txtClabe As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control txtConvenio.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtConvenio As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''Control txtReferencia.

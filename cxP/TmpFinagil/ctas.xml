@@ -1,14 +1,15 @@
 <?xml version="1.0" standalone="yes"?>
 <DocumentElement>
   <CXP_CuentasBancariasProv>
-    <idCuentas>170</idCuentas>
+    <idCuentas>370</idCuentas>
     <idBanco>4</idBanco>
-    <cuenta />
-    <clabe>012233028670963482</clabe>
-    <descripcion>PAGO CTOS 055270001</descripcion>
-    <moneda />
+    <cuenta>00444596900</cuenta>
+    <clabe>012420004445969008</clabe>
+    <descripcion>Bancomer</descripcion>
+    <moneda>MXN</moneda>
     <referencia />
-    <c_NombreMoneda />
+    <convenio />
+    <c_NombreMoneda>Peso Mexicano</c_NombreMoneda>
     <nombreCorto>BBVA BANCOMER</nombreCorto>
   </CXP_CuentasBancariasProv>
 </DocumentElement>

@@ -115,7 +115,7 @@ Public Class frmMisSolicitudesSC
                 'dsProd.CXP_Pagos.GetChanges()
                 'taPagos.Update(dsProd.CXP_Pagos)
 
-                taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
+                taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", CDec(rows.totalPagado * -1), rows.folioSolicitud, rows.uuid)
             Next
 
 

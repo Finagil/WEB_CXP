@@ -61,7 +61,7 @@ Public Class frmMisSolicitudesSCR
                                (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1,
                                rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, False, rows.noContrato, rows.idAutoriza2, rows.naAutoriza2,
                                rows.naAutoriza1, rows.cCostos, rows.fPago, rows.idCuentas)
-                taPagos.ActualizaACancelada_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
+                taPagos.ActualizaACanceladaReemb_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
 
                 contrato = rows.contrato
                 fecha = rows.fechaSolicitud.ToString("yyyyMMddhhmm")

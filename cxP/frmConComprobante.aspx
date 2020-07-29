@@ -15,7 +15,7 @@ $('a[href*="#"]')
 not('[href="#0"]').
 click(function (event) {
   // On-page links
-  if (
+    if (<a href="frmConComprobante.aspx">frmConComprobante.aspx</a>
   location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') &&
 
   location.hostname == this.hostname)
@@ -45,7 +45,7 @@ click(function (event) {
   }
 });
 //# sourceURL=pen.js
-    </script>
+</script>
 <script src="https://static.codepen.io/assets/editor/iframe/iframeRefreshCSS-e03f509ba0a671350b4b363ff105b2eb009850f34a2b4deaadaa63ed5d970b37.js"></script>
 
    
@@ -137,6 +137,9 @@ click(function (event) {
             width: 298px;
             text-align: center;
         }
+        .auto-style90 {
+              width: 16%;
+          }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -196,11 +199,143 @@ click(function (event) {
                 <td  >
 
                     <span style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #FFFFFF; background-color: #F58220;color: rgb(0, 0, 0); font-family: Arial; font-size: x-small; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">
-                    <asp:ObjectDataSource ID="proveedores" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtProv_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_ProveedoresTableAdapter">
+                    <asp:ObjectDataSource ID="proveedores" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtProv_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_ProveedoresTableAdapter" DeleteMethod="Delete" InsertMethod="Insert" UpdateMethod="Update">
+                        <DeleteParameters>
+                            <asp:Parameter Name="Original_idProveedor" Type="Decimal" />
+                            <asp:Parameter Name="Original_rfc" Type="String" />
+                            <asp:Parameter Name="Original_nit" Type="String" />
+                            <asp:Parameter Name="Original_curp" Type="String" />
+                            <asp:Parameter Name="Original_razonSocial" Type="String" />
+                            <asp:Parameter Name="Original_idSucursal" Type="String" />
+                            <asp:Parameter Name="Original_relacionado" Type="Boolean" />
+                            <asp:Parameter Name="Original_cuentaContablePagar" Type="String" />
+                            <asp:Parameter Name="Original_montoMaxTransaccion" Type="Decimal" />
+                            <asp:Parameter Name="Original_extranjero" Type="Boolean" />
+                            <asp:Parameter Name="Original_nacionalidad" Type="String" />
+                            <asp:Parameter Name="Original_fechaRegistro" Type="DateTime" />
+                            <asp:Parameter Name="Original_mail" Type="String" />
+                            <asp:Parameter Name="Original_empresa" Type="String" />
+                            <asp:Parameter Name="Original_banco" Type="String" />
+                            <asp:Parameter Name="Original_cuentaBancaria" Type="String" />
+                            <asp:Parameter Name="Original_Clabe" Type="String" />
+                            <asp:Parameter Name="Original_activo" Type="Boolean" />
+                            <asp:Parameter Name="Original_autorizado" Type="Boolean" />
+                            <asp:Parameter Name="Original_calle" Type="String" />
+                            <asp:Parameter Name="Original_colonia" Type="String" />
+                            <asp:Parameter Name="Original_localidad" Type="String" />
+                            <asp:Parameter Name="Original_delegacion" Type="String" />
+                            <asp:Parameter Name="Original_estado" Type="String" />
+                            <asp:Parameter Name="Original_pais" Type="String" />
+                            <asp:Parameter Name="Original_cp" Type="String" />
+                            <asp:Parameter Name="Original_activoS" Type="String" />
+                            <asp:Parameter Name="Original_autorizadoS" Type="String" />
+                            <asp:Parameter Name="Original_usuarioSolicita" Type="String" />
+                            <asp:Parameter Name="Original_motivoRechazo" Type="String" />
+                            <asp:Parameter Name="Original_autorizaP1" Type="String" />
+                            <asp:Parameter Name="Original_autorizaP2" Type="String" />
+                        </DeleteParameters>
+                        <InsertParameters>
+                            <asp:Parameter Name="rfc" Type="String" />
+                            <asp:Parameter Name="nit" Type="String" />
+                            <asp:Parameter Name="curp" Type="String" />
+                            <asp:Parameter Name="razonSocial" Type="String" />
+                            <asp:Parameter Name="idSucursal" Type="String" />
+                            <asp:Parameter Name="relacionado" Type="Boolean" />
+                            <asp:Parameter Name="cuentaContablePagar" Type="String" />
+                            <asp:Parameter Name="montoMaxTransaccion" Type="Decimal" />
+                            <asp:Parameter Name="extranjero" Type="Boolean" />
+                            <asp:Parameter Name="nacionalidad" Type="String" />
+                            <asp:Parameter Name="fechaRegistro" Type="DateTime" />
+                            <asp:Parameter Name="mail" Type="String" />
+                            <asp:Parameter Name="empresa" Type="String" />
+                            <asp:Parameter Name="banco" Type="String" />
+                            <asp:Parameter Name="cuentaBancaria" Type="String" />
+                            <asp:Parameter Name="Clabe" Type="String" />
+                            <asp:Parameter Name="activo" Type="Boolean" />
+                            <asp:Parameter Name="autorizado" Type="Boolean" />
+                            <asp:Parameter Name="calle" Type="String" />
+                            <asp:Parameter Name="colonia" Type="String" />
+                            <asp:Parameter Name="localidad" Type="String" />
+                            <asp:Parameter Name="delegacion" Type="String" />
+                            <asp:Parameter Name="estado" Type="String" />
+                            <asp:Parameter Name="pais" Type="String" />
+                            <asp:Parameter Name="cp" Type="String" />
+                            <asp:Parameter Name="activoS" Type="String" />
+                            <asp:Parameter Name="autorizadoS" Type="String" />
+                            <asp:Parameter Name="usuarioSolicita" Type="String" />
+                            <asp:Parameter Name="motivoRechazo" Type="String" />
+                            <asp:Parameter Name="autorizaP1" Type="String" />
+                            <asp:Parameter Name="autorizaP2" Type="String" />
+                        </InsertParameters>
                         <SelectParameters>
-                            <asp:SessionParameter Name="idSucursal" SessionField="idSucursal" Type="String" />
-                            <asp:SessionParameter Name="empresa" SessionField="empresa" Type="String" />
+                            <asp:SessionParameter DefaultValue="" Name="idSucursal" SessionField="idSucrusal" Type="String" />
+                            <asp:SessionParameter DefaultValue="" Name="empresa" SessionField="empresa" Type="String" />
                         </SelectParameters>
+                        <UpdateParameters>
+                            <asp:Parameter Name="rfc" Type="String" />
+                            <asp:Parameter Name="nit" Type="String" />
+                            <asp:Parameter Name="curp" Type="String" />
+                            <asp:Parameter Name="razonSocial" Type="String" />
+                            <asp:Parameter Name="idSucursal" Type="String" />
+                            <asp:Parameter Name="relacionado" Type="Boolean" />
+                            <asp:Parameter Name="cuentaContablePagar" Type="String" />
+                            <asp:Parameter Name="montoMaxTransaccion" Type="Decimal" />
+                            <asp:Parameter Name="extranjero" Type="Boolean" />
+                            <asp:Parameter Name="nacionalidad" Type="String" />
+                            <asp:Parameter Name="fechaRegistro" Type="DateTime" />
+                            <asp:Parameter Name="mail" Type="String" />
+                            <asp:Parameter Name="empresa" Type="String" />
+                            <asp:Parameter Name="banco" Type="String" />
+                            <asp:Parameter Name="cuentaBancaria" Type="String" />
+                            <asp:Parameter Name="Clabe" Type="String" />
+                            <asp:Parameter Name="activo" Type="Boolean" />
+                            <asp:Parameter Name="autorizado" Type="Boolean" />
+                            <asp:Parameter Name="calle" Type="String" />
+                            <asp:Parameter Name="colonia" Type="String" />
+                            <asp:Parameter Name="localidad" Type="String" />
+                            <asp:Parameter Name="delegacion" Type="String" />
+                            <asp:Parameter Name="estado" Type="String" />
+                            <asp:Parameter Name="pais" Type="String" />
+                            <asp:Parameter Name="cp" Type="String" />
+                            <asp:Parameter Name="activoS" Type="String" />
+                            <asp:Parameter Name="autorizadoS" Type="String" />
+                            <asp:Parameter Name="usuarioSolicita" Type="String" />
+                            <asp:Parameter Name="motivoRechazo" Type="String" />
+                            <asp:Parameter Name="autorizaP1" Type="String" />
+                            <asp:Parameter Name="autorizaP2" Type="String" />
+                            <asp:Parameter Name="Original_idProveedor" Type="Decimal" />
+                            <asp:Parameter Name="Original_rfc" Type="String" />
+                            <asp:Parameter Name="Original_nit" Type="String" />
+                            <asp:Parameter Name="Original_curp" Type="String" />
+                            <asp:Parameter Name="Original_razonSocial" Type="String" />
+                            <asp:Parameter Name="Original_idSucursal" Type="String" />
+                            <asp:Parameter Name="Original_relacionado" Type="Boolean" />
+                            <asp:Parameter Name="Original_cuentaContablePagar" Type="String" />
+                            <asp:Parameter Name="Original_montoMaxTransaccion" Type="Decimal" />
+                            <asp:Parameter Name="Original_extranjero" Type="Boolean" />
+                            <asp:Parameter Name="Original_nacionalidad" Type="String" />
+                            <asp:Parameter Name="Original_fechaRegistro" Type="DateTime" />
+                            <asp:Parameter Name="Original_mail" Type="String" />
+                            <asp:Parameter Name="Original_empresa" Type="String" />
+                            <asp:Parameter Name="Original_banco" Type="String" />
+                            <asp:Parameter Name="Original_cuentaBancaria" Type="String" />
+                            <asp:Parameter Name="Original_Clabe" Type="String" />
+                            <asp:Parameter Name="Original_activo" Type="Boolean" />
+                            <asp:Parameter Name="Original_autorizado" Type="Boolean" />
+                            <asp:Parameter Name="Original_calle" Type="String" />
+                            <asp:Parameter Name="Original_colonia" Type="String" />
+                            <asp:Parameter Name="Original_localidad" Type="String" />
+                            <asp:Parameter Name="Original_delegacion" Type="String" />
+                            <asp:Parameter Name="Original_estado" Type="String" />
+                            <asp:Parameter Name="Original_pais" Type="String" />
+                            <asp:Parameter Name="Original_cp" Type="String" />
+                            <asp:Parameter Name="Original_activoS" Type="String" />
+                            <asp:Parameter Name="Original_autorizadoS" Type="String" />
+                            <asp:Parameter Name="Original_usuarioSolicita" Type="String" />
+                            <asp:Parameter Name="Original_motivoRechazo" Type="String" />
+                            <asp:Parameter Name="Original_autorizaP1" Type="String" />
+                            <asp:Parameter Name="Original_autorizaP2" Type="String" />
+                        </UpdateParameters>
                     </asp:ObjectDataSource>
                     </span>
                 </td>
@@ -537,12 +672,12 @@ click(function (event) {
                         
                         </td>
                 <td class="auto-style77">
-                    <ajaxToolkit:ComboBox ID="cmbCentroDeCostos" runat="server"  DataSourceID="odsCentroCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" Font-Size="Small" MaxLength="0" style="display: inline;" Width="250px" RenderMode="Block" Visible="False" DropDownStyle="DropDownList">
-                    </ajaxToolkit:ComboBox>
+                    <asp:DropDownList ID="cmbCentroDeCostos" runat="server"  DataSourceID="odsCentroCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" Font-Size="Small" MaxLength="0" style="display: inline;" Width="250px" RenderMode="Block" Visible="False" DropDownStyle="DropDownList">
+                    </asp:DropDownList>
                 </td>
                 <td class="auto-style78">
-                    <ajaxToolkit:ComboBox ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" Font-Size="Small" MaxLength="0" style="display: inline;" Width="250px" RenderMode="Block" Visible="False" AutoCompleteMode="Suggest" DropDownStyle="DropDownList" AutoPostBack="True">
-                    </ajaxToolkit:ComboBox>
+                    <asp:DropDownList ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" Font-Size="Small" MaxLength="0" style="display: inline;" Width="250px" RenderMode="Block" Visible="False" AutoCompleteMode="Suggest" DropDownStyle="DropDownList" AutoPostBack="True">
+                    </asp:DropDownList>
                 </td>
                 <td class="auto-style78">
                             <asp:TextBox ID="txtFechaPago" runat="server" Visible="False" Width="250px" ></asp:TextBox> <ajaxToolkit:CalendarExtender ID="cexFechaPago" runat="server" TargetControlID="txtFechaPago" TodaysDateFormat="MMMM, yyyy" Format="dd/MM/yyyy" />
@@ -551,6 +686,76 @@ click(function (event) {
         </table>
             </div>
         <div visible="false" id="divCtaBancaria" runat="server">
+            <table visible="false" runat="server" id="tablaReferenciaBancaria" style="border-color:lightgray;width:95%; padding:5px; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style75">
+        <tr>
+            <td class="auto-style90">Banco:
+                <asp:FormView ID="FormView5" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
+                    <ItemTemplate>
+                        <asp:Label ID="Banco" runat="server" Text='<%# Bind("Banco") %>' />
+                    </ItemTemplate>
+                </asp:FormView>
+            </td>
+            <td class="auto-style90">Cuenta:
+
+             </td>
+            <td class="auto-style90">CLABE:
+                <asp:FormView ID="FormView4" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
+                    <ItemTemplate>
+                        <asp:Label ID="CuentaCLABELabel" runat="server" Text='<%# Bind("CuentaCLABE") %>' />
+                    </ItemTemplate>
+                </asp:FormView>
+             </td>
+            <td class="auto-style90">Convenio:</td>
+            <td class="auto-style90">Referencia:
+
+             </td>
+            <td class="auto-style90">Adjunto:<asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
+                    <DeleteParameters>
+                        <asp:Parameter Name="Original_idBancos" Type="Decimal" />
+                    </DeleteParameters>
+                    <InsertParameters>
+                        <asp:Parameter Name="claveBancos" Type="String" />
+                        <asp:Parameter Name="nombreCorto" Type="String" />
+                        <asp:Parameter Name="razonSocial" Type="String" />
+                        <asp:Parameter Name="rfc" Type="String" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="claveBancos" Type="String" />
+                        <asp:Parameter Name="nombreCorto" Type="String" />
+                        <asp:Parameter Name="razonSocial" Type="String" />
+                        <asp:Parameter Name="rfc" Type="String" />
+                        <asp:Parameter Name="Original_idBancos" Type="Decimal" />
+                    </UpdateParameters>
+                </asp:ObjectDataSource>
+
+             </td>
+        </tr>
+        <tr>
+            <td class="auto-style90">
+                <asp:DropDownList ID="ddlBancos" runat="server" DataSourceID="odsBancos" DataTextField="nombreCorto" DataValueField="idBancos" Width="90%">
+                </asp:DropDownList>
+
+             </td>
+            <td class="auto-style90">
+                <asp:TextBox ID="txtCuenta" runat="server" Width="90%" Enabled="False" ReadOnly="True"></asp:TextBox>
+            </td>
+            <td class="auto-style90">
+                <asp:TextBox ID="txtClabe" runat="server" Width="90%" Enabled="False" ReadOnly="True"></asp:TextBox>
+            </td>
+            <td class="auto-style90">
+                <asp:TextBox ID="txtConvenio" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td class="auto-style90">
+                <asp:TextBox ID="txtReferencia" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td class="auto-style90">
+              
+                <ajaxToolkit:AsyncFileUpload ID="afuAdjuntoCta" runat="server" Width="100%" />
+              
+            </td>
+        </tr>
+      </table>
+
           <table runat="server" id="ctasBancarias" style="border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width:95%; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style54">
             <tr>
                 <td class="auto-style62">
@@ -587,13 +792,24 @@ click(function (event) {
 
                     <asp:Label ID="lblImporte" runat="server" Text="Importe carta neteo:" Visible="False"></asp:Label>
 
+                    <asp:ObjectDataSource ID="odsDatosCuenta" runat="server" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CuentasDomiTableAdapter">
+                        <InsertParameters>
+                            <asp:Parameter Name="Anexo" Type="String" />
+                            <asp:Parameter Name="CuentaCLABE" Type="String" />
+                            <asp:Parameter Name="Banco" Type="String" />
+                        </InsertParameters>
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="ddlContratos" DefaultValue="0" Name="Anexo" PropertyName="SelectedValue" Type="String" />
+                        </SelectParameters>
+                </asp:ObjectDataSource>
+                
                 </td>
             </tr>
             <tr>
                 <td class="auto-style62">
 
-                    <ajaxToolkit:ComboBox ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: block;" Width="600px" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block" Visible="False" AutoCompleteMode="Suggest">
-                    </ajaxToolkit:ComboBox>
+                    <asp:DropDownList ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: block;" Width="600px" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block" Visible="False" AutoCompleteMode="Suggest">
+                    </asp:DropDownList>
 
                 </td>
                 <td class="auto-style63">
@@ -601,6 +817,14 @@ click(function (event) {
                     <asp:TextBox ID="txtImporteCartaNeteto" runat="server" Visible="False">0</asp:TextBox>
 
                 </td>
+            </tr>
+            <tr>
+                <td class="auto-style62">
+
+                    &nbsp;</td>
+                <td class="auto-style63">
+
+                    &nbsp;</td>
             </tr>
             <tr>
                 <td class="auto-style52" colspan="2">

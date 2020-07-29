@@ -218,6 +218,7 @@
     </None>
     <Content Include="styFW.css" />
     <Content Include="ValidaCfdi.aspx" />
+    <Content Include="verPdfProv.aspx" />
     <Content Include="verPdfGts.aspx" />
     <Content Include="verPdf.aspx" />
     <Content Include="Web.config" />
@@ -464,6 +465,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="validaXSD.vb" />
+    <Compile Include="verPdfProv.aspx.designer.vb">
+      <DependentUpon>verPdfProv.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="verPdfProv.aspx.vb">
+      <DependentUpon>verPdfProv.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="verPdfGts.aspx.designer.vb">
       <DependentUpon>verPdfGts.aspx</DependentUpon>
     </Compile>

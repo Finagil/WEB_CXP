@@ -27,7 +27,7 @@
     </style>
 </head>
 
-<body background="imagenes/Final_1.gif" onload="window.history.fordward();" style="background-size: 100% auto; ">
+<body onload="window.history.fordward();" style="background-size: 100% auto; ">
         <link href="styFW.css" rel="stylesheet" type="text/css" />
     <form id="form1" runat="server">
         <div class="auto-style1">

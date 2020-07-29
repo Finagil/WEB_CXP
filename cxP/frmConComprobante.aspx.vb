@@ -2,6 +2,7 @@
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
 Imports System.IO
+Imports AjaxControlToolkit
 Public Class frmConComprobante
     Inherits System.Web.UI.Page
     Dim taCFDI As New dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter
@@ -263,21 +264,23 @@ Public Class frmConComprobante
 
 
     Protected Sub btnProcesar_Click(sender As Object, e As EventArgs) Handles btnProcesar.Click
+        Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
 
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             If cmbCuentasBancarias.SelectedIndex = -1 Then
-                '*****HABILITAR CUANDO SE ACTIVEN CUENTAS
                 lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Electrónica se debe seleccionar una cuenta bancaria de pago."
                 ModalPopupExtender1.Show()
                 Exit Sub
-                '****** DESHABILITAR CUANDO SE ACTIVEN CUENTAS
-                'idCuentas = 0
             Else
                 idCuentas = cmbCuentasBancarias.SelectedValue
             End If
         Else
-            cmbCuentasBancarias.Enabled = False
-            idCuentas = 0
+            If cmbFormaPago.SelectedIndex = 2 Then
+                idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, Session.Item("monedaCtas"), Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+            Else
+                cmbCuentasBancarias.Enabled = False
+                idCuentas = 0
+            End If
         End If
 
         Try
@@ -649,11 +652,15 @@ Public Class frmConComprobante
 
         GridView1.Dispose()
 
-
+        divCtaBancaria.Visible = False
         divEfos.Visible = False
         divOtros.Visible = False
         divRevision.Visible = False
         divCtaBancaria.Visible = False
+        Session.Item("monedaCtas") = Nothing
+        Session("afuArchivoCtas") = Nothing
+        Session("nameAfuArchivoCtas") = Nothing
+        Session.Item("guuidArchivoCtas") = Nothing
     End Sub
 
     Public Sub terminaProceso()
@@ -758,6 +765,18 @@ Public Class frmConComprobante
                 End If
             Next
         End If
+
+        If IsNothing(Session("afuArchivoCtas")) = False Then
+            If Session.Item("Empresa") = "23" Then
+                taCFDI.Insert("", "", 0, "", 0, Session.Item("guuidArchivoCtas"), "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                taCXPPagos.Insert(deudor, 0, foliosSolicitud, Date.Now.ToShortDateString, Date.Now.ToShortDateString, "AD", "ADJUNTO", Session.Item("guuidArchivoCtas"), 0, 0, 0, 0, "Cta Pago", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
+            Else
+                taCFDI.Insert("", "", 0, "", 0, Session.Item("guuidArchivoCtas"), "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                taCXPPagos.Insert(deudor, 0, foliosSolicitud, Date.Now.ToShortDateString, Date.Now.ToShortDateString, "AD", "ADJUNTO", Session.Item("guuidArchivoCtas"), 0, 0, 0, 0, "Cta Pago", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas)
+            End If
+            Session("afuArchivoCtas") = Nothing
+            'afuAdjuntoCta.SaveAs(MapPath("~/TmpFinagil/FilesProv/" & Convert.ToString(Session.Item("guuidArchivoCtas")) & ".pdf"))
+        End If
     End Sub
 
     Private Sub Abrir_Click(sender As Object, e As EventArgs)
@@ -811,6 +830,8 @@ Public Class frmConComprobante
                             lblErrorGeneral.Text = "No es posible generar una solicitud con dos monedas distintas"
                             ModalPopupExtender1.Show()
                             Exit Sub
+                        Else
+                            Session.Item("monedaCtas") = GridView1.Rows(conta).Cells(4).Text
                         End If
                     End If
 
@@ -839,19 +860,41 @@ Public Class frmConComprobante
 
                 If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
                     If cmbCuentasBancarias.SelectedIndex = -1 Then
-                        '***** HABILITAR CUANDO SE ACTIVEN CUENTAS
                         lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
                         ModalPopupExtender1.Show()
                         Exit Sub
-
-                        '***** DESAHABILITAR CUANDO SE ACTIVEN CUENTAS
-                        'idCuentas = 0
                     Else
                         idCuentas = cmbCuentasBancarias.SelectedValue
                     End If
                 Else
-                    cmbCuentasBancarias.Enabled = False
-                    idCuentas = 0
+                    If cmbFormaPago.SelectedIndex = 2 Then
+                        'datosBancarios = "Banco: " & ddlBancos.SelectedItem.Text & " Cuenta: " & txtCuenta.Text.Trim & " CLABE: " & txtClabe.Text.Trim & " Referencia: " & txtReferencia.Text.Trim
+                        If IsNothing(Session("afuArchivoCtas")) Then
+                            lblErrorGeneral.Text = "No se ha ingresado el archivo de soporte de los datos bancarios"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        Else
+                            If txtClabe.Text.Trim = String.Empty And txtCuenta.Text.Trim = String.Empty And txtReferencia.Text.Trim = String.Empty And txtConvenio.Text.Trim = String.Empty Then
+                                lblErrorGeneral.Text = "No se ha ingresado al menos uno de los siguientes datos: CLABE, Cuenta o Referencia"
+                                ModalPopupExtender1.Show()
+                                Exit Sub
+                            Else
+                                If txtClabe.Text.Trim <> String.Empty And txtClabe.Text.Trim.Length <> 18 Then
+                                    lblErrorGeneral.Text = "La CLABE debe de ser de 18 digitos"
+                                    ModalPopupExtender1.Show()
+                                    Exit Sub
+                                End If
+                                If txtCuenta.Text.Trim <> String.Empty And txtCuenta.Text.Trim.Length <> 10 Then
+                                    lblErrorGeneral.Text = "La cuenta debe de ser de 10 digitos"
+                                    ModalPopupExtender1.Show()
+                                    Exit Sub
+                                End If
+                            End If
+                        End If
+                    Else
+                        cmbCuentasBancarias.Enabled = False
+                        idCuentas = 0
+                    End If
                 End If
 
                 If IsNumeric(txtPorcentaje.Text) Then
@@ -1072,6 +1115,7 @@ Public Class frmConComprobante
         txtFechaPago.Enabled = True
         cmbCuentasBancarias.Enabled = True
         divRevision.Visible = False
+        divCtaBancaria.Visible = False
         'divFacturas.Visible = False
     End Sub
 
@@ -1278,10 +1322,30 @@ Public Class frmConComprobante
     Protected Sub cmbFormaPago_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFormaPago.SelectedIndexChanged
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             cmbCuentasBancarias.Enabled = True
-        Else
+            tablaReferenciaBancaria.Visible = False
+        ElseIf cmbFormaPago.SelectedIndex = 0 Then
+            cmbCuentasBancarias.Enabled = False
+            tablaReferenciaBancaria.Visible = False
+        ElseIf cmbFormaPago.SelectedIndex = 2 Then
+            tablaReferenciaBancaria.Visible = True
             cmbCuentasBancarias.Enabled = False
         End If
     End Sub
 
+    Private Sub afuAdjuntoCta_UploadedComplete(sender As Object, e As AsyncFileUploadEventArgs) Handles afuAdjuntoCta.UploadedComplete
+        Dim guuidAdjuntoCtas As String = Guid.NewGuid.ToString
 
+        If afuAdjuntoCta.HasFile Then
+            If Session.Item("Empresa") = "23" Then
+                afuAdjuntoCta.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidAdjuntoCtas & ".pdf"))
+            Else
+                afuAdjuntoCta.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidAdjuntoCtas & ".pdf"))
+            End If
+            afuAdjuntoCta.SaveAs(MapPath("~/TmpFinagil/FilesProv/" & Convert.ToString(guuidAdjuntoCtas) & ".pdf"))
+        End If
+        Session("afuArchivoCtas") = afuAdjuntoCta
+        Session("nameAfuArchivoCtas") = afuAdjuntoCta.FileName
+        Session.Item("guuidArchivoCtas") = guuidAdjuntoCtas
+
+    End Sub
 End Class

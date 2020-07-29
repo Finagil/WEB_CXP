@@ -81,6 +81,7 @@ Public Class frmAltaProveedor
         txtRazonSocial.Enabled = False
         txtActivo.Enabled = False
         txtAutorizado.Enabled = False
+        Session.Item("tipoPersona") = ""
 
         Dim tableProveedores2 As New dsProduccion.CXP_Proveedores2DataTable
         Dim rowsProveedores2 As dsProduccion.CXP_Proveedores2Row
@@ -97,7 +98,7 @@ Public Class frmAltaProveedor
             txtRazonSocial.Text = rowsProveedores2.razonSocial
             txtColonia.Text = rowsProveedores2.colonia
             txtCalle.Text = rowsProveedores2.calle
-            txtLocalidad.Text = rowsProveedores2.colonia
+            txtLocalidad.Text = rowsProveedores2.localidad
             txtDelegacion.Text = rowsProveedores2.delegacion
             txtEstado.Text = rowsProveedores2.estado
 
@@ -384,6 +385,7 @@ Public Class frmAltaProveedor
                     lblErrorGeneral.Text = "El RFC ya existe"
                     ModalPopupExtender1.Show()
                     divDetalles.Visible = False
+                    Exit Sub
                 End If
             End If
         End If
@@ -517,10 +519,10 @@ Public Class frmAltaProveedor
             Select Case txtAutorizado.Text.Trim
                 Case "AUTORIZADO"
                     tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
-                    enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text)
+                    enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text, txtConvenio.Text, txtReferencia.Text, "CXP\FilesProv\" & guuidCta & ".pdf")
                 Case "PENDIENTE"
                     tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
-                    enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text)
+                    enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text, txtConvenio.Text, txtReferencia.Text, "CXP\FilesProv\" & guuidCta & ".pdf")
                 Case "NO AUTORIZADO"
                     tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                 Case "RECHAZADO"
@@ -553,11 +555,19 @@ Public Class frmAltaProveedor
                 tableAdapterCuentasBancariasProv.EliminRegistro_DeleteQuery(e.CommandArgument)
                 GridView1.DataBind()
                 validaYCambiaEstatus(txtNoProveedor.Text.Trim, txtRfc.Text.Trim)
+            Case "verPdf"
+                Dim rutaPDF As String = "~\TmpFinagil\FilesProv\" & e.CommandArgument & ".pdf"
+                Session.Item("namePDF") = e.CommandArgument
+                Response.Write("<script>")
+                rutaPDF = rutaPDF.Replace("\", "/")
+                rutaPDF = rutaPDF.Replace("~", "..")
+                Response.Write("window.open('verPdfProv.aspx#toolbar=0','popup','_blank','width=200,height=200')")
+                Response.Write("</script>")
             Case "DesactivarCuenta"
                 Dim tableCuentas As New dsProduccion.Vw_CXP_CuentasBancariasProvDataTable
                 Dim rowCuentas As dsProduccion.Vw_CXP_CuentasBancariasProvRow
                 Dim taCuentas As New dsProduccionTableAdapters.Vw_CXP_CuentasBancariasProvTableAdapter
-                Dim banco = "", descripcion = "", moneda = "", cuenta = "", clabe = ""
+                Dim banco = "", descripcion = "", moneda = "", cuenta = "", clabe = "", convenio = "", referencia = "", archivo = ""
 
                 taCuentas.Fill(tableCuentas, e.CommandArgument)
                 If tableCuentas.Rows.Count = 1 Then
@@ -567,10 +577,13 @@ Public Class frmAltaProveedor
                     moneda = rowCuentas.c_NombreMoneda
                     cuenta = rowCuentas.cuenta
                     clabe = rowCuentas.clabe
+                    convenio = rowCuentas.convenio
+                    referencia = rowCuentas.referencia
+                    archivo = rowCuentas.archivo1
                 End If
 
                 tableAdapterCuentasBancariasProv.CambiaEstatus_UpdateQuery(14, Date.Now, Session.Item("usuario"), e.CommandArgument)
-                enviaCorreoCuentasBancarias(banco & " - " & descripcion, moneda, cuenta, clabe)
+                enviaCorreoCuentasBancarias(banco & " - " & descripcion, moneda, cuenta, clabe, convenio, referencia, archivo)
                 If txtAutorizado.Text.Trim = "AUTORIZADO" Then
                     tableAdapterProveedores2.CambiaEstatus_UpdateQuery("PENDIENTE", txtNoProveedor.Text.Trim)
                     txtAutorizado.Text = "PENDIENTE"
@@ -588,6 +601,14 @@ Public Class frmAltaProveedor
                 tableAdapterDocumentacionProv.EliminaReg_DeleteQuery(e.CommandArgument)
                 GridView2.DataBind()
                 validaYCambiaEstatus(txtNoProveedor.Text.Trim, txtRfc.Text.Trim)
+            Case "verPdf"
+                Dim rutaPDF As String = "~\TmpFinagil\FilesProv\" & e.CommandArgument & ".pdf"
+                Session.Item("namePDF") = e.CommandArgument
+                Response.Write("<script>")
+                rutaPDF = rutaPDF.Replace("\", "/")
+                rutaPDF = rutaPDF.Replace("~", "..")
+                Response.Write("window.open('verPdfProv.aspx#toolbar=0','popup','_blank','width=200,height=200')")
+                Response.Write("</script>")
             Case "DesactivarDocumento"
                 Dim tableAdapter As New dsProduccionTableAdapters.Vw_CXP_DocumentacionProvTableAdapter
                 Dim rowDocu As dsProduccion.Vw_CXP_DocumentacionProvRow
@@ -684,6 +705,7 @@ Public Class frmAltaProveedor
                 ModalPopupExtender1.Show()
             End If
         End If
+        Session.Item("tipoPersona") = ""
     End Sub
 
     Protected Sub btnActualizarArch_Click(sender As Object, e As EventArgs) Handles btnActualizarArch.Click
@@ -837,7 +859,7 @@ Public Class frmAltaProveedor
         End If
     End Sub
 
-    Protected Sub enviaCorreoCuentasBancarias(banco As String, moneda As String, cuenta As String, clabe As String)
+    Protected Sub enviaCorreoCuentasBancarias(banco As String, moneda As String, cuenta As String, clabe As String, convenio As String, referencia As String, attachCta As String)
         Dim tableAdapterGenCorreos As New dsProduccionTableAdapters.GEN_Correos_SistemaFinagilTableAdapter
         Dim mensaje As String = "<html><body><font size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" &
                     "<h1><font size=3 align" & Chr(34) & "center" & Chr(34) & ">" & "Estimado (a), le notificamos que se ha generado la solicitud de bloqueo de cuenta con los siguientes datos: </font></h1>" &
@@ -866,21 +888,30 @@ Public Class frmAltaProveedor
                         "<td>CLABE</td>" &
                         "<td>" & clabe & "</td>" &
                     "</tr>" &
+                    "<tr>" &
+                        "<td>Convenio</td>" &
+                        "<td>" & convenio & "</td>" &
+                    "</tr>" &
+                    "<tr>" &
+                        "<td>Referencia</td>" &
+                        "<td>" & referencia & "</td>" &
+                    "</tr>" &
                    "</table><HR width=20%>" &
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
 
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", Session.Item("mailUsuarioS"), "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de bloqueo de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
 
         'Notificación de alta por tesorería
         If Session.Item("Usuario") = "atorres" Or Session.Item("Usuario") = "gisvazquez" Then
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@lamoderna.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@lamoderna.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
         End If
 
     End Sub
@@ -907,6 +938,7 @@ Public Class frmAltaProveedor
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
 
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", Session.Item("mailUsuarioS"), "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de bloqueo de documentos", mensaje, False, Date.Now.ToLongDateString, "")
@@ -919,7 +951,7 @@ Public Class frmAltaProveedor
         End If
     End Sub
 
-    Protected Sub enviaCorreoCuentasBancariasActiv(banco As String, moneda As String, cuenta As String, clabe As String)
+    Protected Sub enviaCorreoCuentasBancariasActiv(banco As String, moneda As String, cuenta As String, clabe As String, convenio As String, referencia As String, attachCta As String)
         Dim tableAdapterGenCorreos As New dsProduccionTableAdapters.GEN_Correos_SistemaFinagilTableAdapter
         Dim mensaje As String = "<html><body><font size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" &
                     "<h1><font size=3 align" & Chr(34) & "center" & Chr(34) & ">" & "Estimado (a), le notificamos que se ha generado la solicitud de activación de cuenta con los siguientes datos: </font></h1>" &
@@ -948,19 +980,28 @@ Public Class frmAltaProveedor
                         "<td>CLABE</td>" &
                         "<td>" & clabe & "</td>" &
                     "</tr>" &
+                     "<tr>" &
+                        "<td>Convenio:</td>" &
+                        "<td>" & convenio & "</td>" &
+                    "</tr>" &
+                    "<tr>" &
+                        "<td>Referencia:</td>" &
+                        "<td>" & referencia & "</td>" &
+                    "</tr>" &
                    "</table><HR width=20%>" &
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de cuenta", mensaje, False, Date.Now.ToLongDateString, "")
 
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", Session.Item("mailUsuarioS"), "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de activación de cuentas", mensaje, False, Date.Now.ToLongDateString, "")
         If Session.Item("Usuario") = "atorres" Or Session.Item("Usuario") = "gisvazquez" Then
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
-            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "vcruz@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "epineda@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
+            tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de cuentas (Tesorería)", mensaje, False, Date.Now.ToLongDateString, "CXP\FilesProv\" & attachCta & ".pdf")
         End If
     End Sub
 
@@ -986,6 +1027,7 @@ Public Class frmAltaProveedor
                      "</body></html>"
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "viapolo@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
 
+        tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", Session.Item("mailUsuarioS"), "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "lgarcia@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "atorres@lamoderna.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")
         tableAdapterGenCorreos.Insert("AltaProveedores@finagil.com.mx", "gisvazquez@finagil.com.mx", "Solicitud de activación de documentos", mensaje, False, Date.Now.ToLongDateString, "")

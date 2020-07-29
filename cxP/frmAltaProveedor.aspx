@@ -57,7 +57,7 @@
             width: 80%;
         }
         .auto-style16 {
-            width: 141px;
+            width: 25%;
         }
         .auto-style23 {
             height: 22px;
@@ -135,13 +135,13 @@
             <table style="border-radius: 5px; border-style: solid; border-width: thin; width: 95%; margin: 0 auto; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; background-color: #FFE0C0;">
         <tr>
             <td class="auto-style16">
-                <asp:TextBox ID="txtBuscar" runat="server" Width="420px"></asp:TextBox>
+                <asp:TextBox ID="txtBuscar" runat="server" Width="95%"></asp:TextBox>
             </td>
-            <td class="auto-style31">
+            <td class="auto-style16">
                 <cc1:BotonEnviar ID="btnBuscar" runat="server" CssClass="Botones" Text="Buscar" />
             </td>
-            <td class="auto-style9">
-                <asp:DropDownList ID="ddlBuscar" runat="server" Width="420px" DataSourceID="odsProveedores" DataTextField="razonSocial" DataValueField="idProveedor">
+            <td class="auto-style16">
+                <asp:DropDownList ID="ddlBuscar" runat="server" Width="95%" DataSourceID="odsProveedores" DataTextField="razonSocial" DataValueField="idProveedor">
                 </asp:DropDownList>
                 <asp:ObjectDataSource ID="odsProveedores" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtProv_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_ProveedoresTableAdapter" UpdateMethod="Update">
                     <DeleteParameters>
@@ -162,6 +162,21 @@
                         <asp:Parameter Name="Original_banco" Type="String" />
                         <asp:Parameter Name="Original_cuentaBancaria" Type="String" />
                         <asp:Parameter Name="Original_Clabe" Type="String" />
+                        <asp:Parameter Name="Original_activo" Type="Boolean" />
+                        <asp:Parameter Name="Original_autorizado" Type="Boolean" />
+                        <asp:Parameter Name="Original_calle" Type="String" />
+                        <asp:Parameter Name="Original_colonia" Type="String" />
+                        <asp:Parameter Name="Original_localidad" Type="String" />
+                        <asp:Parameter Name="Original_delegacion" Type="String" />
+                        <asp:Parameter Name="Original_estado" Type="String" />
+                        <asp:Parameter Name="Original_pais" Type="String" />
+                        <asp:Parameter Name="Original_cp" Type="String" />
+                        <asp:Parameter Name="Original_activoS" Type="String" />
+                        <asp:Parameter Name="Original_autorizadoS" Type="String" />
+                        <asp:Parameter Name="Original_usuarioSolicita" Type="String" />
+                        <asp:Parameter Name="Original_motivoRechazo" Type="String" />
+                        <asp:Parameter Name="Original_autorizaP1" Type="String" />
+                        <asp:Parameter Name="Original_autorizaP2" Type="String" />
                     </DeleteParameters>
                     <InsertParameters>
                         <asp:Parameter Name="rfc" Type="String" />
@@ -180,9 +195,24 @@
                         <asp:Parameter Name="banco" Type="String" />
                         <asp:Parameter Name="cuentaBancaria" Type="String" />
                         <asp:Parameter Name="Clabe" Type="String" />
+                        <asp:Parameter Name="activo" Type="Boolean" />
+                        <asp:Parameter Name="autorizado" Type="Boolean" />
+                        <asp:Parameter Name="calle" Type="String" />
+                        <asp:Parameter Name="colonia" Type="String" />
+                        <asp:Parameter Name="localidad" Type="String" />
+                        <asp:Parameter Name="delegacion" Type="String" />
+                        <asp:Parameter Name="estado" Type="String" />
+                        <asp:Parameter Name="pais" Type="String" />
+                        <asp:Parameter Name="cp" Type="String" />
+                        <asp:Parameter Name="activoS" Type="String" />
+                        <asp:Parameter Name="autorizadoS" Type="String" />
+                        <asp:Parameter Name="usuarioSolicita" Type="String" />
+                        <asp:Parameter Name="motivoRechazo" Type="String" />
+                        <asp:Parameter Name="autorizaP1" Type="String" />
+                        <asp:Parameter Name="autorizaP2" Type="String" />
                     </InsertParameters>
                     <SelectParameters>
-                        <asp:SessionParameter DefaultValue="" Name="idSucursal" SessionField="idSucursal" Type="String" />
+                        <asp:SessionParameter Name="idSucursal" SessionField="idSucursal" Type="String" />
                         <asp:SessionParameter Name="empresa" SessionField="empresa" Type="String" />
                     </SelectParameters>
                     <UpdateParameters>
@@ -202,6 +232,21 @@
                         <asp:Parameter Name="banco" Type="String" />
                         <asp:Parameter Name="cuentaBancaria" Type="String" />
                         <asp:Parameter Name="Clabe" Type="String" />
+                        <asp:Parameter Name="activo" Type="Boolean" />
+                        <asp:Parameter Name="autorizado" Type="Boolean" />
+                        <asp:Parameter Name="calle" Type="String" />
+                        <asp:Parameter Name="colonia" Type="String" />
+                        <asp:Parameter Name="localidad" Type="String" />
+                        <asp:Parameter Name="delegacion" Type="String" />
+                        <asp:Parameter Name="estado" Type="String" />
+                        <asp:Parameter Name="pais" Type="String" />
+                        <asp:Parameter Name="cp" Type="String" />
+                        <asp:Parameter Name="activoS" Type="String" />
+                        <asp:Parameter Name="autorizadoS" Type="String" />
+                        <asp:Parameter Name="usuarioSolicita" Type="String" />
+                        <asp:Parameter Name="motivoRechazo" Type="String" />
+                        <asp:Parameter Name="autorizaP1" Type="String" />
+                        <asp:Parameter Name="autorizaP2" Type="String" />
                         <asp:Parameter Name="Original_idProveedor" Type="Decimal" />
                         <asp:Parameter Name="Original_rfc" Type="String" />
                         <asp:Parameter Name="Original_nit" Type="String" />
@@ -219,10 +264,25 @@
                         <asp:Parameter Name="Original_banco" Type="String" />
                         <asp:Parameter Name="Original_cuentaBancaria" Type="String" />
                         <asp:Parameter Name="Original_Clabe" Type="String" />
+                        <asp:Parameter Name="Original_activo" Type="Boolean" />
+                        <asp:Parameter Name="Original_autorizado" Type="Boolean" />
+                        <asp:Parameter Name="Original_calle" Type="String" />
+                        <asp:Parameter Name="Original_colonia" Type="String" />
+                        <asp:Parameter Name="Original_localidad" Type="String" />
+                        <asp:Parameter Name="Original_delegacion" Type="String" />
+                        <asp:Parameter Name="Original_estado" Type="String" />
+                        <asp:Parameter Name="Original_pais" Type="String" />
+                        <asp:Parameter Name="Original_cp" Type="String" />
+                        <asp:Parameter Name="Original_activoS" Type="String" />
+                        <asp:Parameter Name="Original_autorizadoS" Type="String" />
+                        <asp:Parameter Name="Original_usuarioSolicita" Type="String" />
+                        <asp:Parameter Name="Original_motivoRechazo" Type="String" />
+                        <asp:Parameter Name="Original_autorizaP1" Type="String" />
+                        <asp:Parameter Name="Original_autorizaP2" Type="String" />
                     </UpdateParameters>
                 </asp:ObjectDataSource>
             </td>
-            <td class="auto-style9">
+            <td class="auto-style16">
                 <cc1:BotonEnviar ID="btnSeleccionar" runat="server" Text="Seleccionar" CssClass="Botones" PostBackUrl="#tablaDatos"/>
             </td>
         </tr>
@@ -377,7 +437,7 @@
                         </asp:BoundField>
                         <asp:TemplateField HeaderStyle-Width="35px">
                                     <ItemTemplate> 
-                                         <asp:HyperLink NavigateUrl='<%# Eval("archivo1", "~/TmpFinagil/FilesProv/" & "{0}.pdf#toolbar=0") %>' ID="btnVerCta" runat="server" Text="VerPDF" CssClass="BotonesGrid" TextoEnviando="Env" Target="_blank"/>
+                                         <cc1:BotonEnviar ID="btnVerCta" runat="server" Text="verPDF" CssClass="BotonesGrid" TextoEnviando="Env"  CommandName="verPdf" CommandArgument='<%# Eval("archivo1") %>' />
                                    </ItemTemplate>
                         <HeaderStyle Width="35px"></HeaderStyle>
                         </asp:TemplateField>
@@ -504,26 +564,26 @@
         </table>
             <table id="tablaCtas" style="border-radius: 5px; width:95%; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
                 <tr>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Banco:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Descripción:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:7.5%; ">
                         Moneda:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Cuenta:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         CLABE.</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Convenio:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Referencia:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:17.5%; ">
                         Adjuntar EdoCta:</td>
                 </tr>
                 <tr>
                     <td>
-                        <asp:DropDownList ID="ddlBanco" runat="server" DataSourceID="odsBancos" DataTextField="nombreCorto" DataValueField="idBancos" Width="150px">
+                        <asp:DropDownList ID="ddlBanco" runat="server" DataSourceID="odsBancos" DataTextField="nombreCorto" DataValueField="idBancos" Width="95%">
                         </asp:DropDownList>
                         <asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
                             <DeleteParameters>
@@ -545,10 +605,10 @@
                         </asp:ObjectDataSource>
                     </td>
                     <td>
-                        <asp:TextBox ID="txtDescipcion" runat="server" Width="150px" Wrap="False"></asp:TextBox>
+                        <asp:TextBox ID="txtDescipcion" runat="server" Width="95%" Wrap="False"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:DropDownList ID="ddlMoneda" runat="server" DataSourceID="odsMonedas" DataTextField="c_Moneda" DataValueField="c_Moneda" Width="80px">
+                        <asp:DropDownList ID="ddlMoneda" runat="server" DataSourceID="odsMonedas" DataTextField="c_Moneda" DataValueField="c_Moneda" Width="95%">
                         </asp:DropDownList>
                         <asp:ObjectDataSource ID="odsMonedas" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_c_MonedaTableAdapter" UpdateMethod="Update">
                             <DeleteParameters>
@@ -569,19 +629,19 @@
                         </asp:ObjectDataSource>
                     </td>
                     <td>
-                        <asp:TextBox ID="txtCuentaBancaria" runat="server" Width="100px" Enabled="False" ReadOnly="True"></asp:TextBox>
+                        <asp:TextBox ID="txtCuentaBancaria" runat="server" Width="95%" Enabled="False" ReadOnly="True"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:TextBox ID="txtClabe" runat="server" Width="150px"></asp:TextBox>
+                        <asp:TextBox ID="txtClabe" runat="server" Width="95%"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:TextBox ID="txtConvenio" runat="server" Width="80px"></asp:TextBox>
+                        <asp:TextBox ID="txtConvenio" runat="server" Width="95%"></asp:TextBox>
                     </td>
                     <td>
-                        <asp:TextBox ID="txtReferencia" runat="server" Width="100px"></asp:TextBox>
+                        <asp:TextBox ID="txtReferencia" runat="server" Width="95%"></asp:TextBox>
                     </td>
                     <td>
-                        <ajaxToolkit:AsyncFileUpload ID="afuArcCta" runat="server" Width="180px" />
+                        <ajaxToolkit:AsyncFileUpload ID="afuArcCta" runat="server" Width="95%" />
                     </td>
                 </tr>
                 <tr>
@@ -616,6 +676,7 @@
                         <SortedDescendingCellStyle BackColor="#CAC9C9" />
                         <SortedDescendingHeaderStyle BackColor="#33276A" />
                     </asp:GridView>
+                    <br />
                     <asp:ObjectDataSource ID="odsDocumentacion" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtDocumentacionProv_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_DocumentacionProvTableAdapter" UpdateMethod="Update">
                         <DeleteParameters>
                             <asp:Parameter Name="Original_idDocAdjunto" Type="Decimal" />
@@ -663,7 +724,7 @@
                             <asp:BoundField DataField="descripcion" HeaderText="Tipo Documento" SortExpression="uuid" />
                              <asp:TemplateField HeaderStyle-Width="35px">
                                     <ItemTemplate> 
-                                         <asp:HyperLink NavigateUrl='<%# Eval("uuid", "~/TmpFinagil/FilesProv/" & "{0}.pdf#toolbar=0") %>' ID="btnVerProvArc" runat="server" Text="VerPDF" CssClass="BotonesGrid" TextoEnviando="Env" Target="_blank"/>
+                                        <cc1:BotonEnviar ID="btnVerDoc" runat="server" Text="verPDF" CssClass="BotonesGrid" TextoEnviando="Env"  CommandName="verPdf" CommandArgument='<%# Eval("uuid") %>' />
                                    </ItemTemplate>
                         <HeaderStyle Width="35px"></HeaderStyle>
                         </asp:TemplateField>
