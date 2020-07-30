@@ -85,6 +85,14 @@
               width: 346px;
               text-align: center;
           }
+          .auto-style68 {
+              width: 70%;
+              height: 28px;
+          }
+          .auto-style69 {
+              width: 30%;
+              height: 28px;
+          }
           </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -288,11 +296,11 @@
                             <asp:ListItem>Gabriel Bello Hernández</asp:ListItem>
                         </asp:DropDownList>
                         </td><td>
-                    <ajaxToolkit:ComboBox ID="cmbCentroDeCostos" runat="server" DataSourceID="odsCentroDeCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" MaxLength="0" style="display: inline;" Width="300px">
-                    </ajaxToolkit:ComboBox>
+                    <asp:DropDownList ID="cmbCentroDeCostos" runat="server" DataSourceID="odsCentroDeCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" MaxLength="0" style="display: inline;" Width="300px">
+                    </asp:DropDownList>
                     </td><td>
-                    <ajaxToolkit:ComboBox ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" MaxLength="0" style="display: inline;" Width="300px">
-                    </ajaxToolkit:ComboBox>
+                    <asp:DropDownList ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" MaxLength="0" style="display: inline;" Width="300px" AutoPostBack="True">
+                    </asp:DropDownList>
                     </td><td>
                     <asp:TextBox ID="txtFechaPago" runat="server" Width="100px"></asp:TextBox><ajaxToolkit:CalendarExtender ID="cexFechaPago" runat="server" TargetControlID="txtFechaPago" TodaysDateFormat="MMMM, yyyy" Format="dd/MM/yyyy" />
                 </td></tr>
@@ -305,8 +313,8 @@
                     <asp:CheckBox ID="chkContrato" runat="server" Font-Names="Arial" Font-Size="Small" Text="¿Si?" AutoPostBack="True" Visible="False" />
                 </td></tr>
             <tr><td class="auto-style59">
-                    <ajaxToolkit:ComboBox ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: inline;" Width="600px" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block">
-                    </ajaxToolkit:ComboBox>
+                    <asp:DropDownList ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: inline;" Width="600px" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block">
+                    </asp:DropDownList>
                     </td><td class="auto-style59">
                     <asp:DropDownList ID="ddlClientes" runat="server" AutoPostBack="True" DataSourceID="odsClientes" DataTextField="Descr" DataValueField="Cliente" Enabled="False" Visible="False">
                     </asp:DropDownList>
@@ -671,10 +679,10 @@
 
             <table id="tablaTotales" runat="server" visible="false" style="width:120px; position:fixed;left:85%;right:auto; top:70%;border-color:lightgray; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 10px; color: darkred; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;">
                 <tr>
-                    <td style="width:70%;" >
+                    <td class="auto-style68" >
                         Total Deducibles:
                     </td>
-                     <td style="width:30%; text-align:right;" >
+                     <td style="text-align:right;" class="auto-style69" >
                         <asp:Label ID="lblDeducibles" runat="server" Text="0"></asp:Label>
                     </td>
                 </tr>

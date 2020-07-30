@@ -188,7 +188,7 @@ Public Class frmSinComprobante
                 Else
                     If taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
                         If Session.Item("ref") = "CRE" Then
-                            idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                            idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                         ElseIf Session.Item("ref") = "TRE" Then
                             idCuentas = cmbCuentasBancarias.SelectedValue
                         ElseIf Session.Item("ref") = "CHE" Then
@@ -203,7 +203,7 @@ Public Class frmSinComprobante
                     idCuentas = cmbCuentasBancarias.SelectedValue
                 Else
                     If Session.Item("ref") = "CRE" Then
-                        idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                        idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                     Else
                         idCuentas = 0
                     End If
@@ -1457,6 +1457,7 @@ Public Class frmSinComprobante
     Private Sub formato()
         btnBuscar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
         btnCancelar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+        btnCancelar1.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
         btnRevisar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
         btnSolicitar.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
         btnBuscar0.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)

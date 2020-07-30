@@ -158,11 +158,12 @@ Public Class frmSinReembolso
         'MsgBox(lblTipar.Text)
         'If Not IsNothing(lblTipar) Then
 
-        If taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
-                    idCuentas = cmbCuentasBancarias.SelectedValue
-                Else
-                    idCuentas = 0
-                End If
+
+        If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
+            idCuentas = cmbCuentasBancarias.SelectedValue
+        Else
+            idCuentas = 0
+        End If
 
         'End If
         '/*****
@@ -399,6 +400,7 @@ Public Class frmSinReembolso
         idCuentas = 0
 
         odsClientes.DataBind()
+        GridView1.DataBind()
         GridView2.DataBind()
         GridView3.DataBind()
         'chkContrato.Checked = False
@@ -427,6 +429,8 @@ Public Class frmSinReembolso
 
         btnAgregar.Visible = True
         TabContainer1.Visible = True
+        'btnRevisar.Visible = False
+        'btnCancelarRev.Visible = False
 
     End Sub
 
@@ -442,6 +446,12 @@ Public Class frmSinReembolso
                     proveedor = "Deudor: " & txtDeudor.Text
                 Else
                     proveedor = "Proveedor: " & ddlProveedor.SelectedItem.Text
+                End If
+
+                If CDec(lblDeducibles.Text) + CDec(lblNDeducibles.Text) <> CDec(txtMontoSolicitado.Text) Then
+                    lblErrorGeneral.Text = "La suma de los importes deducibles y no deducibles es diferente al importe solicitado."
+                    ModalPopupExtender1.Show()
+                    Exit Sub
                 End If
 
                 'Valida cuenta
@@ -1095,6 +1105,8 @@ Public Class frmSinReembolso
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
         Dim rptSolPago As New ReportDocument
+        Dim folio As String = "1134"
+        Dim idPago As String = "0"
 
         Dim dtSolPDF As DataTable
         dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
@@ -1105,14 +1117,14 @@ Public Class frmSinReembolso
 
         Dim dtObsSol As DataTable
         dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(1047))
-        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 1047, "No Pagada")
-        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CDec(1047))
-        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CDec(1047))
+        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), CDec(folio))
+        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), folio, "No Pagada")
+        taSolicitudPDF.DetalleSD_FillBy(dtSolPDFSD, CDec(Session.Item("Empresa")), CDec(folio))
+        taSolicitudPDF.DetalleND_FillBy(dtSolPDFND, CDec(Session.Item("Empresa")), CDec(folio))
 
         Dim dtCtasBanco As DataTable
         dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
-        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, 216)
+        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, idPago)
 
         Dim var_observaciones As Integer = dtObsSol.Rows.Count
         Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
@@ -1127,10 +1139,10 @@ Public Class frmSinReembolso
 
         rptSolPago.SetParameterValue("var_SD", dtSolPDFSD.Rows.Count)
         rptSolPago.SetParameterValue("var_ND", dtSolPDFND.Rows.Count)
-        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & 1047))
+        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folio))
         rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
         rptSolPago.SetParameterValue("var_contrato", chkContrato.Checked)
-        rptSolPago.SetParameterValue("var_idCuentas", 216)
+        rptSolPago.SetParameterValue("var_idCuentas", idPago)
 
         If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
             rptSolPago.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
@@ -1139,7 +1151,7 @@ Public Class frmSinReembolso
         End If
 
 
-        Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("namePDF") & ".pdf"
+        Dim rutaPDF As String = "~\TmpFinagil\" & Session.Item("Empresa") & "-" & folio & ".pdf"
         rptSolPago.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
         Response.Write("<script>")
         rutaPDF = rutaPDF.Replace("\", "/")
