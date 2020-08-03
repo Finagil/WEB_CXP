@@ -265,6 +265,13 @@ Public Class frmConComprobante
 
     Protected Sub btnProcesar_Click(sender As Object, e As EventArgs) Handles btnProcesar.Click
         Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+        Dim taRegContable As New dsProduccionTableAdapters.CXP_RegContTableAdapter
+        Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
+        Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
+        Dim taImpuesto As New dsProduccionTableAdapters.CXP_ImpuestoTableAdapter
+        Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
+        Dim taPagosTesoreria As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
+
 
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             If cmbCuentasBancarias.SelectedIndex = -1 Then
@@ -289,11 +296,6 @@ Public Class frmConComprobante
                 Response.Redirect("~/Login.aspx")
                 Exit Sub
             End If
-            Dim taRegContable As New dsProduccionTableAdapters.CXP_RegContTableAdapter
-            Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
-            Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
-            Dim taImpuesto As New dsProduccionTableAdapters.CXP_ImpuestoTableAdapter
-            Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
 
             Dim fechaRegistroCont As Date = Date.Now
 
@@ -568,6 +570,7 @@ Public Class frmConComprobante
 #End Region
 
 #Region "ProvisionEgreso"
+
                                 'If taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = False Then
                                 '    Dim taRegContPago As New dsProduccionTableAdapters.CXP_RegContPagoTableAdapter
                                 '    Dim folioPolizaEgreso As Integer = taTipoDocumento.ConsultaFolioPEgreso(Session.Item("Empresa"))
@@ -631,6 +634,8 @@ Public Class frmConComprobante
                     End If
                     'Genera PDF
                     generaPDF(folSolPagoFinagil, idCuentas)
+                    'Inserta datos del pago para tesorería
+                    taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33)
                 Else
                     lblErrorGeneral.Text = "No se ha seleccionado ningún comprobante"
                     ModalPopupExtender1.Show()

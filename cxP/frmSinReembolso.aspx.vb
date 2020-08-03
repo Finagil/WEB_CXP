@@ -133,7 +133,7 @@ Public Class frmSinReembolso
 
         Dim taEmpresas As New dsProduccionTableAdapters.CXP_EmpresasTableAdapter
         Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
-
+        Dim taPagosTesoreria As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
         Dim taRegContable As New dsProduccionTableAdapters.CXP_RegContTableAdapter
         Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
         Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
@@ -315,6 +315,9 @@ Public Class frmSinReembolso
                 Response.Write("window.open('verPdf.aspx','popup','_blank','width=200,height=200')")
                 Response.Write("</script>")
                 rptSolPago.Dispose()
+
+                'Inserta datos del pago para tesorería
+                taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33)
 
                 cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
                 cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))

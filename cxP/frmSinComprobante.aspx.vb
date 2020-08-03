@@ -165,6 +165,7 @@ Public Class frmSinComprobante
 
     Protected Sub btnSolicitar_Click(sender As Object, e As EventArgs) Handles btnSolicitar.Click
         Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
+        Dim taPagosTesoreria As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
         Dim guuidAdjuntoCtas As String = Guid.NewGuid.ToString
         Try
 
@@ -393,6 +394,9 @@ Public Class frmSinComprobante
                     Response.Write("window.open('verPdf.aspx','popup','_blank','width=200,height=200')")
                     Response.Write("</script>")
                     rptSolPago.Dispose()
+
+                    'Inserta datos del pago para tesorería
+                    taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33)
 
 
                     Session("afuArchivoCtas") = Nothing
