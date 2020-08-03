@@ -454,6 +454,12 @@ Public Class frmSinReembolso
                     Exit Sub
                 End If
 
+                If txtDescripcionPago.Text.Trim = String.Empty Then
+                    lblErrorGeneral.Text = "No se ha agregado una descripción del pago"
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+
                 'Valida cuenta
                 Dim datosBancarios As String
                 If ddlMismoDeudor.SelectedIndex <> 2 Then
