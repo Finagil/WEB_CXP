@@ -635,7 +635,7 @@ Public Class frmConComprobante
                     'Genera PDF
                     generaPDF(folSolPagoFinagil, idCuentas)
                     'Inserta datos del pago para tesorería
-                    taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33)
+                    taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33, CInt(Session.Item("Empresa")), 0)
                 Else
                     lblErrorGeneral.Text = "No se ha seleccionado ningún comprobante"
                     ModalPopupExtender1.Show()

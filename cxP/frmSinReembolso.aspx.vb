@@ -317,7 +317,7 @@ Public Class frmSinReembolso
                 rptSolPago.Dispose()
 
                 'Inserta datos del pago para tesorería
-                taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33)
+                taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33, CInt(Session.Item("Empresa")), 0)
 
                 cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
                 cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))

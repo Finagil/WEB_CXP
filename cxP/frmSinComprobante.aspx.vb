@@ -181,7 +181,7 @@ Public Class frmSinComprobante
             Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
             If Not IsNothing(lblTipar) Then
                 If chkContrato.Checked = True Then
-                    If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                    If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Or lblTipar.Text.Trim = "F" Then
                         idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                     Else
                         idCuentas = 0
@@ -396,7 +396,7 @@ Public Class frmSinComprobante
                     rptSolPago.Dispose()
 
                     'Inserta datos del pago para tesorería
-                    taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33)
+                    taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33, CInt(Session.Item("Empresa")), 0)
 
 
                     Session("afuArchivoCtas") = Nothing
@@ -605,10 +605,11 @@ Public Class frmSinComprobante
                 'Valida cuenta
                 Dim datosBancarios As String
                 'If ddlMismoDeudor.SelectedIndex <> 2 Then
+                Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
                 If ddlConcepto.SelectedValue <> "" Then
 
                     If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) And taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
-                        Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
+
 
                         If chkContrato.Checked = False Then
                             If cmbCuentasBancarias.SelectedIndex = -1 Then
@@ -695,13 +696,15 @@ Public Class frmSinComprobante
 
                 If chkContrato.Checked = True And CDec(txtImporteCartaNeteto.Text) = 0 Then
                     Dim lbl As Label = CType(FormView1.FindControl("saldoContrato"), Label)
-                    If CDec(txtMontoSolicitado.Text.Trim) > CDec(lbl.Text.Trim) Then
-                        lblErrorGeneral.Text = "El monto solicitado no puede ser mayor al Saldo del Contrato"
-                        ModalPopupExtender1.Show()
-                        Exit Sub
+                    If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                        If CDec(txtMontoSolicitado.Text.Trim) > CDec(lbl.Text.Trim) Then
+                            lblErrorGeneral.Text = "El monto solicitado no puede ser mayor al Saldo del Contrato"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
                     End If
                     Dim taAnexos As New dsProduccionTableAdapters.AnexosTableAdapter
-                    txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
+                        txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
                            "Importe solicitado: $ " & txtMontoSolicitado.Text & vbNewLine &
                            "Moneda: " & ddlMoneda.SelectedValue & vbNewLine &
                            proveedor & vbNewLine &
@@ -712,8 +715,8 @@ Public Class frmSinComprobante
                            "Sucursal (CC): " & cmbCentroDeCostos.SelectedItem.Text & vbNewLine &
                            "Forma de Pago: " & cmbFormaPago.SelectedItem.Text & vbNewLine &
                            "Datos bancarios: " & datosBancarios
-                ElseIf chkContrato.Checked = True And CDec(txtImporteCartaNeteto.Text) > 0 Then
-                    txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
+                    ElseIf chkContrato.Checked = True And CDec(txtImporteCartaNeteto.Text) > 0 Then
+                        txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
                            "Importe solicitado: $ " & CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text) & vbNewLine &
                            "Moneda: " & ddlMoneda.SelectedValue & vbNewLine &
                            proveedor & vbNewLine &
@@ -724,13 +727,13 @@ Public Class frmSinComprobante
                            "Sucursal (CC): " & cmbCentroDeCostos.SelectedItem.Text & vbNewLine &
                            "Forma de Pago: " & cmbFormaPago.SelectedItem.Text & vbNewLine &
                            "Datos bancarios: " & datosBancarios
-                ElseIf ddlConcepto.SelectedValue = taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) Then
-                    If CDec(txtMontoSolicitado.Text & vbNewLine) <> (totala + totalb) Then
-                        lblErrorGeneral.Text = "El importe a reembolsar es distinto al monto solicitado"
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    End If
-                    txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
+                    ElseIf ddlConcepto.SelectedValue = taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) Then
+                        If CDec(txtMontoSolicitado.Text & vbNewLine) <> (totala + totalb) Then
+                            lblErrorGeneral.Text = "El importe a reembolsar es distinto al monto solicitado"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
+                        txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
                            "Importe solicitado: $ " & CDec(txtMontoSolicitado.Text) & vbNewLine &
                            "Moneda: " & ddlMoneda.SelectedValue & vbNewLine &
                            proveedor & vbNewLine &
@@ -740,8 +743,8 @@ Public Class frmSinComprobante
                            "Sucursal (CC): " & cmbCentroDeCostos.SelectedItem.Text & vbNewLine &
                            "Forma de Pago: " & cmbFormaPago.SelectedItem.Text & vbNewLine &
                            "Datos bancarios: " & datosBancarios
-                Else
-                    txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
+                    Else
+                        txtRevision.Text = "Descripción del pago: " & txtDescripcionPago.Text & vbNewLine &
                            "Importe solicitado: $ " & txtMontoSolicitado.Text & vbNewLine &
                            "Moneda: " & ddlMoneda.SelectedValue & vbNewLine &
                            proveedor & vbNewLine &
