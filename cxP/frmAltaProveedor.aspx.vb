@@ -15,7 +15,7 @@ Public Class frmAltaProveedor
             formato()
         End If
 
-        ddlMoneda.SelectedValue = "MXN"
+        'ddlMoneda.SelectedValue = "MXN"
         ddlPais.SelectedValue = "MEX"
 
         If Not IsPostBack Then
@@ -329,6 +329,13 @@ Public Class frmAltaProveedor
                 validacion = "NO"
                 Exit Sub
             End If
+        End If
+
+        If txtRazonSocial.Text.Trim <> String.Empty Then
+            lblErrorGeneral.Text = "No se ha incluido la razón social."
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
         End If
 
         If validacion = "SI" Then

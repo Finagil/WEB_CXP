@@ -56,6 +56,7 @@ Public Class frmMisSolicitudesSC
 
     Private Sub GridView1_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridView1.RowCommand
         Dim taPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
+        Dim taPagosTes As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
         Dim dsProd As New dsProduccion
         Dim td As New dsProduccion.CXP_PagosDataTable
         Dim contrato As Boolean = False
@@ -71,6 +72,7 @@ Public Class frmMisSolicitudesSC
         ElseIf e.CommandName = "Cancelar" Then
             GridView1.Enabled = False
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
+            taPagosTes.CambiaEstatus_UpdateQuery(35, "CXP", HiddenID.Value, CInt(Session.Item("Empresa")))
             Dim nRowCXPPagos As dsProduccion.CXP_PagosRow
             For Each rows As dsProduccion.CXP_PagosRow In td
                 'nRowCXPPagos = dsProd.CXP_Pagos.NewCXP_PagosRow

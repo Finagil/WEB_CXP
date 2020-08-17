@@ -270,7 +270,6 @@ Public Class frmConComprobante
         Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
         Dim taImpuesto As New dsProduccionTableAdapters.CXP_ImpuestoTableAdapter
         Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
-        Dim taPagosTesoreria As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
 
 
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
@@ -634,8 +633,7 @@ Public Class frmConComprobante
                     End If
                     'Genera PDF
                     generaPDF(folSolPagoFinagil, idCuentas)
-                    'Inserta datos del pago para tesorería
-                    taPagosTesoreria.Insert("CXP", folSolPagoFinagil, Nothing, idCuentas, 33, CInt(Session.Item("Empresa")), 0)
+
                 Else
                     lblErrorGeneral.Text = "No se ha seleccionado ningún comprobante"
                     ModalPopupExtender1.Show()
@@ -666,6 +664,7 @@ Public Class frmConComprobante
         Session("afuArchivoCtas") = Nothing
         Session("nameAfuArchivoCtas") = Nothing
         Session.Item("guuidArchivoCtas") = Nothing
+        total2 = 0
     End Sub
 
     Public Sub terminaProceso()
@@ -691,6 +690,10 @@ Public Class frmConComprobante
         Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+        Dim taPagosTesoreria As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
+
+        'Inserta datos del pago para tesorería
+        taPagosTesoreria.Insert("CXP", folSol, Nothing, idCuentas, 33, CInt(Session.Item("Empresa")), taSolicitudPDF.TotalSolicitud_ScalarQuery(CInt(Session.Item("Empresa")), folSol))
 
         Dim dtSolPDF As DataTable
         dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
@@ -1271,19 +1274,20 @@ Public Class frmConComprobante
         Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
-
+        Dim folio As String = "2570"
+        Dim idPago As String = "405"
         Dim dtSolPDF As DataTable
         dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
 
-        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), 2131, "No Pagada")
+        taSolicitudPDF.Fill(dtSolPDF, Session.Item("Empresa"), folio, "No Pagada")
 
         Dim dtObsSol As DataTable
         dtObsSol = New dsProduccion.CXP_ObservacionesSolicitudDataTable
-        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), 2131)
+        taObsSolic.Fill(dtObsSol, CDec(Session.Item("Empresa")), folio)
 
         Dim dtCtasBanco As DataTable
         dtCtasBanco = New dsProduccion.CXP_CuentasBancariasProvDataTable
-        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, "0")
+        taCtasBancarias.ObtCtaPago_FillBy(dtCtasBanco, idPago)
         dtCtasBanco.WriteXml("C:\Files\dtCtasDetalle.xml", XmlWriteMode.WriteSchema)
 
         Dim var_observaciones As Integer = dtObsSol.Rows.Count
@@ -1297,10 +1301,10 @@ Public Class frmConComprobante
         rptSolPago.Refresh()
 
 
-        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & "2131"))
+        rptSolPago.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folio))
         rptSolPago.SetParameterValue("var_observaciones", var_observaciones.ToString)
         rptSolPago.SetParameterValue("var_contrato", chkContrato.Checked)
-        rptSolPago.SetParameterValue("var_idCuentas", idCuentas)
+        rptSolPago.SetParameterValue("var_idCuentas", idPago)
 
 
         If Session.Item("rfcEmpresa") = "FIN940905AX7" Then

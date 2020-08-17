@@ -53,6 +53,7 @@ Public Class frmMisSolicitudes
         Dim taRegCont As New dsProduccionTableAdapters.CXP_RegContTableAdapter
         Dim dtRegCont As New dsProduccion.CXP_RegContDataTable
         Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
+        Dim taPagosTes As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
 
         Dim contrato As Boolean = False
         Dim idCuentas As Integer = 0
@@ -70,6 +71,7 @@ Public Class frmMisSolicitudes
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
         ElseIf e.CommandName = "Cancelar" And HiddenID.Value > "" Then
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
+            taPagosTes.CambiaEstatus_UpdateQuery(35, "CXP", HiddenID.Value, CInt(Session.Item("Empresa")))
             For Each rows As dsProduccion.CXP_PagosRow In td
                 taPagos.Insert(rows.idProveedor, rows.idUsuario, rows.folioSolicitud, Date.Now.ToLongDateString, rows.fechaSolicitud, rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1, (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1, rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, rows.contrato, Nothing, Nothing, Nothing, Nothing, rows.cCostos, rows.fPago, rows.idCuentas)
                 taPagos.ActualizaACanceladaConComp_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)

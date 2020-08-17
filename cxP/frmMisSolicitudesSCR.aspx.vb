@@ -41,6 +41,7 @@ Public Class frmMisSolicitudesSCR
 
     Private Sub GridView1_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridView1.RowCommand
         Dim taPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
+        Dim taPagosTes As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
         Dim td As New dsProduccion.CXP_PagosDataTable
         Dim contrato As Boolean = False
         Dim fecha As String = ""
@@ -55,6 +56,7 @@ Public Class frmMisSolicitudesSCR
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
         ElseIf e.CommandName = "Cancelar" Then
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
+            taPagosTes.CambiaEstatus_UpdateQuery(35, "CXP", HiddenID.Value, CInt(Session.Item("Empresa")))
             For Each rows As dsProduccion.CXP_PagosRow In td
                 taPagos.Insert(rows.idProveedor, rows.idUsuario, rows.folioSolicitud, Date.Now.ToLongDateString, rows.fechaSolicitud,
                                rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1,
