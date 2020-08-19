@@ -4,19 +4,13 @@
     <style type="text/css">
 
 
-        .auto-style13 {
-            margin-left: 10px;
-            margin-top: 20px;
-        }
-         .auto-style14 {
+        .auto-style15 {
             text-align: center;
-            overflow-y:auto;
-            height:400px;
         }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-         <div style="overflow-x:auto;overflow-y:auto;">
+         <div style="overflow-x:auto;overflow-y:auto;" class="auto-style15">
                             <asp:HiddenField ID="HiddenID" runat="server" />
                             <asp:HiddenField ID="HiddenEstatus" runat="server" />
                             <asp:Label ID="LabelError" runat="server" Text="Error" Font-Bold="True" ForeColor="#FF3300" Visible="False" Font-Size="X-Large"></asp:Label>

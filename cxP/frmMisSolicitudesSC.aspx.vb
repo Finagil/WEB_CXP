@@ -66,9 +66,14 @@ Public Class frmMisSolicitudesSC
         If e.CommandName = "Select" Then
             HiddenID.Value = e.CommandSource.Text
             HiddenEstatus.Value = e.CommandArgument
+        ElseIf InStr(HiddenEstatus.Value, "Pagada") > 0 Then
+            LabelError.Visible = True
+            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
+            Exit Sub
         ElseIf InStr(HiddenEstatus.Value, "Cancelada") > 0 Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE CANCELADA")
+            Exit Sub
         ElseIf e.CommandName = "Cancelar" Then
             GridView1.Enabled = False
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
@@ -184,5 +189,9 @@ Public Class frmMisSolicitudesSC
             LabelError.Text = UCase("Selecion no válida.")
         End If
         GridView1.Enabled = True
+    End Sub
+
+    Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
+
     End Sub
 End Class

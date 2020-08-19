@@ -54,6 +54,11 @@ Public Class frmMisSolicitudesSCR
         ElseIf InStr(HiddenEstatus.Value, "Pagada") > 0 Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
+            Exit Sub
+        ElseIf InStr(HiddenEstatus.Value, "Cancelada") > 0 Then
+            LabelError.Visible = True
+            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE CANCELADA")
+            Exit Sub
         ElseIf e.CommandName = "Cancelar" Then
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
             taPagosTes.CambiaEstatus_UpdateQuery(35, "CXP", HiddenID.Value, CInt(Session.Item("Empresa")))
@@ -69,7 +74,7 @@ Public Class frmMisSolicitudesSCR
                 fecha = rows.fechaSolicitud.ToString("yyyyMMddhhmm")
                 idCuentas = rows.idCuentas
             Next
-            Response.Redirect("~/frmMisSolicitudesSCR.aspx")
+
 
             '/////Genera PDF Cancelado
             Dim rptSolPago As New ReportDocument
@@ -128,10 +133,16 @@ Public Class frmMisSolicitudesSCR
             Response.Write("</script>")
             rptSolPago.Dispose()
 
+            Response.Redirect("~/frmMisSolicitudesSCR.aspx")
+
         Else
             LabelError.Visible = True
             LabelError.Text = UCase("Selecion no válida.")
         End If
+
+    End Sub
+
+    Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
 
     End Sub
 End Class
