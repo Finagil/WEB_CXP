@@ -108,7 +108,7 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
-        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%'"
+        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%' OR rfc LIKE '%" & txtBuscarProveedor.Text.Trim & "%'" '"razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%'"
 
         valida_Proveedor()
 

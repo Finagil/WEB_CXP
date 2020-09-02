@@ -115,7 +115,7 @@ Public Class frmComprobarGastos
     End Sub
 
     Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
-        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%'"
+        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%' OR rfc LIKE '%" & txtBuscar.Text.Trim & "%'" '"razonSocial LIKE '%" & txtBuscar.Text.Trim & "%'"
     End Sub
 
     Protected Sub btnAsignar_Click(sender As Object, e As EventArgs) Handles btnAsignar.Click

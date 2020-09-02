@@ -118,7 +118,7 @@ Public Class frmConComprobante
         GridView1.DataBind()
     End Sub
     Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
-        proveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%'"
+        proveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%' OR rfc LIKE '%" & txtBuscar.Text.Trim & "%'" '"razonSocial LIKE '%" & txtBuscar.Text.Trim & "%'"
 
     End Sub
 

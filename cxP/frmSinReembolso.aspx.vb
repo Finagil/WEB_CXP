@@ -120,7 +120,7 @@ Public Class frmSinReembolso
     End Sub
 
     Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
-        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%'"
+        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%' OR rfc LIKE '%" & txtBuscarProveedor.Text.Trim & "%'" '"razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%'"
 
         valida_Proveedor()
     End Sub
@@ -730,7 +730,7 @@ Public Class frmSinReembolso
 
 
     Protected Sub btnBuscar0_Click(sender As Object, e As EventArgs) Handles btnBuscar0.Click
-        odsProveedores0.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%'"
+        odsProveedores0.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%' OR rfc LIKE '%" & txtBuscar.Text.Trim & "%'" '"razonSocial LIKE '%" & txtBuscar.Text.Trim & "%'"
     End Sub
 
     Protected Sub btnAsignar_Click(sender As Object, e As EventArgs) Handles btnAsignar.Click
