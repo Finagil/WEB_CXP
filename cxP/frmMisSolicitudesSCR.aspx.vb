@@ -51,7 +51,7 @@ Public Class frmMisSolicitudesSCR
         If e.CommandName = "Select" Then
             HiddenID.Value = e.CommandSource.Text
             HiddenEstatus.Value = e.CommandArgument
-        ElseIf InStr(HiddenEstatus.Value, "Pagada") > 0 Then
+        ElseIf HiddenEstatus.Value = "Pagada" Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
             Exit Sub
@@ -67,7 +67,7 @@ Public Class frmMisSolicitudesSCR
                                rows.serie, rows.folio, rows.uuid, (rows.subtotalPagado) * -1, (rows.totalPagado) * -1, (rows.trasladosPagados) * -1,
                                (rows.retencionesPagadas) * -1, rows.decripcion, rows.idConcepto, -1, rows.usuario, rows.idEmpresas, "Cancelacion", rows.autoriza1,
                                rows.autoriza2, "CANCELADA", "CANCELADA", rows.moneda, Date.Now.ToLongDateString, False, rows.noContrato, rows.idAutoriza2, rows.naAutoriza2,
-                               rows.naAutoriza1, rows.cCostos, rows.fPago, rows.idCuentas)
+                               rows.naAutoriza1, rows.cCostos, rows.fPago, rows.idCuentas, rows.tipoDeCambio, rows.monedaPago)
                 taPagos.ActualizaACanceladaReemb_UpdateQuery("CANCELADA", "CANCELADA", rows.folioSolicitud, rows.uuid)
 
                 contrato = rows.contrato

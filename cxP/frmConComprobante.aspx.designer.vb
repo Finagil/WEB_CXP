@@ -437,6 +437,24 @@ Partial Public Class frmConComprobante
     Protected WithEvents ddlBancos As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
+    '''Control ddlMonedas.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlMonedas As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
+    '''Control odsMonedas.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsMonedas As Global.System.Web.UI.WebControls.ObjectDataSource
+    
+    '''<summary>
     '''Control txtCuenta.
     '''</summary>
     '''<remarks>
@@ -597,6 +615,15 @@ Partial Public Class frmConComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents GridView2 As Global.System.Web.UI.WebControls.GridView
+    
+    '''<summary>
+    '''Control txtTipoDeCambio.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtTipoDeCambio As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''Control lblAdjuntos.

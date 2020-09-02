@@ -67,7 +67,7 @@ Public Class frmAltaProveedor
     'End Sub
 
     Protected Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
-        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%'"
+        odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscar.Text.Trim & "%' OR rfc LIKE '%" & txtBuscar.Text.Trim & "%'"
         limpiarNuevo()
         divDetalles.Visible = False
         txtRfc.Enabled = False
@@ -88,9 +88,13 @@ Public Class frmAltaProveedor
         Dim tableAdapterProveedores2 As New dsProduccionTableAdapters.CXP_Proveedores2TableAdapter
         Dim taUsuarios As New dsProduccionTableAdapters.UsuariosTableAdapter
         Dim taProveedores As New dsProduccionTableAdapters.CXP_ProveedoresTableAdapter
-
-        tableAdapterProveedores2.Fill(tableProveedores2, ddlBuscar.SelectedValue)
-
+        Try
+            tableAdapterProveedores2.Fill(tableProveedores2, ddlBuscar.SelectedValue)
+        Catch ex As Exception
+            lblErrorGeneral.Text = ex.ToString
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End Try
         If tableProveedores2.Rows.Count = 1 Then
             tablaCuentas.Visible = True
             rowsProveedores2 = tableProveedores2.Rows(0)
@@ -312,13 +316,20 @@ Public Class frmAltaProveedor
 
         Dim validacion As String = "SI"
         'valida RFC
-        If txtRfc.Text.Trim <> String.Empty Then
-            If Regex.IsMatch(txtRfc.Text.Trim, "^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$") = False Then
-                lblErrorGeneral.Text = "Estructura del RFC incorrecta."
-                ModalPopupExtender1.Show()
-                validacion = "NO"
-                Exit Sub
+        If txtRfc.Text.Trim.Length = 12 Or txtRfc.Text.Trim.Length = 13 Then
+            If txtRfc.Text.Trim <> String.Empty Then
+                If Regex.IsMatch(txtRfc.Text.Trim, "^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$") = False Then
+                    lblErrorGeneral.Text = "Estructura del RFC incorrecta."
+                    ModalPopupExtender1.Show()
+                    validacion = "NO"
+                    Exit Sub
+                End If
             End If
+        Else
+            lblErrorGeneral.Text = "Longitud del RFC incorrecta."
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
         End If
 
         'valida CURP
@@ -331,7 +342,7 @@ Public Class frmAltaProveedor
             End If
         End If
 
-        If txtRazonSocial.Text.Trim <> String.Empty Then
+        If txtRazonSocial.Text.Trim = String.Empty Then
             lblErrorGeneral.Text = "No se ha incluido la razón social."
             ModalPopupExtender1.Show()
             validacion = "NO"
@@ -647,6 +658,13 @@ Public Class frmAltaProveedor
         Dim tableAdapterGenCorreos As New dsProduccionTableAdapters.GEN_Correos_SistemaFinagilTableAdapter
         Dim tableAdapterCuentasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
         Dim mensaje As String = ""
+
+        If GridView3.Rows.Count = 0 Then
+            lblErrorGeneral.Text = "La documentación del proveedor es incompleta, favor de revisar el listado de documentos obligatorios"
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End If
+
 
         If txtNoProveedor.Text <> String.Empty Then
             If tableadapterDocumentacionProv.NoDoctosOblig_ScalarQuery(Session.Item("tipoPersona")) <= tableadapterProveedorArch.ObtNoDoctsObligXProv_ScalarQuery(txtNoProveedor.Text.Trim) Then

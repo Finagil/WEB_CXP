@@ -66,7 +66,7 @@ Public Class frmMisSolicitudesSC
         If e.CommandName = "Select" Then
             HiddenID.Value = e.CommandSource.Text
             HiddenEstatus.Value = e.CommandArgument
-        ElseIf InStr(HiddenEstatus.Value, "Pagada") > 0 Then
+        ElseIf HiddenEstatus.Value = "Pagada" Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
             Exit Sub

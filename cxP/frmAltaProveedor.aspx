@@ -82,12 +82,7 @@
         .auto-style30 {
             width: 212px;
         }
-        .auto-style31 {
-            width: 624px;
-            text-align: left;
-            height: 30px;
-        }
-     </style>
+        </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server">
@@ -133,6 +128,16 @@
         <div style="overflow-y:auto;height:90%; margin-bottom:10px;">
             
             <table style="border-radius: 5px; border-style: solid; border-width: thin; width: 95%; margin: 0 auto; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; background-color: #FFE0C0;">
+        <tr>
+            <td class="auto-style16">
+                Busque por razón social, nombre o RFC:</td>
+            <td class="auto-style16">
+                &nbsp;</td>
+            <td class="auto-style16">
+                Seleccione el registro deseado:</td>
+            <td class="auto-style16">
+                &nbsp;</td>
+        </tr>
         <tr>
             <td class="auto-style16">
                 <asp:TextBox ID="txtBuscar" runat="server" Width="95%"></asp:TextBox>

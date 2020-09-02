@@ -93,9 +93,7 @@ click(function (event) {
         .auto-style54 {
             width: 1187px;
         }
-        .auto-style62 {
-            width: 393px;
-        }
+        
         .auto-style63 {
             width: 394px;
         }
@@ -695,6 +693,7 @@ click(function (event) {
                     </ItemTemplate>
                 </asp:FormView>
             </td>
+            <td class="auto-style90">Moneda:</td>
             <td class="auto-style90">Cuenta:
 
              </td>
@@ -737,6 +736,27 @@ click(function (event) {
 
              </td>
             <td class="auto-style90">
+                <asp:DropDownList ID="ddlMonedas" runat="server" DataSourceID="odsMonedas" DataTextField="c_Moneda" DataValueField="c_Moneda">
+                </asp:DropDownList>
+                <asp:ObjectDataSource ID="odsMonedas" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_c_MonedaTableAdapter" UpdateMethod="Update">
+                    <DeleteParameters>
+                        <asp:Parameter Name="Original_c_Moneda" Type="String" />
+                    </DeleteParameters>
+                    <InsertParameters>
+                        <asp:Parameter Name="c_Moneda" Type="String" />
+                        <asp:Parameter Name="c_NombreMoneda" Type="String" />
+                        <asp:Parameter Name="c_Decimales" Type="String" />
+                        <asp:Parameter Name="c_Simbolo" Type="String" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="c_NombreMoneda" Type="String" />
+                        <asp:Parameter Name="c_Decimales" Type="String" />
+                        <asp:Parameter Name="c_Simbolo" Type="String" />
+                        <asp:Parameter Name="Original_c_Moneda" Type="String" />
+                    </UpdateParameters>
+                </asp:ObjectDataSource>
+            </td>
+            <td class="auto-style90">
                 <asp:TextBox ID="txtCuenta" runat="server" Width="90%" Enabled="False" ReadOnly="True"></asp:TextBox>
             </td>
             <td class="auto-style90">
@@ -758,7 +778,7 @@ click(function (event) {
 
           <table runat="server" id="ctasBancarias" style="border-radius:5px; border-style: groove; border-width: 3px; border-color: lightgray; width:95%; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style54">
             <tr>
-                <td class="auto-style62">
+                <td style="width:40%">
 
                     Cuenta bancaria:<asp:ObjectDataSource ID="odsCuentasBancarias" runat="server" DeleteMethod="Delete" OldValuesParameterFormatString="original_{0}" SelectMethod="CuentasBancarias_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter" InsertMethod="Insert" UpdateMethod="Update">
                         <DeleteParameters>
@@ -788,7 +808,10 @@ click(function (event) {
                     </asp:ObjectDataSource>
 
                 </td>
-                <td class="auto-style63">
+                <td style="width:25%">
+
+                    &nbsp;</td>
+                <td style="width:25%">
 
                     <asp:Label ID="lblImporte" runat="server" Text="Importe carta neteo:" Visible="False"></asp:Label>
 
@@ -808,10 +831,13 @@ click(function (event) {
             <tr>
                 <td class="auto-style62">
 
-                    <asp:DropDownList ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: block;" Width="600px" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block" Visible="False" AutoCompleteMode="Suggest">
+                    <asp:DropDownList ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: block;" Width="95%" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block" Visible="False" AutoCompleteMode="Suggest">
                     </asp:DropDownList>
 
                 </td>
+                <td class="auto-style62">
+
+                    &nbsp;</td>
                 <td class="auto-style63">
 
                     <asp:TextBox ID="txtImporteCartaNeteto" runat="server" Visible="False">0</asp:TextBox>
@@ -820,6 +846,9 @@ click(function (event) {
             </tr>
             <tr>
                 <td class="auto-style62">
+                     
+                    &nbsp;</td>
+                <td class="auto-style62">
 
                     &nbsp;</td>
                 <td class="auto-style63">
@@ -827,7 +856,7 @@ click(function (event) {
                     &nbsp;</td>
             </tr>
             <tr>
-                <td class="auto-style52" colspan="2">
+                <td class="auto-style52" colspan="3">
 
                     <asp:Button ID="btnVistaPrevia" runat="server" Text="Revisar" CssClass="Botones" Visible="False" Width="100px"/>
                     &nbsp;&nbsp;
@@ -836,7 +865,7 @@ click(function (event) {
                 </td>
             </tr>
             <tr>
-                <td class="auto-style52" colspan="2">
+                <td class="auto-style52" colspan="3">
 
                     <asp:Label ID="lblError" runat="server" Font-Names="Arial Black" Font-Size="X-Large" ForeColor="#FF6401" Text="Error" Visible="False"></asp:Label>
                     <br />
@@ -887,7 +916,25 @@ click(function (event) {
                     &nbsp;</td>
             </tr>            
             <tr>
-                <td class="auto-style76" colspan="3">
+                <td style="width:33%">
+
+                    Tipo de cambio:</td>
+                <td style="width:33%">
+
+                    &nbsp;</td>
+                <td style="width:36%">
+                    &nbsp;</td>
+            </tr>            
+            <tr>
+                <td style="width:33%">
+
+                    <asp:TextBox ID="txtTipoDeCambio" Width="80%" runat="server"></asp:TextBox>
+
+                </td>
+                <td style="width:33%">
+
+                    &nbsp;</td>
+                <td style="width:36%">
                     &nbsp;</td>
             </tr>            
             <tr>
@@ -904,15 +951,15 @@ click(function (event) {
                 </td>
             </tr>            
             <tr>
-                <td class="auto-style73">
-                                <asp:FileUpload ID="fup1" runat="server" Visible="False" accept=".pdf" multiple="multiple" AllowMultiple="true" Width="200px"/>
+                <td style="width:33%">
+                                <asp:FileUpload ID="fup1" runat="server" Visible="False" accept=".pdf" multiple="multiple" AllowMultiple="true" Width="95%"/>
                 </td>
-                <td class="auto-style73">
-                    <asp:FileUpload ID="fupCartaNeteo" runat="server"  Width="200px" Visible="False" />
+                <td style="width:33%">
+                    <asp:FileUpload ID="fupCartaNeteo" runat="server"  Width="95%" Visible="False" />
                 </td>
-                <td class="auto-style82">
+                <td style="width:36%">
 
-                    <asp:TextBox ID="txtDescCartaNeteo" runat="server" Visible="False" Width="300px"></asp:TextBox>
+                    <asp:TextBox ID="txtDescCartaNeteo" runat="server" Visible="False" Width="95%"></asp:TextBox>
 
                 </td>
             </tr>            

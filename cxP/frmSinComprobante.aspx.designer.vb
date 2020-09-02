@@ -554,6 +554,15 @@ Partial Public Class frmSinComprobante
     Protected WithEvents ddlBancos As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
+    '''Control ddlMonedaPago.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlMonedaPago As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
     '''Control txtCuenta.
     '''</summary>
     '''<remarks>
@@ -633,6 +642,15 @@ Partial Public Class frmSinComprobante
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents ddlMoneda As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
+    '''Control txtTipoDeCambio.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtTipoDeCambio As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''Control txtMontoSolicitado.
