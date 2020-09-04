@@ -182,17 +182,7 @@ Public Class frmSinComprobante
                 Exit Sub
             End If
 
-            ' Revisa datos del cliente-proveedor-deudor
-
-            Select Case ddlMismoDeudor.SelectedIndex
-                Case 0 'elegir proveedor
-                    Session.Item("idProvCtasPago") = ddlProveedor.SelectedValue
-                Case 1 'mismo deudor
-                    Session.Item("idProvCtasPago") = Session.Item("idDeudor")  'obtieneIdProveedor(Session.Item("rfcCliente"))
-                Case 2 'mismo cliente
-                    'validaExisteProveedor(ddlClientes.SelectedValue)
-                    Session.Item("idProvCtasPago") = Session.Item("idDeudor") 'obtieneIdProveedor(Session.Item("rfcCliente"))
-            End Select
+            monedaPago = ddlMoneda.SelectedValue
 
             'Insertar registro de datos bancarios para crédito simple y liquidez inmediata
             Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
@@ -200,7 +190,7 @@ Public Class frmSinComprobante
             If Not IsNothing(lblTipar) Then
                 If chkContrato.Checked = True Then
                     If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Or lblTipar.Text.Trim = "F" Or lblTipar.Text.Trim = "R" Then
-                        idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(Session.Item("idProvCtasPago"), ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                        idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CTOS " & ddlContratos.SelectedItem.Text, ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                     Else
                         idCuentas = 0
                         txtTipoDeCambio.Text = "1.0000"
@@ -209,7 +199,7 @@ Public Class frmSinComprobante
                 Else
                     If taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
                         If Session.Item("ref") = "CRE" Then
-                            idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(Session.Item("idProvCtasPago"), ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                            idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                         ElseIf Session.Item("ref") = "TRE" Then
                             idCuentas = cmbCuentasBancarias.SelectedValue
                         ElseIf Session.Item("ref") = "CHE" Then
@@ -229,7 +219,7 @@ Public Class frmSinComprobante
                     idCuentas = cmbCuentasBancarias.SelectedValue
                 Else
                     If Session.Item("ref") = "CRE" Then
-                        idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(Session.Item("idProvCtasPago"), ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                        idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
                     Else
                         idCuentas = 0
                         txtTipoDeCambio.Text = "1.0000"
@@ -863,7 +853,7 @@ Public Class frmSinComprobante
 
 
         odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' OR idConcepto ='" & taEmpresa.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "' OR eventoContable = 1 AND idConcepto <>'" & taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "')" '"idConcepto IN (" & Session.Item("Conceptos") & ") AND conComprobante = false"
-        ddlMonedaPago.SelectedValue = "MXN"
+
 
     End Sub
 
@@ -1568,36 +1558,36 @@ Public Class frmSinComprobante
         'validaTipoDeCambio()
     End Sub
 
-    Private Sub validaTipoDeCambio()
-        Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
-        Dim taTipoDeCambio As New dsProduccionTableAdapters.CONT_TiposDeCambioTableAdapter
+    'Private Sub validaTipoDeCambio()
+    '    Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+    '    Dim taTipoDeCambio As New dsProduccionTableAdapters.CONT_TiposDeCambioTableAdapter
 
-        If cmbCuentasBancarias.Enabled = True Then
-            If ddlMoneda.SelectedValue <> taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
-                If ddlMoneda.SelectedValue = "MXN" Then
-                    txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
-                    monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
-                Else
-                    txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(ddlMoneda.Text, Date.Now.ToShortDateString)
-                    monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
-                End If
-            Else
-                txtTipoDeCambio.Text = "1.0000"
-            End If
-        Else
-            If ddlMonedaPago.SelectedValue <> ddlMoneda.SelectedValue Then
-                If ddlMoneda.SelectedValue = "MXN" Then
-                    txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
-                    monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
-                Else
-                    txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(ddlMoneda.Text, Date.Now.ToShortDateString)
-                    monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
-                End If
-            Else
-                txtTipoDeCambio.Text = "1.0000"
-            End If
-        End If
-    End Sub
+    '    If cmbCuentasBancarias.Enabled = True Then
+    '        If ddlMoneda.SelectedValue <> taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
+    '            If ddlMoneda.SelectedValue = "MXN" Then
+    '                txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
+    '                monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
+    '            Else
+    '                txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(ddlMoneda.Text, Date.Now.ToShortDateString)
+    '                monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
+    '            End If
+    '        Else
+    '            txtTipoDeCambio.Text = "1.0000"
+    '        End If
+    '    Else
+    '        If ddlMonedaPago.SelectedValue <> ddlMoneda.SelectedValue Then
+    '            If ddlMoneda.SelectedValue = "MXN" Then
+    '                txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
+    '                monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
+    '            Else
+    '                txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(ddlMoneda.Text, Date.Now.ToShortDateString)
+    '                monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue)
+    '            End If
+    '        Else
+    '            txtTipoDeCambio.Text = "1.0000"
+    '        End If
+    '    End If
+    'End Sub
 
     Protected Sub cmbCuentasBancarias_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCuentasBancarias.SelectedIndexChanged
         ' validaTipoDeCambio()

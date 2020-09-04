@@ -100,10 +100,7 @@
           .auto-style88 {
               width: 476px;
           }
-          .auto-style90 {
-              width: 16%;
-          }
-    </style>
+          </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     .<asp:ScriptManager ID="ScriptManager1" runat="server">
@@ -421,7 +418,6 @@
                     </ItemTemplate>
                 </asp:FormView>
             </td>
-            <td style="width:8%">Moneda:</td>
             <td style="width:14%">Cuenta:
 
              </td>
@@ -463,11 +459,6 @@
                 </asp:DropDownList>
 
              </td>
-            <td style="width:8%">
-                <asp:DropDownList ID="ddlMonedaPago" runat="server" DataSourceID="odsMonedas" DataTextField="c_Moneda" DataValueField="c_Moneda" Width="90%">
-                </asp:DropDownList>
-
-            </td>
             <td style="width:14%">
                 <asp:TextBox ID="txtCuenta" runat="server" Width="90%"></asp:TextBox>
             </td>
@@ -480,7 +471,7 @@
             <td style="width:14%">
                 <asp:TextBox ID="txtReferencia" runat="server" Width="90%"></asp:TextBox>
             </td>
-            <td style="width:21%">
+            <td style="width:35%">
               
                 <ajaxToolkit:AsyncFileUpload ID="afuAdjuntoCta" runat="server" Width="100%" />
               
