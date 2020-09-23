@@ -111,7 +111,7 @@ Public Class frmSinComprobante
         odsProveedores.FilterExpression = "razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%' OR rfc LIKE '%" & txtBuscarProveedor.Text.Trim & "%'" '"razonSocial LIKE '%" & txtBuscarProveedor.Text.Trim & "%'"
 
         valida_Proveedor()
-
+        tablaDatosSol.Visible = False
     End Sub
 
     Private Sub valida_Proveedor()
@@ -264,6 +264,12 @@ Public Class frmSinComprobante
                     Session.Item("namePDF") = Session.Item("Empresa") & "-" & folSolPagoFinagil
                     taEmpresas.ConsumeFolio(Session.Item("Empresa"))
                     If ddlMismoDeudor.SelectedValue = "Elegir proveedor" Then
+                        If ddlProveedor.SelectedValue <> taCuentasProv.ObtNoProveedor_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
+                            lblErrorGeneral.Text = "El número de cuenta no corresponde al proveedor seleccionad"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
+
                         If chkContrato.Checked = True Then
                             taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
                             If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = True Then
@@ -314,6 +320,7 @@ Public Class frmSinComprobante
                                 txtDeudor.Text = rowsD.razonSocial
                                 Session.Item("idCDeudor") = rowsD.idProveedor
                             End If
+
                             '********************
                             taCXPPagos.Insert(Session.Item("idCDeudor"), 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
                             If CDec(txtImporteCartaNeteto.Text) > 0 And fupCarteNeteo.HasFile = True Then
@@ -1172,8 +1179,8 @@ Public Class frmSinComprobante
         Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
-        Dim folio As String = "2498"
-        Dim cuenta As String = "370"
+        Dim folio As String = "2948"
+        Dim cuenta As String = "148"
 
         Dim dtSolPDF As DataTable
         dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
@@ -1229,7 +1236,7 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub ddlProveedor_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlProveedor.SelectedIndexChanged
-
+        seleccionaProveedor()
     End Sub
 
     Private Function valida_Proveedor2()
@@ -1306,38 +1313,7 @@ Public Class frmSinComprobante
     End Sub
 
     Protected Sub btnSeleccionarProv_Click(sender As Object, e As EventArgs) Handles btnSeleccionarProv.Click
-        Dim dtDatosEmpresa As New dsProduccion.CXP_EmpresasDataTable
-        Dim drDatosEmpresa As dsProduccion.CXP_EmpresasRow
-        If chkContrato.Checked = True Then
-            If ddlMismoDeudor.SelectedIndex = 0 Then
-                Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
-                If lblTipar.Text.Trim <> "L" And lblTipar.Text.Trim <> "S" Then
-
-                    validaEstatusProveedor(ddlProveedor.SelectedValue)
-                Else
-                    odsCuentasBancarias.FilterExpression = "idProveedor = '" & ddlProveedor.SelectedValue & "' AND estatus = 11"
-                    tablaContratos.Visible = True
-                    tablaDatosSol.Visible = True
-                    If btnSeleccionarProv.Enabled = True Then
-                        valida_Proveedor()
-                    End If
-                End If
-            Else
-                validaEstatusProveedor(ddlProveedor.SelectedValue)
-            End If
-            odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
-            ddlMoneda.SelectedValue = "MXN"
-            txtTipoDeCambio.Text = "1.0000"
-        Else
-            validaEstatusProveedor(ddlProveedor.SelectedValue)
-            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
-            ddlMoneda.SelectedValue = "MXN"
-            txtTipoDeCambio.Text = "1.0000"
-        End If
-
-        cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
-        cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
-
+        seleccionaProveedor()
     End Sub
 
     Protected Sub validaEstatusProveedor(idProveedor As String)
@@ -1349,6 +1325,7 @@ Public Class frmSinComprobante
                 tablaDatosSol.Visible = False
                 Session.Item("solicitud") = "OK"
                 Session.Item("noProveedor") = idProveedor
+                cmbCuentasBancarias.Enabled = False
                 Exit Sub
             Else
                 odsCuentasBancarias.FilterExpression = "idProveedor = '" & idProveedor & "' AND estatus = 11"
@@ -1597,10 +1574,7 @@ Public Class frmSinComprobante
         ' validaTipoDeCambio()
     End Sub
 
-    Protected Sub txtFechaPago_TextChanged(sender As Object, e As EventArgs) Handles txtFechaPago.TextChanged
 
-
-    End Sub
 
     Public Function obtieneIdProveedor(ByVal rfc As String)
         Dim idProveedor As Integer = 0
@@ -1618,6 +1592,41 @@ Public Class frmSinComprobante
         End If
         Return idProveedor
     End Function
+
+    Private Sub seleccionaProveedor()
+        Dim dtDatosEmpresa As New dsProduccion.CXP_EmpresasDataTable
+        Dim drDatosEmpresa As dsProduccion.CXP_EmpresasRow
+        If chkContrato.Checked = True Then
+            If ddlMismoDeudor.SelectedIndex = 0 Then
+                Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
+                If lblTipar.Text.Trim <> "L" And lblTipar.Text.Trim <> "S" Then
+
+                    validaEstatusProveedor(ddlProveedor.SelectedValue)
+                Else
+                    odsCuentasBancarias.FilterExpression = "idProveedor = '" & ddlProveedor.SelectedValue & "' AND estatus = 11"
+                    tablaContratos.Visible = True
+                    tablaDatosSol.Visible = True
+                    If btnSeleccionarProv.Enabled = True Then
+                        valida_Proveedor()
+                    End If
+                End If
+            Else
+                validaEstatusProveedor(ddlProveedor.SelectedValue)
+            End If
+            odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
+            ddlMoneda.SelectedValue = "MXN"
+            txtTipoDeCambio.Text = "1.0000"
+        Else
+            validaEstatusProveedor(ddlProveedor.SelectedValue)
+            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+            ddlMoneda.SelectedValue = "MXN"
+            txtTipoDeCambio.Text = "1.0000"
+        End If
+
+        cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
+        cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
+
+    End Sub
 
 End Class
 

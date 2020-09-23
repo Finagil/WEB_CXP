@@ -45,12 +45,20 @@
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <ItemStyle HorizontalAlign="Right" />
                                 </asp:BoundField>
-                                <asp:BoundField DataField="estatus" HeaderText="Estatus" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right" >
+                                <asp:BoundField DataField="estatus" HeaderText="Estatus Autorización" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right" >
 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
 
 <ItemStyle HorizontalAlign="Left" Font-Size="X-Small"></ItemStyle>
                                 </asp:BoundField>
-                                <asp:TemplateField HeaderText="PDF Solicitud" HeaderStyle-Font-Names="Arial" ItemStyle-HorizontalAlign="Right" >
+
+                                 <asp:TemplateField headertext="Estatus Pago" ItemStyle-HorizontalAlign="Left">
+                                    <ItemTemplate>
+                                        <asp:HyperLink ID="HyperLink2" Text='<%#Eval("st")%>' runat="server" NavigateUrl='<%# Eval("uuidPago", "~/TmpFinagil/ComPago/" & "{0}.pdf") %>' Target="_blank" enabled='<%#Eval("visible")%>' >HyperLink</asp:HyperLink>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Left" Font-Size="X-Small" BorderStyle="None" BorderWidth="2px"></ItemStyle>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="PDF" HeaderStyle-Font-Names="Arial" ItemStyle-HorizontalAlign="Right" >
                                     <ItemTemplate>
                                         <asp:HyperLink Font-Names="Arial" ID="lnkPdf" NavigateUrl='<%# Eval("folioSolicitud", "~/TmpFinagil/" & Session.Item("Empresa") & "-" & "{0}.pdf") %>' Target="_blank" runat="server">pdf</asp:HyperLink>
                                     </ItemTemplate>
@@ -65,7 +73,7 @@
                                         <cc1:BotonEnviar ID="BotonEnviar1" runat="server" Text="Cancelar Solicitud" TextoEnviando="Cancelando..." CommandName="Cancelar" />
                                     </HeaderTemplate>
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandArgument='<%# Eval("st") %>' CommandName="Select" Text='<%# Eval("folioSolicitud", "{0}") %>'></asp:LinkButton>
+                                        <asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandArgument='<%# Eval("st") %>' CommandName="Select" Text='<%# Eval("folioSolicitud", "{0}") %>' Enabled='<%#Eval("habilitado")%>'></asp:LinkButton>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Right" />
                                 </asp:TemplateField>

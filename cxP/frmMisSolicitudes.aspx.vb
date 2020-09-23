@@ -5,7 +5,7 @@ Imports CrystalDecisions.Shared
 Imports System.IO
 Public Class frmMisSolicitudes
     Inherits System.Web.UI.Page
-
+    Dim taAutorizantes As New dsProduccionTableAdapters.Vw_CXP_MisSolicitudesTableAdapter
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
             Response.Redirect("~/Login.aspx")
@@ -16,7 +16,7 @@ Public Class frmMisSolicitudes
             GridView1.RowStyle.BackColor = System.Drawing.Color.FromArgb(213, 244, 255)
         End If
         Dim taPagosR As New dsProduccionTableAdapters.CXP_PagosTableAdapter
-        Dim taAutorizantes As New dsProduccionTableAdapters.Vw_CXP_MisSolicitudesTableAdapter
+
         Dim dtPagosR As New dsProduccion.CXP_PagosDataTable
 
         For Each row As GridViewRow In GridView1.Rows
@@ -63,12 +63,18 @@ Public Class frmMisSolicitudes
         If e.CommandName = "Select" Then
             HiddenID.Value = e.CommandSource.Text
             HiddenEstatus.Value = e.CommandArgument
-        ElseIf INSTR(HiddenEstatus.Value, "Cancelada") > 0 Then
-            LabelError.Visible = True
-            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE CANCELADA")
-        ElseIf HiddenEstatus.Value = "Pagada" Then
+        ElseIf HiddenEstatus.Value = "Pagada" Or taAutorizantes.ObtEstatus_ScalarQuery(HiddenID.Value, CInt(Session.Item("Empresa"))) = "Pagada" Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
+            Exit Sub
+        ElseIf HiddenEstatus.Value = "En Proceso de Pago" Or taAutorizantes.ObtEstatus_ScalarQuery(HiddenID.Value, CInt(Session.Item("Empresa"))) = "En Proceso de Pago" Then
+            LabelError.Visible = True
+            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " SE ENCUENTRA EN PROCESO DE PAGO")
+            Exit Sub
+        ElseIf HiddenEstatus.Value = "Cancelada" Or taAutorizantes.ObtEstatus_ScalarQuery(HiddenID.Value, CInt(Session.Item("Empresa"))) = "Cancelada" Then
+            LabelError.Visible = True
+            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE CANCELADA")
+            Exit Sub
         ElseIf e.CommandName = "Cancelar" And HiddenID.Value > "" Then
             taPagos.ObtFolioParaCancelar_FillBy(td, Session.Item("Usuario"), CInt(Session.Item("Empresa")), HiddenID.Value)
             taPagosTes.CambiaEstatus_UpdateQuery(35, "CXP", HiddenID.Value, CInt(Session.Item("Empresa")))
@@ -85,7 +91,7 @@ Public Class frmMisSolicitudes
             If dtRegCont.Rows.Count > 0 Then
                 Dim folioPoliza As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
                 For Each rwRegCont As dsProduccion.CXP_RegContRow In dtRegCont.Rows
-                    taRegCont.Insert(CDec(rwRegCont.idCuenta), CDec(rwRegCont.idProveedor), CDec(rwRegCont.abono), CDec(rwRegCont.cargo), rwRegCont.referencia, rwRegCont.concepto, CDec(rwRegCont.idTipoDocumento), folioPoliza, CDec(rwRegCont.idEmpresa), rwRegCont.uuid, CDec(rwRegCont.folioSolicitud), rwRegCont.fecha, rwRegCont.estatus, CDec(rwRegCont.idConcepto), CDec(rwRegCont.periodoEjercicio))
+                    taRegCont.Insert(CDec(rwRegCont.idCuenta), CDec(rwRegCont.idProveedor), CDec(rwRegCont.abono), CDec(rwRegCont.cargo), rwRegCont.referencia, "CAX-" & rwRegCont.concepto, CDec(rwRegCont.idTipoDocumento), folioPoliza, CDec(rwRegCont.idEmpresa), rwRegCont.uuid, CDec(rwRegCont.folioSolicitud), rwRegCont.fecha, rwRegCont.estatus, CDec(rwRegCont.idConcepto), CDec(rwRegCont.periodoEjercicio))
                 Next
                 taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
             End If

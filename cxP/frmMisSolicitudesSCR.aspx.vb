@@ -2,7 +2,7 @@
 Imports CrystalDecisions.Shared
 Public Class frmMisSolicitudesSCR
     Inherits System.Web.UI.Page
-
+    Dim taAutorizaciones As New dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim taEmpresa As New dsProduccionTableAdapters.CXP_EmpresasTableAdapter
         Session.Item("idConcepto") = taEmpresa.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa"))
@@ -19,7 +19,7 @@ Public Class frmMisSolicitudesSCR
         End If
         For Each row As GridViewRow In GridView1.Rows
             Session.Item("Leyenda") = "Mis solicitudes de reembolso"
-            Dim taAutorizaciones As New dsProduccionTableAdapters.Vw_CXP_MisSolicitudesSCTableAdapter
+
             Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesSCDataTable
             Dim drAutorizaciones As dsProduccion.Vw_CXP_MisSolicitudesSCRow
 
@@ -51,11 +51,15 @@ Public Class frmMisSolicitudesSCR
         If e.CommandName = "Select" Then
             HiddenID.Value = e.CommandSource.Text
             HiddenEstatus.Value = e.CommandArgument
-        ElseIf HiddenEstatus.Value = "Pagada" Then
+        ElseIf HiddenEstatus.Value = "Pagada" Or taAutorizaciones.ObtieneEstatusSol_ScalarQuery(HiddenID.Value, CInt(Session.Item("Empresa"))) = "Pagada" Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE PAGADA")
             Exit Sub
-        ElseIf InStr(HiddenEstatus.Value, "Cancelada") > 0 Then
+        ElseIf HiddenEstatus.Value = "En Proceso de Pago" Or taAutorizaciones.ObtieneEstatusSol_ScalarQuery(HiddenID.Value, CInt(Session.Item("Empresa"))) = "En Proceso de Pago" Then
+            LabelError.Visible = True
+            LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " SE ENCUENTRA EN PROCESO DE PAGO")
+            Exit Sub
+        ElseIf HiddenEstatus.Value = "Cancelada" Or taAutorizaciones.ObtieneEstatusSol_ScalarQuery(HiddenID.Value, CInt(Session.Item("Empresa"))) = "Cancelada" Then
             LabelError.Visible = True
             LabelError.Text = UCase("SOLICITUD " & HiddenID.Value & " YA FUE CANCELADA")
             Exit Sub

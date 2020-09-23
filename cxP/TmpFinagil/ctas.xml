@@ -1,14 +1,12 @@
 <?xml version="1.0" standalone="yes"?>
 <DocumentElement>
   <CXP_CuentasBancariasProv>
-    <idCuentas>370</idCuentas>
+    <idCuentas>148</idCuentas>
     <idBanco>4</idBanco>
-    <cuenta>00444596900</cuenta>
-    <clabe>012420004445969008</clabe>
-    <descripcion>Bancomer</descripcion>
+    <cuenta>1538714129</cuenta>
+    <clabe>012180015387141297</clabe>
+    <descripcion>CUENTA BANCOMER</descripcion>
     <moneda>MXN</moneda>
-    <referencia />
-    <convenio />
     <c_NombreMoneda>Peso Mexicano</c_NombreMoneda>
     <nombreCorto>BBVA BANCOMER</nombreCorto>
   </CXP_CuentasBancariasProv>
