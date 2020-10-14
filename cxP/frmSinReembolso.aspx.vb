@@ -131,6 +131,12 @@ Public Class frmSinReembolso
         Dim guuid As String = Guid.NewGuid.ToString
         Dim guuidCN As String = Guid.NewGuid.ToString
 
+        If GridView2.Rows.Count = 0 And GridView3.Rows.Count = 0 Then
+            lblErrorGeneral.Text = "No se han ingresado datos..."
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End If
+
         Dim taEmpresas As New dsProduccionTableAdapters.CXP_EmpresasTableAdapter
         Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
         Dim taPagosTesoreria As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
@@ -478,6 +484,12 @@ Public Class frmSinReembolso
 
                 If txtDescripcionPago.Text.Trim = String.Empty Then
                     lblErrorGeneral.Text = "No se ha agregado una descripción del pago"
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+
+                If GridView2.Rows.Count = 0 And GridView3.Rows.Count = 0 Then
+                    lblErrorGeneral.Text = "No se han ingresado datos..."
                     ModalPopupExtender1.Show()
                     Exit Sub
                 End If

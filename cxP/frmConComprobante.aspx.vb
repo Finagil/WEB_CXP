@@ -878,7 +878,7 @@ Public Class frmConComprobante
                 'lblMoneda = CType(FormView6.FindControl("MonedaTipoCambio"), Label)
                 If Session.Item("monedaCtas") <> taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
                     txtTipoDeCambio.Enabled = True
-                    txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(lblMoneda.Text, Date.Now.ToShortDateString)
+                    txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
                 Else
                     txtTipoDeCambio.Text = "1.0000"
                     txtTipoDeCambio.Enabled = False

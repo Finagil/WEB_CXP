@@ -323,6 +323,7 @@ Public Class frmComprobarGastos
 
             Dim contador As Integer = 0
             Dim totalFacturas As Decimal = 0
+            Dim fecha As Date = Date.Now
             For Each rows As GridViewRow In GridView2.Rows
                 taUUIDPagos.ObtDatosFactura_FillBy(dtDatosFactura, GridView2.Rows(contador).Cells(2).Text)
                 For Each rowsa As dsProduccion.vw_CXP_XmlCfdi2_grpUuidRow In dtDatosFactura.Rows
@@ -332,11 +333,17 @@ Public Class frmComprobarGastos
                     taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), rowsa.uuid, CDec(GridView2.Rows(contador).Cells(5).Text), 0, GridView2.Rows(contador).Cells(3).Text.Replace("&nbsp;", ""), txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, rowsa.folio, rowsa.serie, "Activo")
                     '***
                     taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rowsa.uuid.ToString)
+                    taRegContable.Insert(0, 0, total, 0, txtDestinoNacional.Text, "GASTOS DE VIAJE Y VIATICOS", 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
                     For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
                         If rowsCfdi.mTras IsNot Nothing Then
-                            'taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.mTras, 0, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, ddlConc.SelectedItem.Value)
+                            'taRegContable.Insert(0, 0, rowsCfdi.mTras, 0, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, GridView2.Rows(contador).Cells(3).Text.Replace("&nbsp;", ""), CInt(Session.Item("tipoPoliza")), 0, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, ddlConc.SelectedItem.Value)
+                            taRegContable.Insert(0, 0, rowsCfdi.mTras, 0, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
                         ElseIf rowsCfdi.mRet IsNot Nothing Then
-
+                            taRegContable.Insert(0, 0, rowsCfdi.mRet, 0, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                        ElseIf rowsCfdi.mLocTra IsNot Nothing Then
+                            taRegContable.Insert(0, 0, 0, rowsCfdi.mLocTra, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                        ElseIf rowsCfdi.mLocRet IsNot Nothing Then
+                            taRegContable.Insert(0, 0, 0, rowsCfdi.mLocRet, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
                         End If
                     Next
 
@@ -350,9 +357,11 @@ Public Class frmComprobarGastos
                 Dim fileUp As FileUpload = rowsND.Cells(2).FindControl("fupNoDeducibles")
                 Dim taCFDI As New dsProduccionTableAdapters.CXP_XmlCfdi2TableAdapter
                 Dim taCompGts As New dsProduccionTableAdapters.CXP_ComprobGtosTableAdapter
+
                 If fileUp.HasFile Then
                     Dim archivoPDF As HttpPostedFile = fileUp.PostedFile
                     Dim guuidCN As String = Guid.NewGuid.ToString
+                    taRegContable.Insert(0, 0, 0, CDec(GridView3.Rows(contadorND).Cells(1).Text), "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), guuidCN, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
                     If Session.Item("Empresa") = "23" Then
                         archivoPDF.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
                         taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(GridView3.Rows(contadorND).Cells(1).Text), 1, "", 0, 0, 0, 0)

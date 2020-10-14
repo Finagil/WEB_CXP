@@ -115,55 +115,64 @@ Public Class frmSinComprobante
     End Sub
 
     Private Sub valida_Proveedor()
-        lbl69.Text = "PAGO PROCEDENTE A PROVEEDOR"
-        lbl69B.Text = "PAGO PROCEDENTE A PROVEEDOR"
-        lbl69.ForeColor = Color.Green
-        lbl69B.ForeColor = Color.Green
-
-        Session.Item("rfcEmisor") = taProveedor.ObtRfc_ScalarQuery(ddlProveedor.SelectedValue)
-        'comprobantesFiscales.FilterExpression = "rfcEmisor ='" & taProveedor.ObtRfc_ScalarQuery(ddlProveedores.SelectedValue) & "' AND rfcReceptor ='" & Session.Item("rfcEmpresa") & "'"
-        'GridView1.Visible = True
-
-        Dim ta69 As New dsProduccionTableAdapters.CRED_Lista_Art69TableAdapter
-        Dim ta69B As New dsProduccionTableAdapters.CRED_Lista_Art69BTableAdapter
-        Dim dt69 As New dsProduccion.CRED_Lista_Art69DataTable
-        Dim dt69B As New dsProduccion.CRED_Lista_Art69BDataTable
-
-        ta69.ObtEst_FillBy(dt69, Session.Item("rfcEmisor"))
-
-        For Each rows69 As dsProduccion.CRED_Lista_Art69Row In dt69
-            lbl69.ForeColor = Color.Yellow
-            Select Case rows69.supuesto
-                Case "FIRMES"
-                    lbl69.Text = "1. DE CONTRIBUYENTE QUE TIENE CRÉDITOS FISCALES FIRMES"
-                Case "EXIGIBLES"
-                    lbl69.Text = "2. CRÉDITOS EXIGIBLES, NO PAGADOS O GARANTIZADOS"
-                Case "CANCELADOS"
-                    lbl69.Text = "3. CRÉDITOS CANCELADOS"
-                Case "CONDONADOS"
-                    lbl69.Text = "4. CRÉDITOS CONDONADOS"
-                Case "SENTENCIA"
-                    lbl69.Text = "5. DE CONTRIBUYENTE QUE TIENE SENTENCIA CONDENATORIA EJECUTORIA POR LA COMISIÓN DE UN DELITO FISCAL"
-                Case "NO LOCALIZADO"
-                    lbl69.Text = "NO LOCALIZADO"
-            End Select
-        Next
-
-        ta69B.ObtEst_FillBy(dt69B, Session.Item("rfcEmisor"))
-
-        For Each rows69B As dsProduccion.CRED_Lista_Art69BRow In dt69B
-            lbl69B.ForeColor = Color.Red
-            If rows69B.status_cont <> "Desvirtuado" Or rows69B.status_cont <> "" Then
-                lbl69B.Text = "NO PROCEDE EL PAGO A PROVEEDOR, SOLICITAR ACLARACION"
-                GridView1.Enabled = False
+        Try
+            lbl69.Text = "PAGO PROCEDENTE A PROVEEDOR"
+            lbl69B.Text = "PAGO PROCEDENTE A PROVEEDOR"
+            lbl69.ForeColor = Color.Green
+            lbl69B.ForeColor = Color.Green
+            If ddlProveedor.SelectedValue <> "" Then
+                Session.Item("rfcEmisor") = taProveedor.ObtRfc_ScalarQuery(ddlProveedor.SelectedValue)
             Else
-                ddlAutorizo.Enabled = False
-                txtMontoSolicitado.Enabled = False
-                txtDescripcionPago.Enabled = False
-                txtFechaPago.Enabled = False
-                chkContrato.Enabled = False
+                Session.Item("rfcEmisor") = ""
             End If
-        Next
+            'comprobantesFiscales.FilterExpression = "rfcEmisor ='" & taProveedor.ObtRfc_ScalarQuery(ddlProveedores.SelectedValue) & "' AND rfcReceptor ='" & Session.Item("rfcEmpresa") & "'"
+            'GridView1.Visible = True
+
+            Dim ta69 As New dsProduccionTableAdapters.CRED_Lista_Art69TableAdapter
+            Dim ta69B As New dsProduccionTableAdapters.CRED_Lista_Art69BTableAdapter
+            Dim dt69 As New dsProduccion.CRED_Lista_Art69DataTable
+            Dim dt69B As New dsProduccion.CRED_Lista_Art69BDataTable
+
+            ta69.ObtEst_FillBy(dt69, Session.Item("rfcEmisor"))
+
+            For Each rows69 As dsProduccion.CRED_Lista_Art69Row In dt69
+                lbl69.ForeColor = Color.Yellow
+                Select Case rows69.supuesto
+                    Case "FIRMES"
+                        lbl69.Text = "1. DE CONTRIBUYENTE QUE TIENE CRÉDITOS FISCALES FIRMES"
+                    Case "EXIGIBLES"
+                        lbl69.Text = "2. CRÉDITOS EXIGIBLES, NO PAGADOS O GARANTIZADOS"
+                    Case "CANCELADOS"
+                        lbl69.Text = "3. CRÉDITOS CANCELADOS"
+                    Case "CONDONADOS"
+                        lbl69.Text = "4. CRÉDITOS CONDONADOS"
+                    Case "SENTENCIA"
+                        lbl69.Text = "5. DE CONTRIBUYENTE QUE TIENE SENTENCIA CONDENATORIA EJECUTORIA POR LA COMISIÓN DE UN DELITO FISCAL"
+                    Case "NO LOCALIZADO"
+                        lbl69.Text = "NO LOCALIZADO"
+                End Select
+            Next
+
+            ta69B.ObtEst_FillBy(dt69B, Session.Item("rfcEmisor"))
+
+            For Each rows69B As dsProduccion.CRED_Lista_Art69BRow In dt69B
+                lbl69B.ForeColor = Color.Red
+                If rows69B.status_cont <> "Desvirtuado" Or rows69B.status_cont <> "" Then
+                    lbl69B.Text = "NO PROCEDE EL PAGO A PROVEEDOR, SOLICITAR ACLARACION"
+                    GridView1.Enabled = False
+                Else
+                    ddlAutorizo.Enabled = False
+                    txtMontoSolicitado.Enabled = False
+                    txtDescripcionPago.Enabled = False
+                    txtFechaPago.Enabled = False
+                    chkContrato.Enabled = False
+                End If
+            Next
+        Catch ex As Exception
+            lblErrorGeneral.Text = ex.ToString
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End Try
     End Sub
 
     Protected Sub btnSolicitar_Click(sender As Object, e As EventArgs) Handles btnSolicitar.Click
@@ -264,11 +273,11 @@ Public Class frmSinComprobante
                     Session.Item("namePDF") = Session.Item("Empresa") & "-" & folSolPagoFinagil
                     taEmpresas.ConsumeFolio(Session.Item("Empresa"))
                     If ddlMismoDeudor.SelectedValue = "Elegir proveedor" Then
-                        If ddlProveedor.SelectedValue <> taCuentasProv.ObtNoProveedor_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
-                            lblErrorGeneral.Text = "El número de cuenta no corresponde al proveedor seleccionad"
-                            ModalPopupExtender1.Show()
-                            Exit Sub
-                        End If
+                        'If ddlProveedor.SelectedValue <> taCuentasProv.ObtNoProveedor_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
+                        '    lblErrorGeneral.Text = "El número de cuenta no corresponde al proveedor seleccionado"
+                        '    ModalPopupExtender1.Show()
+                        '    Exit Sub
+                        'End If
 
                         If chkContrato.Checked = True Then
                             taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, folSolPagoFinagil, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "PSC", "PROVEEDOR", guuid, "0", CDec(txtMontoSolicitado.Text), 0, 0, txtDescripcionPago.Text, ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), taGenFasesCorreo.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenFasesCorreo.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
@@ -439,14 +448,14 @@ Public Class frmSinComprobante
 #Region "generaEvenetoContable"
                         '***************
                         Try
-                            If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = 1 Then
-                                'If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 Then
-                                taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), 0, ddlProveedor.SelectedItem.Text, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, 29, ddlConcepto.SelectedValue, CInt(Session.Item("idPeriodo")))
-                                taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), 0, CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), ddlProveedor.SelectedValue, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, 29, ddlConcepto.SelectedValue, CInt(Session.Item("idPeriodo")))
-                                taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
-                                'End If
-                            End If
-                        Catch ex As Exception
+                        'If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConcepto.SelectedValue) = 1 Then
+                        If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)) <> 0 Then
+                            taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), 0, ddlProveedor.SelectedItem.Text, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, 29, ddlConcepto.SelectedValue, CInt(Session.Item("idPeriodo")))
+                            taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConcepto.SelectedValue)), CDec(ddlProveedor.SelectedValue), 0, CDec(txtMontoSolicitado.Text) - CDec(txtImporteCartaNeteto.Text), ddlProveedor.SelectedValue, ddlConcepto.SelectedItem.Text & " - " & txtDescripcionPago.Text, CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), guuid, folSolPagoFinagil, Date.Now, 29, ddlConcepto.SelectedValue, CInt(Session.Item("idPeriodo")))
+                            taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                            'End If
+                        End If
+                    Catch ex As Exception
                             lblErrorGeneral.Text = ex.ToString.Substring(1, 100)
                             ModalPopupExtender1.Show()
                         End Try

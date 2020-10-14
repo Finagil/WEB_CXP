@@ -13,8 +13,26 @@
     End Sub
 
     Protected Sub btnEntrar_Click(sender As Object, e As EventArgs) Handles btnEntrar.Click
+        Dim taPeriodos As New dsProduccionTableAdapters.CXP_PeriodosTableAdapter
+        Dim taTipoDeDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
         Dim aceptado As Boolean = False
         If Autentificacion(txtUsuario.TemplateSourceDirectory, txtPassword.Text) Then
+            'valida fecha para reiniciar polizas de diario
+            If Date.Now.Day = 1 Then
+                If Date.Now.Month > 1 Then
+                    If taPeriodos.ExistePeriodo_ScalarQuery(Date.Now.Year, Date.Now.Month - 1, CDec(Session.Item("Empresa"))) = -1 Then
+                        taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & Date.Now.Year.ToString, 31, Date.Now.Year.ToString, CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month - 1))
+                        taTipoDeDocumento.ReiniciaFolio_UpdateQuery(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
+                    End If
+                Else
+                    If taPeriodos.ExistePeriodo_ScalarQuery(Date.Now.Year - 1, Date.Now.Month - 1, CDec(Session.Item("Empresa"))) = -1 Then
+                        taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & CStr(Date.Now.Year - 1), 31, CStr(Date.Now.Year - 1), CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month - 1))
+                        taTipoDeDocumento.ReiniciaFolio_UpdateQuery(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
+                    End If
+                End If
+
+            End If
+
             FormsAuthentication.RedirectFromLoginPage(txtUsuario.Text, False)
             Response.Redirect("~/Default.aspx")
         Else

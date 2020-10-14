@@ -421,7 +421,7 @@ Public Class frmAltaProveedor
         Else
             Session.Item("tipoPersona") = "E"
         End If
-        If chkClientProv.Checked = True Then
+        If chkClientProv.Checked = True Or txtRfc.Text.Trim = "XAXX010101000" Then
             Session.Item("tipoPersona") = "C"
         End If
         GridView3.DataBind()
