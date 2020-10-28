@@ -332,20 +332,20 @@ Public Class frmComprobarGastos
                     taCXPPagos.Insert(ddlProveedor.SelectedItem.Value, 0, ddlFolioSolicitud.SelectedItem.Text, Date.Now.ToLongDateString, rowsa.fechaEmision, rowsa.serie, rowsa.folio, rowsa.uuid, Math.Round(rowsa.subTotal * percentPago, 2), CDec(GridView2.Rows(contador).Cells(5).Text), 0, 0, GridView2.Rows(contador).Cells(3).Text, 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "CompGtos", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rowsa.moneda, Date.Now, False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), Nothing, Nothing, 0, 1, "MXN")
                     taComprobacionGtos.Insert(CDec(Session.Item("idUsuario")), CDec(ddlFolioSolicitud.SelectedItem.Text), CDec(Session.Item("Empresa")), rowsa.uuid, CDec(GridView2.Rows(contador).Cells(5).Text), 0, GridView2.Rows(contador).Cells(3).Text.Replace("&nbsp;", ""), txtDestinoNacional.Text, "", "", CDate(txtFechaLlegada.Text), CDate(txtFechaSalida.Text), folComprobacionCom, "", "", Session.Item("Jefe"), ddlAutorizo.SelectedItem.Text, "#" & Session.Item("mailJefe"), mail, Date.Now.ToLongDateString, rowsa.folio, rowsa.serie, "Activo")
                     '***
-                    taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rowsa.uuid.ToString)
-                    taRegContable.Insert(0, 0, total, 0, txtDestinoNacional.Text, "GASTOS DE VIAJE Y VIATICOS", 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
-                    For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
-                        If rowsCfdi.mTras IsNot Nothing Then
-                            'taRegContable.Insert(0, 0, rowsCfdi.mTras, 0, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, GridView2.Rows(contador).Cells(3).Text.Replace("&nbsp;", ""), CInt(Session.Item("tipoPoliza")), 0, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, ddlConc.SelectedItem.Value)
-                            taRegContable.Insert(0, 0, rowsCfdi.mTras, 0, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
-                        ElseIf rowsCfdi.mRet IsNot Nothing Then
-                            taRegContable.Insert(0, 0, rowsCfdi.mRet, 0, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
-                        ElseIf rowsCfdi.mLocTra IsNot Nothing Then
-                            taRegContable.Insert(0, 0, 0, rowsCfdi.mLocTra, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
-                        ElseIf rowsCfdi.mLocRet IsNot Nothing Then
-                            taRegContable.Insert(0, 0, 0, rowsCfdi.mLocRet, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
-                        End If
-                    Next
+                    'taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rowsa.uuid.ToString)
+                    'taRegContable.Insert(0, 0, total, 0, txtDestinoNacional.Text, "GASTOS DE VIAJE Y VIATICOS", 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                    'For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
+                    '    If rowsCfdi.mTras IsNot Nothing Then
+                    '        taRegContable.Insert(0, 0, rowsCfdi.mTras, 0, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                    '    ElseIf rowsCfdi.mRet IsNot Nothing Then
+                    '        taRegContable.Insert(0, 0, rowsCfdi.mRet, 0, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                    '    ElseIf rowsCfdi.mLocTra IsNot Nothing Then
+                    '        taRegContable.Insert(0, 0, 0, rowsCfdi.mLocTra, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                    '    ElseIf rowsCfdi.mLocRet IsNot Nothing Then
+                    '        taRegContable.Insert(0, 0, 0, rowsCfdi.mLocRet, "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), rowsa.uuid, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                    '    End If
+                    'Next
+                    '******
 
                     totalFacturas += CDec(GridView2.Rows(contador).Cells(5).Text)
                 Next
@@ -361,7 +361,7 @@ Public Class frmComprobarGastos
                 If fileUp.HasFile Then
                     Dim archivoPDF As HttpPostedFile = fileUp.PostedFile
                     Dim guuidCN As String = Guid.NewGuid.ToString
-                    taRegContable.Insert(0, 0, 0, CDec(GridView3.Rows(contadorND).Cells(1).Text), "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), guuidCN, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
+                    'taRegContable.Insert(0, 0, 0, CDec(GridView3.Rows(contadorND).Cells(1).Text), "", GridView2.Rows(contador).Cells(3).Text, 3, 0, CDec(Session.Item("Empresa")), guuidCN, ddlFolioSolicitud.SelectedItem.Text, fecha, 29, 34, 2)
                     If Session.Item("Empresa") = "23" Then
                         archivoPDF.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
                         taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(GridView3.Rows(contadorND).Cells(1).Text), 1, "", 0, 0, 0, 0)
@@ -529,5 +529,50 @@ Public Class frmComprobarGastos
 
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
 
+    End Sub
+
+    Protected Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Dim folioComp As Integer = 284
+        Dim taComprobacion As New dsProduccionTableAdapters.Vw_CXP_ComprobacionGastosTableAdapter
+
+        Dim rptComprobacion As New ReportDocument
+        Dim dtSol1 As DataTable
+        dtSol1 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
+        Dim dtSol2 As DataTable
+        dtSol2 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
+        Dim dtSol3 As DataTable
+        dtSol3 = New dsProduccion.Vw_CXP_ComprobacionGastosDataTable
+
+
+        Dim taSol1 As New dsProduccionTableAdapters.Vw_CXP_ComprobacionGastosTableAdapter
+        Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
+        taSol1.Obt1_FillBy(dtSol1, CDec(Session.Item("Empresa")), folioComp)
+        taSol1.ObtND_FillBy(dtSol2, CDec(Session.Item("Empresa")), folioComp)
+        taSol1.ObtDND_FillBy(dtSol3, CDec(Session.Item("Empresa")), folioComp)
+
+        rptComprobacion.Load(Server.MapPath("~/rptComprobacionGts.rpt"))
+        rptComprobacion.SetDataSource(dtSol1)
+        rptComprobacion.Subreports(0).SetDataSource(dtSol2)
+        rptComprobacion.Subreports(1).SetDataSource(dtSol3)
+        rptComprobacion.Refresh()
+
+        If Session.Item("rfcEmpresa") = "FIN940905AX7" Then
+            rptComprobacion.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/LOGO FINAGIL.JPG"))
+        Else
+            rptComprobacion.SetParameterValue("var_pathImagen", Server.MapPath("~/imagenes/logoArfin.JPG"))
+        End If
+        rptComprobacion.SetParameterValue("var_genero", encripta.Encriptar(Date.Now.ToString("yyyyMMddhhmm") & Session.Item("Empresa") & folioComp))
+        rptComprobacion.SetParameterValue("var_totalConFactura", FormatCurrency(taComprobacion.importeSifacturas_ScalarQuery(CDec(Session.Item("Empresa")), folioComp)))
+        rptComprobacion.SetParameterValue("var_totalSinFactura", FormatCurrency(taComprobacion.importeNoFacturas_ScalarQuery(CDec(Session.Item("Empresa")), folioComp)))
+        rptComprobacion.SetParameterValue("var_total", FormatCurrency(taComprobacion.Total_ScalarQuery(CDec(Session.Item("Empresa")), folioComp)))
+
+        Dim rutaPDF As String = "~\GTS\" & Session.Item("namePDFg") & ".pdf"
+        rptComprobacion.ExportToDisk(ExportFormatType.PortableDocFormat, Server.MapPath(rutaPDF))
+
+        Response.Write("<script>")
+        rutaPDF = rutaPDF.Replace("\", "/")
+        rutaPDF = rutaPDF.Replace("~", "..")
+        Response.Write("window.open('verPdfGts.aspx','popup','_blank','width=200,height=200')")
+        Response.Write("</script>")
     End Sub
 End Class

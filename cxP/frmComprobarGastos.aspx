@@ -316,7 +316,8 @@
                 </td>
                 <td class="auto-style38">
 
-                    &nbsp;</td>
+                    <asp:Button ID="Button5" runat="server" Text="Button" Visible="False" />
+                </td>
                 <td class="auto-style38">
 
                     &nbsp;</td>
@@ -425,8 +426,11 @@
                 </td>
             </tr>
         </table>
-        <div id="divFacturas" style="width:90%;height:100px;overflow-x:auto;overflow-y:auto;margin-left:auto;margin-right:auto;" >
-            <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="idXmlCfdi" DataSourceID="odsCFDI" Width="100%" Height="100%" ForeColor="#333333" HorizontalAlign="Center" Visible="False" PageSize="5">
+         <div id="temp" style="width:90%;height:20px;overflow-x:auto;overflow-y:auto;margin-left:auto;margin-right:auto;" >
+             </div>
+        <div id="divFacturas" style="width:95%;height:20%;overflow-x:auto;overflow-y:auto;margin-left:auto;margin-right:auto;" >
+                   <table style="margin-left:auto;margin-right:auto;width:95%; scrollbar-3dlight-color:ActiveBorder;">
+                <asp:GridView ID="GridView1" runat="server" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="idXmlCfdi" DataSourceID="odsCFDI" Width="100%" Height="100%" ForeColor="#333333" HorizontalAlign="Center" Visible="False" PageSize="5">
                             <Columns>
                                 <asp:TemplateField HeaderText="-" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" >
                                     <ItemTemplate>
@@ -551,7 +555,8 @@
             <HeaderStyle BackColor="#F58220" Font-Bold="True" ForeColor="White" />
             <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
-        </div>
+            </table>
+         </div>
         <table id="tablaFacturas" style="width:95%;margin-left:auto;margin-right:auto;">
             <tr>
                 <td class="auto-style21">

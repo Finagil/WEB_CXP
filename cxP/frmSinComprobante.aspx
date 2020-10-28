@@ -428,6 +428,7 @@
                     </ItemTemplate>
                 </asp:FormView>
              </td>
+            <td style="width:14%">Concepto:</td>
             <td style="width:14%">Convenio:</td>
             <td style="width:14%">Referencia:
 
@@ -464,6 +465,9 @@
             </td>
             <td style="width:14%">
                 <asp:TextBox ID="txtClabe" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width:14%">
+                <asp:TextBox ID="txtConcepto" runat="server" Width="90%"></asp:TextBox>
             </td>
             <td style="width:14%">
                 <asp:TextBox ID="txtConvenio" runat="server" Width="90%"></asp:TextBox>

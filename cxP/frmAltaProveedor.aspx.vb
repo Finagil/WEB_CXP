@@ -259,11 +259,11 @@ Public Class frmAltaProveedor
         'txtClabe.Enabled = False
         'afuArcCta.Enabled = False
         'afuArcCta.Visible = False
-        ddlDocumentacionProv.Enabled = False
-        afuDocumentacionProv.Enabled = False
-        afuDocumentacionProv.Visible = False
+        'ddlDocumentacionProv.Enabled = False
+        'afuDocumentacionProv.Enabled = False
+        'afuDocumentacionProv.Visible = False
         'btnAgregarCta.Enabled = False
-        btnActualizarArch.Enabled = False
+        'btnActualizarArch.Enabled = False
         btnActualizar.Enabled = False
         btnAutorizar.Enabled = False
         txtRfc.Enabled = False
@@ -334,7 +334,7 @@ Public Class frmAltaProveedor
 
         'valida CURP
         If txtCurp.Text.Trim <> String.Empty Then
-            If Regex.IsMatch(txtCurp.Text.Trim, "^([a-zA-Z]{4,4}[0-9]{6}[a-zA-Z]{6,6}[0-9]{2})$") = False Then
+            If Regex.IsMatch(txtCurp.Text.Trim, "^([a-zA-Z]{4,4}[0-9]{6}[a-zA-Z]{6,6}[0-9-a-zA-Z]{2})$") = False Then
                 lblErrorGeneral.Text = "Estructura de la clave CURP incorrecta."
                 ModalPopupExtender1.Show()
                 validacion = "NO"
@@ -536,18 +536,18 @@ Public Class frmAltaProveedor
 
             Select Case txtAutorizado.Text.Trim
                 Case "AUTORIZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim, Nothing)
                     enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text, txtConvenio.Text, txtReferencia.Text, "CXP\FilesProv\" & guuidCta & ".pdf")
                 Case "PENDIENTE"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 12, txtReferencia.Text.Trim, txtConvenio.Text.Trim, Nothing)
                     enviaCorreoCuentasBancariasActiv(ddlBanco.SelectedItem.Text, ddlMoneda.SelectedItem.Text, txtCuentaBancaria.Text, txtClabe.Text, txtConvenio.Text, txtReferencia.Text, "CXP\FilesProv\" & guuidCta & ".pdf")
                 Case "NO AUTORIZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim, Nothing)
                 Case "RECHAZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim, Nothing)
                 Case ""
                     txtAutorizado.Text = "NO AUTORIZADO"
-                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim)
+                    tableAdapterCuentasBancariasProv.Insert(txtNoProveedor.Text.Trim, ddlBanco.SelectedValue, txtCuentaBancaria.Text.Trim, txtClabe.Text.Trim, txtDescipcion.Text.Trim, ddlMoneda.SelectedValue, guuidCta, True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 22, txtReferencia.Text.Trim, txtConvenio.Text.Trim, Nothing)
             End Select
 
             GridView1.DataBind()
@@ -1139,6 +1139,9 @@ Public Class frmAltaProveedor
                         End If
                     End If
                 Else
+                    lblErrorGeneral.Text = "El RFC ya existe en el catálogo de proveedores..."
+                    ModalPopupExtender1.Show()
+                    Exit Sub
                 End If
             End If
         End If

@@ -91,7 +91,8 @@ Public Class frmMisSolicitudes
             If dtRegCont.Rows.Count > 0 Then
                 Dim folioPoliza As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
                 For Each rwRegCont As dsProduccion.CXP_RegContRow In dtRegCont.Rows
-                    taRegCont.Insert(CDec(rwRegCont.idCuenta), CDec(rwRegCont.idProveedor), CDec(rwRegCont.abono), CDec(rwRegCont.cargo), rwRegCont.referencia, "CAX-" & rwRegCont.concepto, CDec(rwRegCont.idTipoDocumento), folioPoliza, CDec(rwRegCont.idEmpresa), rwRegCont.uuid, CDec(rwRegCont.folioSolicitud), rwRegCont.fecha, rwRegCont.estatus, CDec(rwRegCont.idConcepto), CDec(rwRegCont.periodoEjercicio))
+                    taRegCont.Insert(CDec(rwRegCont.idCuenta), CDec(rwRegCont.idProveedor), CDec(rwRegCont.abono), CDec(rwRegCont.cargo), rwRegCont.referencia, "CAX-" & rwRegCont.concepto, CDec(rwRegCont.idTipoDocumento), folioPoliza, CDec(rwRegCont.idEmpresa), rwRegCont.uuid, CDec(rwRegCont.folioSolicitud), rwRegCont.fecha, 39, CDec(rwRegCont.idConcepto), CDec(rwRegCont.periodoEjercicio))
+                    taRegCont.ActualizaEstatus_UpdateQuery(38, rwRegCont.idReg)
                 Next
                 taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
             End If

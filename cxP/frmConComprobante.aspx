@@ -9,7 +9,8 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script id="rendered-js">
 // Select all links with hashes
-$('a[href*="#"]')
+    $('a[href*="#"]')
+
 // Remove links that don't actually link to anything
 .not('[href="#"]').
 not('[href="#0"]').
@@ -686,29 +687,30 @@ click(function (event) {
         <div visible="false" id="divCtaBancaria" runat="server">
             <table visible="false" runat="server" id="tablaReferenciaBancaria" style="border-color:lightgray;width:95%; padding:5px; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style75">
         <tr>
-            <td class="auto-style90">Banco:
+            <td style="width:12.5%" >Banco:
                 <asp:FormView ID="FormView5" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
                     <ItemTemplate>
                         <asp:Label ID="Banco" runat="server" Text='<%# Bind("Banco") %>' />
                     </ItemTemplate>
                 </asp:FormView>
             </td>
-            <td class="auto-style90">Moneda:</td>
-            <td class="auto-style90">Cuenta:
+            <td style="width:10%">Moneda:</td>
+            <td style="width:12.5%">Cuenta:
 
              </td>
-            <td class="auto-style90">CLABE:
+            <td style="width:12.5%">CLABE:
                 <asp:FormView ID="FormView4" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
                     <ItemTemplate>
                         <asp:Label ID="CuentaCLABELabel" runat="server" Text='<%# Bind("CuentaCLABE") %>' />
                     </ItemTemplate>
                 </asp:FormView>
              </td>
-            <td class="auto-style90">Convenio:</td>
-            <td class="auto-style90">Referencia:
+            <td style="width:12.5%">Concepto:</td>
+            <td style="width:12.5%">Convenio:</td>
+            <td style="width:12.5%">Referencia:
 
              </td>
-            <td class="auto-style90">Adjunto:<asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
+            <td style="width:15%">Adjunto:<asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
                     <DeleteParameters>
                         <asp:Parameter Name="Original_idBancos" Type="Decimal" />
                     </DeleteParameters>
@@ -730,12 +732,12 @@ click(function (event) {
              </td>
         </tr>
         <tr>
-            <td class="auto-style90">
+            <td style="width:12.5%">
                 <asp:DropDownList ID="ddlBancos" runat="server" DataSourceID="odsBancos" DataTextField="nombreCorto" DataValueField="idBancos" Width="90%">
                 </asp:DropDownList>
 
              </td>
-            <td class="auto-style90">
+            <td style="width:10%">
                 <asp:DropDownList ID="ddlMonedas" runat="server" DataSourceID="odsMonedas" DataTextField="c_Moneda" DataValueField="c_Moneda">
                 </asp:DropDownList>
                 <asp:ObjectDataSource ID="odsMonedas" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_c_MonedaTableAdapter" UpdateMethod="Update">
@@ -756,19 +758,22 @@ click(function (event) {
                     </UpdateParameters>
                 </asp:ObjectDataSource>
             </td>
-            <td class="auto-style90">
+            <td style="width:12.5%">
                 <asp:TextBox ID="txtCuenta" runat="server" Width="90%" Enabled="False" ReadOnly="True"></asp:TextBox>
             </td>
-            <td class="auto-style90">
+            <td style="width:12.5%">
                 <asp:TextBox ID="txtClabe" runat="server" Width="90%" Enabled="False" ReadOnly="True"></asp:TextBox>
             </td>
-            <td class="auto-style90">
+            <td style="width:12.5%">
+                <asp:TextBox ID="txtConcepto" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width:12.5%">
                 <asp:TextBox ID="txtConvenio" runat="server" Width="90%"></asp:TextBox>
             </td>
-            <td class="auto-style90">
+            <td style="width:12.5%">
                 <asp:TextBox ID="txtReferencia" runat="server" Width="90%"></asp:TextBox>
             </td>
-            <td class="auto-style90">
+            <td style="width:15%">
               
                 <ajaxToolkit:AsyncFileUpload ID="afuAdjuntoCta" runat="server" Width="100%" />
               
@@ -830,10 +835,8 @@ click(function (event) {
             </tr>
             <tr>
                 <td class="auto-style62">
-
                     <asp:DropDownList ID="cmbCuentasBancarias" runat="server" DataSourceID="odsCuentasBancarias" DataTextField="descrip" DataValueField="idCuentas" MaxLength="0" style="display: block;" Width="95%" Font-Size="Small" DropDownStyle="DropDownList" Height="20px" RenderMode="Block" Visible="False" AutoCompleteMode="Suggest">
                     </asp:DropDownList>
-
                 </td>
                 <td class="auto-style62">
 
@@ -876,7 +879,7 @@ click(function (event) {
         </table>
             </div>
         <div visible="false" id="divRevision" runat="server">
-        <table runat="server" id="revision" style="position:fixed;top:30%;left:15%; border-radius:5px; border-style: groove; border-width: 5px; border-color: navy; width:70%; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background: linear-gradient(to bottom, rgba(245,130,32,1) 0%, rgba(245,130,32,1) 50%, rgba(241,188,142,1) 71%, rgba(237,237,237,1) 89%, rgba(246,246,246,1) 100%);" class="auto-style66">
+        <table runat="server" id="revision" style="position:fixed;top:30%;left:15%; border-radius:5px; border-style: groove; border-width: 5px; border-color: navy; width:70%; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background: linear-gradient(to bottom, rgba(245,130,32,1) 0%, rgba(245,130,32,1) 50%, rgba(241,188,142,1) 71%, rgba(237,237,237,1) 89%, rgba(246,246,246,1) 100%);">
             <tr>
                 <td colspan="3">
                     Revisión previa y documentos adjuntos:
