@@ -54,6 +54,7 @@ Public Class frmMisSolicitudes
         Dim dtRegCont As New dsProduccion.CXP_RegContDataTable
         Dim taTipoDocumento As New dsProduccionTableAdapters.CXP_tipoDeDocumentoTableAdapter
         Dim taPagosTes As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
+        Dim taPeriodos As New dsProduccionTableAdapters.CXP_PeriodosTableAdapter
 
         Dim contrato As Boolean = False
         Dim idCuentas As Integer = 0
@@ -88,17 +89,32 @@ Public Class frmMisSolicitudes
 
             '////Genera registro contable de cancelación
             taRegCont.ObtDatosPoliza_FillBy(dtRegCont, CInt(Session.Item("Empresa")), HiddenID.Value)
+            Dim drRegCont As dsProduccion.CXP_RegContRow
+            drRegCont = dtRegCont.Rows(0)
+
             If dtRegCont.Rows.Count > 0 Then
-                Dim folioPoliza As Integer = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
+                Dim folioPoliza As Integer
+                If drRegCont.fecha.Month >= Date.Now.Month Then
+                    folioPoliza = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
+                Else
+                    folioPoliza = taPeriodos.ConsultaFolio_ScalarQuery(drRegCont.fecha.Year, drRegCont.fecha.Month, CInt(Session.Item("Empresa")))
+                End If
+
                 For Each rwRegCont As dsProduccion.CXP_RegContRow In dtRegCont.Rows
                     taRegCont.Insert(CDec(rwRegCont.idCuenta), CDec(rwRegCont.idProveedor), CDec(rwRegCont.abono), CDec(rwRegCont.cargo), rwRegCont.referencia, "CAX-" & rwRegCont.concepto, CDec(rwRegCont.idTipoDocumento), folioPoliza, CDec(rwRegCont.idEmpresa), rwRegCont.uuid, CDec(rwRegCont.folioSolicitud), rwRegCont.fecha, 39, CDec(rwRegCont.idConcepto), CDec(rwRegCont.periodoEjercicio))
                     taRegCont.ActualizaEstatus_UpdateQuery(38, rwRegCont.idReg)
                 Next
-                taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+
+                If drRegCont.fecha.Month >= Date.Now.Month Then
+                    taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                Else
+                    'folioPoliza = taPeriodos.ConsultaFolio_ScalarQuery(drRegCont.fecha.Year, drRegCont.fecha.Month, CInt(Session.Item("Empresa")))
+                    taPeriodos.ConsumeFolio_UpdateQuery(drRegCont.fecha.Year, drRegCont.fecha.Month, CInt(Session.Item("Empresa")))
+                End If
             End If
 
-            '/////Genera PDF Cancelado
-            Dim rptSolPago As New ReportDocument
+                '/////Genera PDF Cancelado
+                Dim rptSolPago As New ReportDocument
                 Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesAllTableAdapter
                 Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
                 Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
