@@ -90,9 +90,9 @@ Public Class frmMisSolicitudes
             '////Genera registro contable de cancelación
             taRegCont.ObtDatosPoliza_FillBy(dtRegCont, CInt(Session.Item("Empresa")), HiddenID.Value)
             Dim drRegCont As dsProduccion.CXP_RegContRow
-            drRegCont = dtRegCont.Rows(0)
 
             If dtRegCont.Rows.Count > 0 Then
+                drRegCont = dtRegCont.Rows(0)
                 Dim folioPoliza As Integer
                 If drRegCont.fecha.Month >= Date.Now.Month Then
                     folioPoliza = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
@@ -113,8 +113,8 @@ Public Class frmMisSolicitudes
                 End If
             End If
 
-                '/////Genera PDF Cancelado
-                Dim rptSolPago As New ReportDocument
+            '/////Genera PDF Cancelado
+            Dim rptSolPago As New ReportDocument
                 Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesAllTableAdapter
                 Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
                 Dim encripta As readXML_CFDI_class = New readXML_CFDI_class
