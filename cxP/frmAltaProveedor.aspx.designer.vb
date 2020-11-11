@@ -482,6 +482,15 @@ Partial Public Class frmAltaProveedor
     Protected WithEvents afuArcCta As Global.AjaxControlToolkit.AsyncFileUpload
     
     '''<summary>
+    '''Control chkCuentaNueva.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkCuentaNueva As Global.System.Web.UI.WebControls.CheckBox
+    
+    '''<summary>
     '''Control btnAgregarCta.
     '''</summary>
     '''<remarks>

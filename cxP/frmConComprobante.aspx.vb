@@ -36,7 +36,7 @@ Public Class frmConComprobante
         End If
 
         If Not IsPostBack Then
-            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV' AND Fase <> 'TES_CXP')"
             odsCuentasBancarias.FilterExpression = "idProveedor = 0"
             Session.Item("Leyenda") = "Solicitud de pagos con comprobante fiscal"
             txtFechaPago.Text = Date.Now.ToShortDateString
@@ -226,7 +226,7 @@ Public Class frmConComprobante
             odsAnexosActivos.FilterExpression = "cliente ='" & ddlClientes.SelectedValue & "'"
             'odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
 
-            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV' AND Fase <> 'TES_CXP')"
             odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "')"
 
         Else
@@ -238,7 +238,7 @@ Public Class frmConComprobante
             txtImporteCartaNeteto.Visible = False
 
             'lblCarteNeteo.Visible = False
-            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV' AND Fase <> 'TES_CXP')"
             odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento1.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "')"
         End If
 
@@ -843,6 +843,10 @@ Public Class frmConComprobante
             Dim ddlCon As DropDownList = rows.Cells(13).FindControl("ddlConceptos")
             Dim txtObs As TextBox = rows.Cells(11).FindControl("txtObservaciones")
 
+            If ddlCon.SelectedValue = 144 Then
+                odsAutorizantes.FilterExpression = "Fase = 'TES_CXP'"
+            End If
+
             If chkg.Checked = True Then
                 rowA = dtDetalleA.NewRow
 
@@ -1097,9 +1101,6 @@ Public Class frmConComprobante
             divCtaBancaria.Visible = True
             btnCancelarBusqueda.Visible = True
         End If
-
-
-
     End Sub
 
     Protected Sub btnCancelar_Click(sender As Object, e As EventArgs) Handles btnCancelar.Click
@@ -1283,8 +1284,6 @@ Public Class frmConComprobante
             odsAnexosActivos.FilterExpression = "cliente ='" & ddlClientes.SelectedValue & "'"
             odsAutorizantes.FilterExpression = "Fase = 'MCONTROL_CXP'"
             odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND idConcepto = '" & drDatosEmpresa.idConceptoPagoCtos & "'"
-
-
         Else
             ddlContratos.Enabled = False
             'fupCartaNeteo.Visible = False
@@ -1292,7 +1291,7 @@ Public Class frmConComprobante
             lblImporte.Visible = False
             txtImporteCartaNeteto.Visible = False
             ddlClientes.Enabled = False
-            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV')"
+            odsAutorizantes.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV' AND Fase <> 'TES_CXP')"
             odsConceptos.FilterExpression = "idConcepto IN (" & Session.Item("Conceptos") & ") AND (" & "idConcepto <>'" & taTipoDocumento.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento.ObtTipoConceptoReem_ScalarQuery(Session.Item("Empresa")) & "' AND idConcepto <>'" & taTipoDocumento.ObtTipoConceptoPCts_ScalarQuery(Session.Item("Empresa")) & "')"
         End If
     End Sub

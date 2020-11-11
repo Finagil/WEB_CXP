@@ -427,7 +427,7 @@
             <table id="tablaCuentas" runat="server" style="border-radius: 5px; width:95%; border-style: solid; border-width: thin; margin-top: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 0; background-color: #FFE0C0;" class="auto-style14">
         <tr>
             <td>
-                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="idCuentas" DataSourceID="odsCuentas" Width="100%">
+                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="idCuentas" DataSourceID="odsCuentas" Width="100%" GridLines="None">
                     <Columns>
                         <asp:BoundField DataField="idCuentas" HeaderText="idCuentas" InsertVisible="False" ReadOnly="True" SortExpression="idCuentas" Visible="False" />
                         <asp:BoundField DataField="idProveedor" HeaderText="idProveedor" SortExpression="idProveedor" Visible="False" />
@@ -475,6 +475,9 @@
                         <asp:BoundField DataField="referencia" HeaderText="Referencia" >
                         <ItemStyle Width="130px" />
                         </asp:BoundField>
+                         <asp:CheckBoxField DataField="cuentaNueva" HeaderText="Cta Nueva">
+                        <ItemStyle HorizontalAlign="Center" />
+                        </asp:CheckBoxField>
                     </Columns>
                     <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
                              <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
@@ -573,13 +576,13 @@
                         Banco:</td>
                     <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Descripción:</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:7.5%; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:7.5%; " colspan="2">
                         Moneda:</td>
                     <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Cuenta:</td>
                     <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         CLABE.</td>
-                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
+                    <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; " colspan="2">
                         Convenio:</td>
                     <td style="font-family: Arial, Helvetica, sans-serif; color: #000000; width:12.5%; ">
                         Referencia:</td>
@@ -612,7 +615,7 @@
                     <td>
                         <asp:TextBox ID="txtDescipcion" runat="server" Width="95%" Wrap="False"></asp:TextBox>
                     </td>
-                    <td>
+                    <td colspan="2">
                         <asp:DropDownList ID="ddlMoneda" runat="server" DataSourceID="odsMonedas" DataTextField="c_Moneda" DataValueField="c_Moneda" Width="95%">
                         </asp:DropDownList>
                         <asp:ObjectDataSource ID="odsMonedas" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_c_MonedaTableAdapter" UpdateMethod="Update">
@@ -639,7 +642,7 @@
                     <td>
                         <asp:TextBox ID="txtClabe" runat="server" Width="95%"></asp:TextBox>
                     </td>
-                    <td>
+                    <td colspan="2">
                         <asp:TextBox ID="txtConvenio" runat="server" Width="95%"></asp:TextBox>
                     </td>
                     <td>
@@ -650,9 +653,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8" style="align-content:center" class="auto-style9">
+                    <td colspan="3" style="align-content:center" class="auto-style9">
+                        <asp:CheckBox ID="chkCuentaNueva" runat="server" Text="¿Cuenta Nueva?" />
+                    </td>
+                    <td colspan="4" style="align-content:center" class="auto-style9">
                 <cc1:BotonEnviar ID="btnAgregarCta" runat="server" Text="Agregar" CssClass="Botones" PostBackUrl="#tablaCtas"/>
                     </td>
+                    <td colspan="3" style="align-content:center" class="auto-style9">
+                        &nbsp;</td>
                 </tr>
             </table>
            
@@ -721,7 +729,7 @@
                             <asp:SessionParameter Name="idProveedor" SessionField="noProveedor" Type="Decimal" />
                         </SelectParameters>
                     </asp:ObjectDataSource>
-                    <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" DataKeyNames="idProveedoresArch" DataSourceID="odsProveedoresArch" Width="100%">
+                    <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" DataKeyNames="idProveedoresArch" DataSourceID="odsProveedoresArch" Width="100%" GridLines="Horizontal">
                         <Columns>
                             <asp:BoundField DataField="idProveedoresArch" HeaderText="idProveedoresArch" InsertVisible="False" ReadOnly="True" SortExpression="idProveedoresArch" Visible="False" />
                             <asp:BoundField DataField="idProveedor" HeaderText="idProveedor" SortExpression="idProveedor" Visible="False" />
