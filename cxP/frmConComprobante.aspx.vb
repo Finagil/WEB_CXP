@@ -12,6 +12,7 @@ Public Class frmConComprobante
     Dim total2 As Decimal = 0
     Dim dtDetalle As New DataTable("Comprobantes")
     Dim tableCFDI2 As New dsProduccion.CXP_XmlCfdi2DataTable
+    Dim tableCFDI2Cont As New dsProduccion.CXP_XmlCfdi2DataTable
     Dim ds As New dsProduccion
     Dim rptSolPago As New ReportDocument
     Dim taCFDIImpuestos As New dsProduccionTableAdapters.Vw_CXP_ImpuestosCFDITableAdapter
@@ -275,6 +276,7 @@ Public Class frmConComprobante
             End If
         End If
 
+
         'Identifica moneda de pago
         monedaPago = taCuentasProv.ObtMoneda_ScalarQuery(idCuentas)
 
@@ -328,6 +330,27 @@ Public Class frmConComprobante
                 Session.Item("namePDF") = Session.Item("Empresa") & "-" & folSolPagoFinagil
                 'validaTamanoArchiAdjunto(folSolPagoFinagil, Session.Item("idCDeudor"))
                 taEmpresas.ConsumeFolio(Session.Item("Empresa"))
+
+                'revisa filas del grid para validar fecha de facturas
+                For Each rows As GridViewRow In GridView1.Rows
+                    Dim ddlConc As DropDownList = rows.Cells(12).FindControl("ddlConceptos")
+                    taCFDI2.SumaImp_FillBy(tableCFDI2Cont, GridView1.Rows(cont).Cells(7).Text)
+                    For Each rows2 As dsProduccion.CXP_XmlCfdi2Row In tableCFDI2Cont
+                        If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = 1 Then
+                            If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)) <> 0 Then
+                                fechaRegistroCont = CDate(rows2.fechaEmision)
+
+                                If fechaRegistroCont.Month >= Date.Now.Month Then
+                                    folioPolizaDiario = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
+                                    fechaRegistroCont = Date.Now
+                                Else
+                                    fechaRegistroCont = Date.Now.AddDays(-Now.Day + 1).AddDays(-1)
+                                    folioPolizaDiario = taPeriodos.ConsultaFolio_ScalarQuery(fechaRegistroCont.Year, fechaRegistroCont.Month, CInt(Session.Item("Empresa")))
+                                End If
+                            End If
+                        End If
+                    Next
+                Next
 
                 For Each rows As GridViewRow In GridView1.Rows
                     Dim chkg As CheckBox = rows.Cells(0).FindControl("chk")
@@ -493,14 +516,7 @@ Public Class frmConComprobante
 
 
 #Region "ProvisionDiario"
-                                fechaRegistroCont = CDate(rows2.fechaEmision)
 
-                                If fechaRegistroCont.Month >= Date.Now.Month Then
-                                    folioPolizaDiario = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
-                                Else
-                                    fechaRegistroCont = Date.Now.AddDays(-Now.Day + 1).AddDays(-1)
-                                    folioPolizaDiario = taPeriodos.ConsultaFolio_ScalarQuery(fechaRegistroCont.Year, fechaRegistroCont.Month, CInt(Session.Item("Empresa")))
-                                End If
 
                                 'Provisión de diario
                                 'If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
@@ -866,6 +882,12 @@ Public Class frmConComprobante
                         Else
                             Session.Item("monedaCtas") = GridView1.Rows(conta).Cells(4).Text
                         End If
+
+                        If CDate(GridView1.Rows(conta).Cells(1).Text).Month <> CDate(GridView1.Rows(contV).Cells(1).Text).Month Then
+                            lblErrorGeneral.Text = "No es posible generar una solicitud con facturas de meses distintos"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
                     End If
 
                     contV += 1
@@ -896,6 +918,11 @@ Public Class frmConComprobante
                 If Session.Item("monedaCtas") <> taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
                     txtTipoDeCambio.Enabled = True
                     txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
+                    If txtTipoDeCambio.Text = "1.0000" Then
+                        lblErrorGeneral.Text = "No existe el tipo de cambio del día de hoy."
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
                 Else
                     txtTipoDeCambio.Text = "1.0000"
                     txtTipoDeCambio.Enabled = False
@@ -903,7 +930,7 @@ Public Class frmConComprobante
 
                 If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
                     If cmbCuentasBancarias.SelectedIndex = -1 Then
-                        lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Elctrónica se debe seleccionar una cuenta bancaria de pago."
+                        lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Electrónica se debe seleccionar una cuenta bancaria de pago."
                         ModalPopupExtender1.Show()
                         Exit Sub
                     Else
