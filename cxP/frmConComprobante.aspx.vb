@@ -3,6 +3,7 @@ Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
 Imports System.IO
 Imports AjaxControlToolkit
+
 Public Class frmConComprobante
     Inherits System.Web.UI.Page
     Dim taCFDI As New dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter
@@ -258,6 +259,8 @@ Public Class frmConComprobante
         Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
         Dim taPeriodos As New dsProduccionTableAdapters.CXP_PeriodosTableAdapter
         Dim monedaPago As String = ""
+        Dim importeOtrosGastosIngresos As Decimal = 0
+        Dim banderaOtrosIngresos As String = ""
 
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             If cmbCuentasBancarias.SelectedIndex = -1 Then
@@ -377,31 +380,41 @@ Public Class frmConComprobante
 
                             Dim percentPago As Decimal = CDec(txtTot.Text) / CDec(GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", ""))
 
-                            If CDec(txtTot.Text) < rows2.total Then
-                                row("rfcEmisor") = rows2.rfcEmisor
-                                row("rfcReceptor") = rows2.rfcReceptor
-                                row("serie") = rows2.serie.ToString
-                                row("folio") = rows2.folio.ToString
-                                row("uuid") = rows2.uuid.ToString
-                                row("impuesto") = ""
-                                row("mImpuestoT") = Math.Round(CDec(rows2.montoImpuesto.ToString) * percentPago, 2)
-                                row("mImpuestoR") = Math.Round(CDec(rows2.montoImpuestoR.ToString) * percentPago, 2)
-                                row("mImpLocalT") = Math.Round(CDec(rows2.impLocTra.ToString) * percentPago, 2)
-                                row("mImpLocalR") = Math.Round(CDec(rows2.impLocRet.ToString) * percentPago, 2)
-                                row("fechaEmision") = rows2.fechaEmision.ToString
-                                row("factor") = ""
-                                row("subTotal") = Math.Round(CDec(rows2.subTotal) * percentPago, 2)
-                                row("total") = txtTot.Text
-                                row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
-                                row("observaciones") = txtObs.Text
-                                row("concepto") = ddlConc.SelectedItem.Text
-                            ElseIf CDec(txtTot.Text) > rows2.total Then
-                                'Dim dialog As New frmBanner
 
-                                'lblError.Visible = True
-                                lblErrorGeneral.Text = "El importe a pagar no debe ser mayor al saldo de la factura"
-                                ModalPopupExtender1.Show()
-                                Exit Sub
+
+                            If CDec(txtTot.Text) < rows2.total Then
+                                If rows2.rfcEmisor = "CSS160330CP7" And CDec(txtTot.Text) - 2 < rows2.total Then
+                                    importeOtrosGastosIngresos = rows2.total - CDec(txtTot.Text)
+                                    banderaOtrosIngresos = "OI"
+                                Else
+                                    row("rfcEmisor") = rows2.rfcEmisor
+                                    row("rfcReceptor") = rows2.rfcReceptor
+                                    row("serie") = rows2.serie.ToString
+                                    row("folio") = rows2.folio.ToString
+                                    row("uuid") = rows2.uuid.ToString
+                                    row("impuesto") = ""
+                                    row("mImpuestoT") = Math.Round(CDec(rows2.montoImpuesto.ToString) * percentPago, 2)
+                                    row("mImpuestoR") = Math.Round(CDec(rows2.montoImpuestoR.ToString) * percentPago, 2)
+                                    row("mImpLocalT") = Math.Round(CDec(rows2.impLocTra.ToString) * percentPago, 2)
+                                    row("mImpLocalR") = Math.Round(CDec(rows2.impLocRet.ToString) * percentPago, 2)
+                                    row("fechaEmision") = rows2.fechaEmision.ToString
+                                    row("factor") = ""
+                                    row("subTotal") = Math.Round(CDec(rows2.subTotal) * percentPago, 2)
+                                    row("total") = txtTot.Text
+                                    row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
+                                    row("observaciones") = txtObs.Text
+                                    row("concepto") = ddlConc.SelectedItem.Text
+                                End If
+                            ElseIf CDec(txtTot.Text) > rows2.total Then
+                                'Permite ingresar importes menores o superiores según
+                                If rows2.rfcEmisor = "CSS160330CP7" And CDec(txtTot.Text) + 2 > rows2.total Then
+                                    importeOtrosGastosIngresos = CDec(txtTot.Text) - rows2.total
+                                    banderaOtrosIngresos = "OG"
+                                Else
+                                    lblErrorGeneral.Text = "El importe a pagar no debe ser mayor al saldo de la factura"
+                                    ModalPopupExtender1.Show()
+                                    Exit Sub
+                                End If
                             ElseIf IsNumeric(txtPorcentaje.Text) Then
                                 row("rfcEmisor") = rows2.rfcEmisor
                                 row("rfcReceptor") = rows2.rfcReceptor
@@ -594,6 +607,21 @@ Public Class frmConComprobante
                                             taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), 0, rows2.total, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                         End If
                                     End If
+                                    'Valida otros ingresos u otros gatos para pago de servicios con convenio CIE
+                                    If banderaOtrosIngresos = "OI" Then
+                                        If CInt(Session.Item("Empresa")) = 23 Then
+                                            taRegContable.Insert(93340, CDec(ddlProveedores.SelectedValue), 0, importeOtrosGastosIngresos, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                        Else
+                                            taRegContable.Insert(985, CDec(ddlProveedores.SelectedValue), 0, importeOtrosGastosIngresos, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                        End If
+                                    End If
+                                    If banderaOtrosIngresos = "OG" Then
+                                        If CInt(Session.Item("Empresa")) = 23 Then
+                                            taRegContable.Insert(93467, CDec(ddlProveedores.SelectedValue), importeOtrosGastosIngresos, 0, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                        Else
+                                            taRegContable.Insert(1070, CDec(ddlProveedores.SelectedValue), importeOtrosGastosIngresos, 0, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                        End If
+                                    End If
                                 End If
 #End Region
 
@@ -619,6 +647,15 @@ Public Class frmConComprobante
                     End If
                     cont += 1
                 Next
+
+                'inserta otros ingresos
+                'importeOtrosGastosIngresos = rows2.total - CDec(txtTot.Text)
+                'banderaOtrosIngresos = "OI"
+                If banderaRegistroContable = "OI" Then
+                    Dim guuidCN As String = Guid.NewGuid.ToString
+                    taCFDI2.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text) * -1, 1, "", 0, 0, 0, 0)
+                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now, "", "", guuidCN, 0, CDec(importeOtrosGastosIngresos) * -1, 0, 0, "CARTA NETEO ( " & txtDescCartaNeteo.Text & " )", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
+                End If
 
                 'inserta carta neteo
 
@@ -907,166 +944,210 @@ Public Class frmConComprobante
                     Exit Sub
                 End If
 
-                If txtObs.Text.trim.Length = 0 Then
-                    lblErrorGeneral.Text = "Falta incluir una descripción de pago"
-                    ModalPopupExtender1.Show()
-                    Exit Sub
-                End If
+                If txtConvenio.Text.Trim.Length > 0 Then
+                    Dim validaCaracteres As New utilerias
 
-                'Valida igualdad de monedas, cuenta VS factura
-                'lblMoneda = CType(FormView6.FindControl("MonedaTipoCambio"), Label)
-                If Session.Item("monedaCtas") <> taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
-                    txtTipoDeCambio.Enabled = True
-                    txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
-                    If txtTipoDeCambio.Text = "1.0000" Then
-                        lblErrorGeneral.Text = "No existe el tipo de cambio del día de hoy."
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    End If
-                Else
-                    txtTipoDeCambio.Text = "1.0000"
-                    txtTipoDeCambio.Enabled = False
-                End If
-
-                If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
-                    If cmbCuentasBancarias.SelectedIndex = -1 Then
-                        lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Electrónica se debe seleccionar una cuenta bancaria de pago."
-                        ModalPopupExtender1.Show()
-                        Exit Sub
+                    If IsNumeric(txtConvenio.Text) Then
+                        If txtConvenio.Text.Trim.Length > 7 Then
+                            lblErrorGeneral.Text = "El convenio CIE no puedes ser mayor a 7 dígitos"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
                     Else
-                        idCuentas = cmbCuentasBancarias.SelectedValue
+                        lblErrorGeneral.Text = "El convenio CIE debe ser numérico"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
                     End If
-                Else
-                    If cmbFormaPago.SelectedIndex = 2 Then
-                        'datosBancarios = "Banco: " & ddlBancos.SelectedItem.Text & " Cuenta: " & txtCuenta.Text.Trim & " CLABE: " & txtClabe.Text.Trim & " Referencia: " & txtReferencia.Text.Trim
-                        If IsNothing(Session("afuArchivoCtas")) Then
-                            lblErrorGeneral.Text = "No se ha ingresado el archivo de soporte de los datos bancarios"
+
+                    If txtConcepto.Text.Trim.Length > 30 Then
+                        lblErrorGeneral.Text = "El concepto CIE no puedes ser mayor a 30 dígitos"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+
+                    If txtReferencia.Text.Trim.Length > 20 Then
+                        lblErrorGeneral.Text = "La referencia CIE no puedes ser mayor a 20 dígitos"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+
+                    If validaCaracteres.validaCaracteresEspeciales(txtConvenio.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "El convenio CIE no puede contener los caracteres especiales"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                    If validaCaracteres.validaCaracteresEspeciales(txtReferencia.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "La referencia CIE no puede contener los caracteres especiales"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                    If validaCaracteres.validaCaracteresEspeciales(txtConcepto.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "El concepto CIE no puede contener los caracteres especiales"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                End If
+
+                If txtObs.Text.Trim.Length = 0 Then
+                        lblErrorGeneral.Text = "Falta incluir una descripción de pago"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+
+                    'Valida igualdad de monedas, cuenta VS factura
+                    'lblMoneda = CType(FormView6.FindControl("MonedaTipoCambio"), Label)
+                    If Session.Item("monedaCtas") <> taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue) Then
+                        txtTipoDeCambio.Enabled = True
+                        txtTipoDeCambio.Text = taTipoDeCambio.ObtTipoCambio_ScalarQuery(taCuentasBancarias.ObtMoneda_ScalarQuery(cmbCuentasBancarias.SelectedValue), Date.Now.ToShortDateString)
+                        If txtTipoDeCambio.Text = "1.0000" Then
+                            lblErrorGeneral.Text = "No existe el tipo de cambio del día de hoy."
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
+                    Else
+                        txtTipoDeCambio.Text = "1.0000"
+                        txtTipoDeCambio.Enabled = False
+                    End If
+
+                    If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
+                        If cmbCuentasBancarias.SelectedIndex = -1 Then
+                            lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Electrónica se debe seleccionar una cuenta bancaria de pago."
                             ModalPopupExtender1.Show()
                             Exit Sub
                         Else
-                            If txtClabe.Text.Trim = String.Empty And txtCuenta.Text.Trim = String.Empty And txtReferencia.Text.Trim = String.Empty And txtConvenio.Text.Trim = String.Empty Then
-                                lblErrorGeneral.Text = "No se ha ingresado al menos uno de los siguientes datos: CLABE, Cuenta o Referencia"
+                            idCuentas = cmbCuentasBancarias.SelectedValue
+                        End If
+                    Else
+                        If cmbFormaPago.SelectedIndex = 2 Then
+                            'datosBancarios = "Banco: " & ddlBancos.SelectedItem.Text & " Cuenta: " & txtCuenta.Text.Trim & " CLABE: " & txtClabe.Text.Trim & " Referencia: " & txtReferencia.Text.Trim
+                            If IsNothing(Session("afuArchivoCtas")) Then
+                                lblErrorGeneral.Text = "No se ha ingresado el archivo de soporte de los datos bancarios"
                                 ModalPopupExtender1.Show()
                                 Exit Sub
                             Else
-                                If txtClabe.Text.Trim <> String.Empty And txtClabe.Text.Trim.Length <> 18 Then
-                                    lblErrorGeneral.Text = "La CLABE debe de ser de 18 digitos"
+                                If txtClabe.Text.Trim = String.Empty And txtCuenta.Text.Trim = String.Empty And txtReferencia.Text.Trim = String.Empty And txtConvenio.Text.Trim = String.Empty Then
+                                    lblErrorGeneral.Text = "No se ha ingresado al menos uno de los siguientes datos: CLABE, Cuenta o Referencia"
                                     ModalPopupExtender1.Show()
                                     Exit Sub
-                                End If
-                                If txtCuenta.Text.Trim <> String.Empty And txtCuenta.Text.Trim.Length <> 10 Then
-                                    lblErrorGeneral.Text = "La cuenta debe de ser de 10 digitos"
-                                    ModalPopupExtender1.Show()
-                                    Exit Sub
+                                Else
+                                    If txtClabe.Text.Trim <> String.Empty And txtClabe.Text.Trim.Length <> 18 Then
+                                        lblErrorGeneral.Text = "La CLABE debe de ser de 18 digitos"
+                                        ModalPopupExtender1.Show()
+                                        Exit Sub
+                                    End If
+                                    If txtCuenta.Text.Trim <> String.Empty And txtCuenta.Text.Trim.Length <> 10 Then
+                                        lblErrorGeneral.Text = "La cuenta debe de ser de 10 digitos"
+                                        ModalPopupExtender1.Show()
+                                        Exit Sub
+                                    End If
                                 End If
                             End If
+                        Else
+                            cmbCuentasBancarias.Enabled = False
+                            idCuentas = 0
                         End If
-                    Else
-                        cmbCuentasBancarias.Enabled = False
-                        idCuentas = 0
                     End If
-                End If
 
-                If IsNumeric(txtPorcentaje.Text) Then
-                    If CDec(txtPorcentaje.Text) > 100 Then
-                        lblErrorGeneral.Text = "El % de pago solicitado no debe de exceder el 100 % del importe restante"
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    ElseIf CDec(txtPorcentaje.Text) <= 0 Then
-                        lblErrorGeneral.Text = "El % de pago solicitado no puede ser 0 o menor a este"
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    End If
-                    rowA("total") = ((CDec(txtTot.Text) * CDec(txtPorcentaje.Text)) / 100)
-                ElseIf IsNumeric(txtTot.Text) Then
-                    If CDec(txtTot.Text) > CDec(GridView1.Rows(conta).Cells(11).Text) Then
-                        lblErrorGeneral.Text = "El importe solicitado para pago no debe ser mayor al importe de la factura"
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    ElseIf CDec(txtTot.Text) <= 0 Then
-                        lblErrorGeneral.Text = "El importe solicitado no puede ser 0 o menor a este"
-                        ModalPopupExtender1.Show()
-                        Exit Sub
-                    End If
-                    rowA("total") = CDec(txtTot.Text)
-                Else
-                    lblErrorGeneral.Text = "Los datos ingresados solo deben de ser númericos"
-                    ModalPopupExtender1.Show()
-                    Exit Sub
-                End If
-
-                dtDetalleA.Rows.Add(rowA)
-                contaTrue += 1
-
-                '**************************
-
-                Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
-
-                If chkContrato.Checked = False Then
-                    taCFDI2.SumaImp_FillBy(tableCFDI2, GridView1.Rows(conta).Cells(7).Text)
-                    For Each rows2 As dsProduccion.CXP_XmlCfdi2Row In tableCFDI2
-                        taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rows2.uuid.ToString)
-
-                        Dim taPagoImpuestos As New dsProduccionTableAdapters.CXP_PagosImpuestosTableAdapter
-                        Dim errores As String = ""
-
-                        For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
-                            Dim efecto As String = ""
-                            Dim tipo As String = ""
-
-                            Dim mPago As Decimal = 0
-
-                            'Prueba de omisión
-                            If rowsCfdi.mTras <> "X" Then
-                                efecto = "TRA"
-                                tipo = "Federal"
-                                If taConceptos.ObtCtaImp_ScalarQuery(ddlCon.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
-                                    lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & " Impuesto: " & rowsCfdi.Impuesto & " Efecto: " & efecto & " Factor: " & rowsCfdi.tipoFactor & " Tipo: " & tipo & " Sin impuesto configurado  " & vbNewLine
-                                    errores = "OK"
-                                End If
-                            End If
-
-                            'Prueba de omisión
-                            If rowsCfdi.mRet <> "X" Then
-                                efecto = "RET"
-                                tipo = "Federal"
-                                If taConceptos.ObtCtaImp_ScalarQuery(ddlCon.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
-                                    lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
-                                    errores = "OK"
-                                End If
-                            End If
-
-                            If rowsCfdi.mLocTra <> "X" And rowsCfdi.mLocTra <> 0 Then
-                                efecto = "LOC"
-                                ' mPago = Math.Round(CDec(Val(rowsCfdi.mLocTra) * percentPago), 2)
-                                tipo = "Local"
-                                If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlCon.SelectedValue, tipo, "TRA") = "0" Then
-                                    lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
-                                    errores = "OK"
-                                End If
-                            End If
-
-                            If rowsCfdi.mLocRet <> "X" And rowsCfdi.mLocRet <> 0 Then
-                                efecto = "LOC"
-                                'mPago = Math.Round(CDec(Val(rowsCfdi.mLocRet) * percentPago), 2)
-                                tipo = "Local"
-                                If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlCon.SelectedValue, tipo, "RET") = "0" Then
-                                    lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
-                                    errores = "OK"
-                                End If
-                            End If
-
-
-                        Next
-                        If errores = "OK" Then
-                            lblError2.Visible = True
+                    If IsNumeric(txtPorcentaje.Text) Then
+                        If CDec(txtPorcentaje.Text) > 100 Then
+                            lblErrorGeneral.Text = "El % de pago solicitado no debe de exceder el 100 % del importe restante"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        ElseIf CDec(txtPorcentaje.Text) <= 0 Then
+                            lblErrorGeneral.Text = "El % de pago solicitado no puede ser 0 o menor a este"
+                            ModalPopupExtender1.Show()
                             Exit Sub
                         End If
-                    Next
+                        rowA("total") = ((CDec(txtTot.Text) * CDec(txtPorcentaje.Text)) / 100)
+                    ElseIf IsNumeric(txtTot.Text) Then
+                        If CDec(txtTot.Text) > CDec(GridView1.Rows(conta).Cells(11).Text) Then
+                            lblErrorGeneral.Text = "El importe solicitado para pago no debe ser mayor al importe de la factura"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        ElseIf CDec(txtTot.Text) <= 0 Then
+                            lblErrorGeneral.Text = "El importe solicitado no puede ser 0 o menor a este"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
+                        rowA("total") = CDec(txtTot.Text)
+                    Else
+                        lblErrorGeneral.Text = "Los datos ingresados solo deben de ser númericos"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+
+                    dtDetalleA.Rows.Add(rowA)
+                    contaTrue += 1
+
+                    '**************************
+
+                    Dim taConceptos As New dsProduccionTableAdapters.CXP_ConceptosTableAdapter
+
+                    If chkContrato.Checked = False Then
+                        taCFDI2.SumaImp_FillBy(tableCFDI2, GridView1.Rows(conta).Cells(7).Text)
+                        For Each rows2 As dsProduccion.CXP_XmlCfdi2Row In tableCFDI2
+                            taCFDIImpuestos.CFDIImpuestos_Fill(dtCFDIImpuestos, rows2.uuid.ToString)
+
+                            Dim taPagoImpuestos As New dsProduccionTableAdapters.CXP_PagosImpuestosTableAdapter
+                            Dim errores As String = ""
+
+                            For Each rowsCfdi As dsProduccion.Vw_CXP_ImpuestosCFDIRow In dtCFDIImpuestos
+                                Dim efecto As String = ""
+                                Dim tipo As String = ""
+
+                                Dim mPago As Decimal = 0
+
+                                'Prueba de omisión
+                                If rowsCfdi.mTras <> "X" Then
+                                    efecto = "TRA"
+                                    tipo = "Federal"
+                                    If taConceptos.ObtCtaImp_ScalarQuery(ddlCon.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
+                                        lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & " Impuesto: " & rowsCfdi.Impuesto & " Efecto: " & efecto & " Factor: " & rowsCfdi.tipoFactor & " Tipo: " & tipo & " Sin impuesto configurado  " & vbNewLine
+                                        errores = "OK"
+                                    End If
+                                End If
+
+                                'Prueba de omisión
+                                If rowsCfdi.mRet <> "X" Then
+                                    efecto = "RET"
+                                    tipo = "Federal"
+                                    If taConceptos.ObtCtaImp_ScalarQuery(ddlCon.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) = "0" Then
+                                        lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
+                                        errores = "OK"
+                                    End If
+                                End If
+
+                                If rowsCfdi.mLocTra <> "X" And rowsCfdi.mLocTra <> 0 Then
+                                    efecto = "LOC"
+                                    ' mPago = Math.Round(CDec(Val(rowsCfdi.mLocTra) * percentPago), 2)
+                                    tipo = "Local"
+                                    If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlCon.SelectedValue, tipo, "TRA") = "0" Then
+                                        lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
+                                        errores = "OK"
+                                    End If
+                                End If
+
+                                If rowsCfdi.mLocRet <> "X" And rowsCfdi.mLocRet <> 0 Then
+                                    efecto = "LOC"
+                                    'mPago = Math.Round(CDec(Val(rowsCfdi.mLocRet) * percentPago), 2)
+                                    tipo = "Local"
+                                    If taConceptos.ObtCtaImpLoc_ScalarQuery(ddlCon.SelectedValue, tipo, "RET") = "0" Then
+                                        lblError2.Text = "Concepto: " & ddlCon.SelectedItem.Text & vbNewLine & "Impuesto: " & rowsCfdi.Impuesto & vbNewLine & "Efecto: " & efecto & vbNewLine & "Factor: " & rowsCfdi.tipoFactor & vbNewLine & "Tipo: " & tipo & " Sin impuesto configurado  "
+                                        errores = "OK"
+                                    End If
+                                End If
+
+
+                            Next
+                            If errores = "OK" Then
+                                lblError2.Visible = True
+                                Exit Sub
+                            End If
+                        Next
+                    End If
                 End If
-            End If
-            '**************************
-            conta += 1
+                '**************************
+                conta += 1
         Next
 
 

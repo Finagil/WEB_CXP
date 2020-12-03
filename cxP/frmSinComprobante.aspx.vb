@@ -618,7 +618,49 @@ Public Class frmSinComprobante
         If ddlAutorizo.SelectedItem.Text <> "" Then
             If IsNumeric(txtMontoSolicitado.Text) Then
 
+                If txtConvenio.Text.Trim.Length > 0 Then
+                    Dim validaCaracteres As New utilerias
 
+                    If IsNumeric(txtConvenio.Text) Then
+                        If txtConvenio.Text.Trim.Length > 7 Then
+                            lblErrorGeneral.Text = "El convenio CIE no puedes ser mayor a 7 dígitos"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        End If
+                    Else
+                        lblErrorGeneral.Text = "El convenio CIE debe ser numérico"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+
+                    If txtConcepto.Text.Trim.Length > 30 Then
+                        lblErrorGeneral.Text = "El concepto CIE no puedes ser mayor a 30 dígitos"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+
+                    If txtReferencia.Text.Trim.Length > 20 Then
+                        lblErrorGeneral.Text = "La referencia CIE no puedes ser mayor a 20 dígitos"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+
+                    If validaCaracteres.validaCaracteresEspeciales(txtConvenio.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "El convenio CIE no puede contener los caracteres especiales"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                    If validaCaracteres.validaCaracteresEspeciales(txtReferencia.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "La referencia CIE no puede contener los caracteres especiales"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                    If validaCaracteres.validaCaracteresEspeciales(txtConcepto.Text.Trim) = False Then
+                        lblErrorGeneral.Text = "El concepto CIE no puede contener los caracteres especiales"
+                        ModalPopupExtender1.Show()
+                        Exit Sub
+                    End If
+                End If
 
                 If txtDescripcionPago.Text.Trim.Length > 199 Then
                     lblErrorGeneral.Text = "La descripción del pago supera la longitud permitida"
@@ -665,7 +707,7 @@ Public Class frmSinComprobante
                             End If
                         Else
                             If Not IsNothing(lblTipar) Then
-                                If lblTipar.Text = "L" Or lblTipar.Text = "S" Then
+                                If lblTipar.Text = "L" Or lblTipar.Text = "S" Or lblTipar.Text = "R" Or lblTipar.Text = "F" Then
                                     datosBancarios = "Banco: " & ddlBancos.SelectedItem.Text & " Cuenta: " & txtCuenta.Text.Trim & " CLABE: " & txtClabe.Text.Trim & " Referencia: " & txtReferencia.Text.Trim
                                     If IsNothing(Session("afuArchivoCtas")) Then
                                         lblErrorGeneral.Text = "No se ha ingresado el archivo de soporte de los datos bancarios"
@@ -743,7 +785,7 @@ Public Class frmSinComprobante
 
                 If chkContrato.Checked = True And CDec(txtImporteCartaNeteto.Text) = 0 Then
                     Dim lbl As Label = CType(FormView1.FindControl("saldoContrato"), Label)
-                    If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                    If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Or lblTipar.Text.Trim = "R" Or lblTipar.Text.Trim = "F" Then
                         If CDec(txtMontoSolicitado.Text.Trim) > CDec(lbl.Text.Trim) Then
                             lblErrorGeneral.Text = "El monto solicitado no puede ser mayor al Saldo del Contrato"
                             ModalPopupExtender1.Show()
@@ -1387,7 +1429,7 @@ Public Class frmSinComprobante
                 If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
                     If Not IsNothing(lblTipar) Then
                         If chkContrato.Checked = True Then
-                            If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                            If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Or lblTipar.Text.Trim = "R" Or lblTipar.Text.Trim = "F" Then
                                 tablaReferenciaBancaria.Visible = True
                                 If Not IsNothing(lblCta) And Not IsNothing(lblBco) Then
                                     If ddlMismoDeudor.SelectedIndex = 2 Then
@@ -1420,7 +1462,7 @@ Public Class frmSinComprobante
             Else
                 If Not IsNothing(lblTipar) Then
                     If chkContrato.Checked = True Then
-                        If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Then
+                        If lblTipar.Text.Trim = "L" Or lblTipar.Text.Trim = "S" Or lblTipar.Text.Trim = "R" Or lblTipar.Text.Trim = "F" Then
                             tablaReferenciaBancaria.Visible = True
                             If Not IsNothing(lblCta) And Not IsNothing(lblBco) Then
                                 If ddlMismoDeudor.SelectedIndex = 2 Then
@@ -1609,7 +1651,7 @@ Public Class frmSinComprobante
         If chkContrato.Checked = True Then
             If ddlMismoDeudor.SelectedIndex = 0 Then
                 Dim lblTipar As Label = CType(FormView3.FindControl("tipoContrato"), Label)
-                If lblTipar.Text.Trim <> "L" And lblTipar.Text.Trim <> "S" Then
+                If lblTipar.Text.Trim <> "L" And lblTipar.Text.Trim <> "S" And lblTipar.Text.Trim <> "R" And lblTipar.Text.Trim <> "F" Then
 
                     validaEstatusProveedor(ddlProveedor.SelectedValue)
                 Else

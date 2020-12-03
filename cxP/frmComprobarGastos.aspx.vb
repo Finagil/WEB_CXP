@@ -34,6 +34,7 @@ Public Class frmComprobarGastos
             txtFechaLlegada.Text = Date.Now.ToShortDateString
             txtFechaSalida.Text = Date.Now.ToShortDateString
             odbSolicitudes2.FilterExpression = "idConcepto = '" & taTipoDocumento.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' AND estatus like '%Autoriza 2%'"
+            odsAutoriza.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV' AND Fase <> 'TES_CXP')"
         Else
         End If
     End Sub
@@ -453,6 +454,7 @@ Public Class frmComprobarGastos
         txtConceptoND.Text = ""
         TabContainer1.Visible = False
         odbSolicitudes2.FilterExpression = "idConcepto = '" & taTipoDocumento.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "' AND estatus like '%Autoriza 2%'"
+        odsAutoriza.FilterExpression = "Descripcion = 'CXP_AUTORIZACIONES' AND (Fase <> 'MCONTROL_CXP' AND Fase <> 'MCONTROL_AV' AND Fase <> 'TES_CXP')"
     End Sub
 
     Private Sub GridView3_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridView3.RowDataBound
@@ -469,7 +471,7 @@ Public Class frmComprobarGastos
             e.Row.Font.Bold = True
         End If
         For Each rows2 As GridViewRow In GridView3.Rows
-            total_b += total_b + CDec(GridView3.Rows(con_b).Cells(1).Text)
+            total_b = total_b + CDec(GridView3.Rows(con_b).Cells(1).Text)
             con_b += 1
         Next
         lblTotalGastos.Text = "Importe total a comprobar: " + FormatCurrency((totala + totalb).ToString)
@@ -525,6 +527,9 @@ Public Class frmComprobarGastos
         btnComprobar.Visible = False
         lblTotalGastos.Visible = False
         btnAgregar.Visible = False
+        totala = 0
+        totalb = 0
+        total = 0
     End Sub
 
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged

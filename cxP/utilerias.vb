@@ -29,4 +29,23 @@ Public Class utilerias
         ' registro personalizado para él
 
     End Sub
+
+    Public Function validaCaracteresEspeciales(ByVal linea As String)
+
+        Dim patronNum As New Regex("[0-9]")
+        Dim caractEspecial As New Regex("[^a-zA-Z0-9]")
+
+        'If patronNum.Matches(linea).Count > 0 Then
+        '    Console.WriteLine("No coincide")
+        '    Return False
+        '    Exit Function
+        'End If
+
+        If caractEspecial.Matches(linea).Count > 0 Then
+            'Console.WriteLine("No coincide")
+            Return False
+            Exit Function
+        End If
+        Return True
+    End Function
 End Class
