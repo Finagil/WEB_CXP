@@ -262,6 +262,8 @@ Public Class frmConComprobante
         Dim importeOtrosGastosIngresos As Decimal = 0
         Dim banderaOtrosIngresos As String = ""
 
+
+
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             If cmbCuentasBancarias.SelectedIndex = -1 Then
                 lblErrorGeneral.Text = "Cuando la forma de pago es por Tranferencia Electrónica se debe seleccionar una cuenta bancaria de pago."
@@ -383,9 +385,27 @@ Public Class frmConComprobante
 
 
                             If CDec(txtTot.Text) < rows2.total Then
-                                If rows2.rfcEmisor = "CSS160330CP7" And CDec(txtTot.Text) - 2 < rows2.total Then
+                                If (rows2.rfcEmisor = "CSS160330CP7" Or rows2.rfcEmisor = "TNO8105076Q8" Or rows2.rfcEmisor = "CES671208JE5") And CDec(txtTot.Text) - 2 < rows2.total Then
                                     importeOtrosGastosIngresos = rows2.total - CDec(txtTot.Text)
                                     banderaOtrosIngresos = "OI"
+
+                                    row("rfcEmisor") = rows2.rfcEmisor
+                                    row("rfcReceptor") = rows2.rfcReceptor
+                                    row("serie") = rows2.serie.ToString
+                                    row("folio") = rows2.folio.ToString
+                                    row("uuid") = rows2.uuid.ToString
+                                    row("impuesto") = ""
+                                    row("mImpuestoT") = rows2.montoImpuesto.ToString
+                                    row("mImpuestoR") = rows2.montoImpuestoR.ToString
+                                    row("mImpLocalT") = rows2.impLocTra.ToString
+                                    row("mImpLocalR") = rows2.impLocRet.ToString
+                                    row("fechaEmision") = rows2.fechaEmision.ToString
+                                    row("factor") = ""
+                                    row("subTotal") = rows2.subTotal
+                                    row("total") = rows2.total
+                                    row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
+                                    row("observaciones") = txtObs.Text
+                                    row("concepto") = ddlConc.SelectedItem.Text
                                 Else
                                     row("rfcEmisor") = rows2.rfcEmisor
                                     row("rfcReceptor") = rows2.rfcReceptor
@@ -407,9 +427,27 @@ Public Class frmConComprobante
                                 End If
                             ElseIf CDec(txtTot.Text) > rows2.total Then
                                 'Permite ingresar importes menores o superiores según
-                                If rows2.rfcEmisor = "CSS160330CP7" And CDec(txtTot.Text) + 2 > rows2.total Then
+                                If (rows2.rfcEmisor = "CSS160330CP7" Or rows2.rfcEmisor = "TNO8105076Q8" Or rows2.rfcEmisor = "CES671208JE5") And CDec(txtTot.Text) + 2 > rows2.total Then
                                     importeOtrosGastosIngresos = CDec(txtTot.Text) - rows2.total
                                     banderaOtrosIngresos = "OG"
+
+                                    row("rfcEmisor") = rows2.rfcEmisor
+                                    row("rfcReceptor") = rows2.rfcReceptor
+                                    row("serie") = rows2.serie.ToString
+                                    row("folio") = rows2.folio.ToString
+                                    row("uuid") = rows2.uuid.ToString
+                                    row("impuesto") = ""
+                                    row("mImpuestoT") = rows2.montoImpuesto.ToString
+                                    row("mImpuestoR") = rows2.montoImpuestoR.ToString
+                                    row("mImpLocalT") = rows2.impLocTra.ToString
+                                    row("mImpLocalR") = rows2.impLocRet.ToString
+                                    row("fechaEmision") = rows2.fechaEmision.ToString
+                                    row("factor") = ""
+                                    row("subTotal") = rows2.subTotal
+                                    row("total") = txtTot.Text
+                                    row("totalOrg") = GridView1.Rows(cont).Cells(11).Text.Replace(",", "").Replace("$", "")
+                                    row("observaciones") = txtObs.Text
+                                    row("concepto") = ddlConc.SelectedItem.Text
                                 Else
                                     lblErrorGeneral.Text = "El importe a pagar no debe ser mayor al saldo de la factura"
                                     ModalPopupExtender1.Show()
@@ -607,6 +645,7 @@ Public Class frmConComprobante
                                             taRegContable.Insert(CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), 0, rows2.total, rows2.rfcEmisor, ddlProveedores.SelectedItem.Text & " F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                         End If
                                     End If
+
                                     'Valida otros ingresos u otros gatos para pago de servicios con convenio CIE
                                     If banderaOtrosIngresos = "OI" Then
                                         If CInt(Session.Item("Empresa")) = 23 Then
@@ -651,10 +690,11 @@ Public Class frmConComprobante
                 'inserta otros ingresos
                 'importeOtrosGastosIngresos = rows2.total - CDec(txtTot.Text)
                 'banderaOtrosIngresos = "OI"
-                If banderaRegistroContable = "OI" Then
+                If banderaOtrosIngresos = "OI" Then
                     Dim guuidCN As String = Guid.NewGuid.ToString
                     taCFDI2.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text) * -1, 1, "", 0, 0, 0, 0)
-                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now, "", "", guuidCN, 0, CDec(importeOtrosGastosIngresos) * -1, 0, 0, "CARTA NETEO ( " & txtDescCartaNeteo.Text & " )", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
+                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now, "", "", guuidCN, 0, CDec(importeOtrosGastosIngresos) * -1, 0, 0, "CARTA NETEO ( " & txtDescCartaNeteo.Text & " )", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
+                    'taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, rows2.fechaEmision, rows2.serie, rows2.folio, rows2.uuid, CDec(row("subTotal")), CDec(row("total")), CDec(row("mImpuestoT")) + CDec(row("mImpLocalT")), CDec(row("mImpuestoR")) + CDec(row("mImpLocalR")), row("observaciones"), ddlConc.SelectedItem.Value, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & Session.Item("mailJefe"), mail, Nothing, Nothing, rows2.moneda, CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, ddlAutorizo.SelectedItem.Text, Session.Item("Jefe"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
                 End If
 
                 'inserta carta neteo
@@ -1060,11 +1100,13 @@ Public Class frmConComprobante
                         End If
                         rowA("total") = ((CDec(txtTot.Text) * CDec(txtPorcentaje.Text)) / 100)
                     ElseIf IsNumeric(txtTot.Text) Then
-                        If CDec(txtTot.Text) > CDec(GridView1.Rows(conta).Cells(11).Text) Then
+                    If CDec(txtTot.Text) > CDec(GridView1.Rows(conta).Cells(11).Text) Then
+                        If (Session.Item("rfcEmisor") <> "CSS160330CP7" And Session.Item("rfcEmisor") <> "TNO8105076Q8" And Session("rfcEmisor") <> "CES671208JE5") Then
                             lblErrorGeneral.Text = "El importe solicitado para pago no debe ser mayor al importe de la factura"
                             ModalPopupExtender1.Show()
                             Exit Sub
-                        ElseIf CDec(txtTot.Text) <= 0 Then
+                        End If
+                    ElseIf CDec(txtTot.Text) <= 0 Then
                             lblErrorGeneral.Text = "El importe solicitado no puede ser 0 o menor a este"
                             ModalPopupExtender1.Show()
                             Exit Sub
@@ -1415,8 +1457,8 @@ Public Class frmConComprobante
         Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
-        Dim folio As String = "3247"
-        Dim idPago As String = "225"
+        Dim folio As String = "3643"
+        Dim idPago As String = "1212"
         Dim estatus As String = "No Pagada"
         Dim dtSolPDF As DataTable
         dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable
