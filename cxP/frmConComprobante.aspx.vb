@@ -365,8 +365,14 @@ Public Class frmConComprobante
                     Dim txtPorcentaje As TextBox = rows.Cells(11).FindControl("txtPorcentaje")
                     'Dim generaEvento As Boolean = taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue)
 
+                    If ddlConc.SelectedValue = 144 Then
+                        If Session.Item("Usuario") = "atorres" Then
+                            Session.Item("mailJefe") = "atorres@finagil.com.mx"
+                            Session.Item("Jefe") = "CP ABRAHAM TORRES"
+                        End If
+                    End If
 
-                    Dim GeneraEventoContable As Boolean = False
+                        Dim GeneraEventoContable As Boolean = False
                     If chkg.Checked = True Then
                         'If taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
                         '    GeneraEventoContable = True
@@ -1457,8 +1463,8 @@ Public Class frmConComprobante
         Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
-        Dim folio As String = "3643"
-        Dim idPago As String = "1212"
+        Dim folio As String = "3690"
+        Dim idPago As String = "173"
         Dim estatus As String = "No Pagada"
         Dim dtSolPDF As DataTable
         dtSolPDF = New dsProduccion.Vw_CXP_AutorizacionesDataTable

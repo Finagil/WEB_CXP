@@ -301,7 +301,7 @@
             &nbsp;
                 <asp:CheckBox ID="chkClientProv" runat="server" AutoPostBack="True" Text="¿Cliente?" />
             </td>
-            <td class="auto-style23">Calle:</td>
+            <td class="auto-style23">Calle y Número:</td>
             <td class="auto-style23">
                 <asp:TextBox ID="txtCalle" runat="server"></asp:TextBox>
             </td>
@@ -388,6 +388,17 @@
             <td>
                 <asp:TextBox ID="txtNoProveedor" runat="server" Enabled="False"></asp:TextBox>
                     </td>
+        </tr>
+                <tr>
+            <td>&nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                <br />
+                <asp:CheckBox ID="chkCheque" runat="server" Text="Forma de Pago Cheque" TextAlign="Left" />
+                    </td>
+            <td>
+                &nbsp;</td>
         </tr>
                 <tr>
             <td>&nbsp;</td>

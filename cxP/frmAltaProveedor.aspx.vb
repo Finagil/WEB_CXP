@@ -206,6 +206,7 @@ Public Class frmAltaProveedor
         txtNoProveedor.Text = ""
         txtMail.Text = ""
 
+        chkCheque.Enabled = True
         txtRfc.Enabled = True
         txtRazonSocial.Enabled = True
         txtNit.Enabled = True
@@ -264,6 +265,7 @@ Public Class frmAltaProveedor
         'afuDocumentacionProv.Visible = False
         'btnAgregarCta.Enabled = False
         'btnActualizarArch.Enabled = False
+        chkCheque.Enabled = False
         btnActualizar.Enabled = False
         btnAutorizar.Enabled = False
         txtRfc.Enabled = False
@@ -344,6 +346,73 @@ Public Class frmAltaProveedor
 
         If txtRazonSocial.Text.Trim = String.Empty Then
             lblErrorGeneral.Text = "No se ha incluido la razón social."
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
+        End If
+
+        If txtRfc.Text.Trim = "XEXX010101000" Then
+            If txtNit.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Cuando un RFC es para extranjeros, se debe incluir el NIT correspondiente al país de origen"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+        End If
+
+        If txtRfc.Text.Trim.Length = 13 Then
+            If txtCurp.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Cuando un RFC es de una persona física, se debe incluir la CURP correspondiente"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+        End If
+
+        If txtMail.Text.Trim = String.Empty Then
+            lblErrorGeneral.Text = "Se debe de incluir una dirección de correo electrónico"
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
+        End If
+
+        If txtCalle.Text.Trim = String.Empty Then
+            lblErrorGeneral.Text = "Se debe de incluir la calle y número correspondiente"
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
+        End If
+
+        If txtColonia.Text.Trim = String.Empty Then
+            lblErrorGeneral.Text = "Se debe de incluir la colonia correspondiente"
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
+        End If
+
+        If txtLocalidad.Text.Trim = String.Empty Then
+            lblErrorGeneral.Text = "Se debe de incluir la localidad correspondiente"
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
+        End If
+
+        If txtDelegacion.Text.Trim = String.Empty Then
+            lblErrorGeneral.Text = "Se debe de incluir la delegación o municipio correspondiente"
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
+        End If
+
+        If txtEstado.Text.Trim = String.Empty Then
+            lblErrorGeneral.Text = "Se debe de incluir la estado correspondiente"
+            ModalPopupExtender1.Show()
+            validacion = "NO"
+            Exit Sub
+        End If
+
+        If txtCp.Text.Trim = String.Empty Then
+            lblErrorGeneral.Text = "Se debe de incluir el CP correspondiente"
             ModalPopupExtender1.Show()
             validacion = "NO"
             Exit Sub
@@ -450,6 +519,73 @@ Public Class frmAltaProveedor
                     validacion = "NO"
                     Exit Sub
                 End If
+            End If
+
+            If txtRfc.Text.Trim = "XEXX010101000" Then
+                If txtNit.Text.Trim = String.Empty Then
+                    lblErrorGeneral.Text = "Cuando un RFC es para extranjeros, se debe incluir el NIT correspondiente al país de origen"
+                    ModalPopupExtender1.Show()
+                    validacion = "NO"
+                    Exit Sub
+                End If
+            End If
+
+            If txtRfc.Text.Trim.Length = 13 Then
+                If txtCurp.Text.Trim = String.Empty Then
+                    lblErrorGeneral.Text = "Cuando un RFC es de una persona física, se debe incluir la CURP correspondiente"
+                    ModalPopupExtender1.Show()
+                    validacion = "NO"
+                    Exit Sub
+                End If
+            End If
+
+            If txtMail.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Se debe de incluir una dirección de correo electrónico"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+
+            If txtCalle.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Se debe de incluir la calle y número correspondiente"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+
+            If txtColonia.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Se debe de incluir la colonia correspondiente"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+
+            If txtLocalidad.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Se debe de incluir la localidad correspondiente"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+
+            If txtDelegacion.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Se debe de incluir la delegación o municipio correspondiente"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+
+            If txtEstado.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Se debe de incluir la estado correspondiente"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
+            End If
+
+            If txtCp.Text.Trim = String.Empty Then
+                lblErrorGeneral.Text = "Se debe de incluir el CP correspondiente"
+                ModalPopupExtender1.Show()
+                validacion = "NO"
+                Exit Sub
             End If
 
             If validacion = "SI" Then
@@ -658,6 +794,13 @@ Public Class frmAltaProveedor
         Dim tableAdapterGenCorreos As New dsProduccionTableAdapters.GEN_Correos_SistemaFinagilTableAdapter
         Dim tableAdapterCuentasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
         Dim mensaje As String = ""
+        Dim formaPago As String = "TRANSFERENCIA"
+
+        If GridView1.Rows.Count = 0 And chkCheque.Checked = False Then
+            lblErrorGeneral.Text = "Si no agrega una cuenta bancaria es necesario que indique si el pago será con cheque"
+            ModalPopupExtender1.Show()
+            Exit Sub
+        End If
 
         If GridView3.Rows.Count = 0 Then
             lblErrorGeneral.Text = "La documentación del proveedor es incompleta, favor de revisar el listado de documentos obligatorios"
@@ -668,9 +811,13 @@ Public Class frmAltaProveedor
 
         If txtNoProveedor.Text <> String.Empty Then
             If tableadapterDocumentacionProv.NoDoctosOblig_ScalarQuery(Session.Item("tipoPersona")) <= tableadapterProveedorArch.ObtNoDoctsObligXProv_ScalarQuery(txtNoProveedor.Text.Trim) Then
-                tableAdapterProveedor.AutorizaPro_UpdateQuery(Session.Item("mailUsuarioS"), CDec(txtNoProveedor.Text.Trim))
+                tableAdapterProveedor.AutorizaPro_UpdateQuery(Session.Item("mailUsuarioS"), chkCheque.Checked.ToString, CDec(txtNoProveedor.Text.Trim))
                 tableAdapterCuentasBancarias.CambiaEstatusAll_UpdateQuery(22, txtNoProveedor.Text.Trim)
                 tableadapterProveedorArch.CambiaEstatusAll_UpdateQuery(23, txtNoProveedor.Text.Trim)
+
+                If chkCheque.Checked = True Then
+                    formaPago = "CHEQUE"
+                End If
 
                 btnAutorizar.Enabled = False
                 'GridView1.Enabled = False
@@ -688,10 +835,12 @@ Public Class frmAltaProveedor
                     "<tr>" &
                         "<td>Razón Social</td>" &
                         "<td>RFC</td>" &
+                        "<td>Forma de Pago</td>" &
                     "</tr>" &
                     "<tr>" &
                             "<td>" & txtRazonSocial.Text.Trim & "</td>" &
                             "<td>" & txtRfc.Text.Trim & "</td>" &
+                            "<td>" & formaPago & "</td>" &
                         "</tr></table><HR width=20%>" &
                    "<tfoot><tr><font align=" & Chr(34) & "center" & Chr(34) & "size=3 face=" & Chr(34) & "Arial" & Chr(34) & ">" & "Solicitante: " & Session.Item("Nombre") & vbNewLine & "</font></tr></tfoot>" &
                      "</body></html>"
@@ -1150,6 +1299,12 @@ Public Class frmAltaProveedor
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
 
     End Sub
+
+    Protected Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles chkCheque.CheckedChanged
+
+    End Sub
+
+
 End Class
 
 

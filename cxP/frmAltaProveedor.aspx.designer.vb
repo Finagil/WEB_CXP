@@ -320,6 +320,15 @@ Partial Public Class frmAltaProveedor
     Protected WithEvents txtNoProveedor As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
+    '''Control chkCheque.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents chkCheque As Global.System.Web.UI.WebControls.CheckBox
+    
+    '''<summary>
     '''Control btnNuevo.
     '''</summary>
     '''<remarks>
