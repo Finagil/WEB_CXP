@@ -98,9 +98,6 @@ click(function (event) {
         .auto-style63 {
             width: 394px;
         }
-        .auto-style66 {
-            width: 1196px;
-        }
         .auto-style73 {
             height: 30px;
             font-family: Arial;
@@ -136,9 +133,9 @@ click(function (event) {
             width: 298px;
             text-align: center;
         }
-        .auto-style90 {
-              width: 16%;
-          }
+        .auto-style91 {
+            color: #333333;
+        }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -192,7 +189,7 @@ click(function (event) {
             <tr>
                 <td>
                     Proveedor:
-                    <asp:Button ID="Button1" runat="server" Text="Button" Visible="False" />
+                    <asp:Button ID="Button1" runat="server" Text="Button" />
                     <asp:Button ID="Button2" runat="server" Text="PruebURL" PostBackUrl="~/aut2TwoPrvCtas.aspx?idCuentas=66&archivo1=a01a11a3-5fef-4f69-981b-ee5535198723" Visible="False" />
                 </td>
                 <td  >
@@ -912,7 +909,7 @@ click(function (event) {
                             </Columns>
             <EditRowStyle BackColor="#F58220" />
                         </asp:GridView>
-                </td>
+                        <a href="frmConComprobante.aspx"><span class="auto-style91">frmConComprobante.aspx</span></a></td>
             </tr>            
             <tr>
                 <td class="auto-style76" colspan="3">

@@ -106,6 +106,7 @@ Public Class frmAltaProveedor
             txtDelegacion.Text = rowsProveedores2.delegacion
             txtEstado.Text = rowsProveedores2.estado
 
+
             If IsNothing(rowsProveedores2.pais) = False Then
                 ddlPais.SelectedValue = rowsProveedores2.pais.Trim
             Else
@@ -118,11 +119,14 @@ Public Class frmAltaProveedor
             txtNit.Text = rowsProveedores2.nit
             txtCurp.Text = rowsProveedores2.curp
             txtMail.Text = rowsProveedores2.mail
-            If IsNothing(rowsProveedores2.activo) Then
-                chkClientProv.Checked = False
-            Else
-                chkClientProv.Checked = rowsProveedores2.activo
-            End If
+
+            chkClientProv.Checked = tableAdapterProveedores2.EsCliente_ScalarQuery(rowsProveedores2.idProveedor)
+
+            'If IsNothing(rowsProveedores2.activo) Then
+            '    chkClientProv.Checked = False
+            'Else
+            '    chkClientProv.Checked = rowsProveedores2.activo
+            'End If
 
             If taUsuarios.ExisteUsuario_ScalarQuery(rowsProveedores2.rfc) <> "NE" Then
                 Session.Item("rfcEmpleado") = rowsProveedores2.rfc
