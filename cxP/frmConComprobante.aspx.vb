@@ -732,7 +732,7 @@ Public Class frmConComprobante
                         taCFDI2.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text) * -1, 1, "", 0, 0, 0, 0)
                     End If
 
-                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now, "", "", guuidCN, 0, CDec(txtImporteCartaNeteto.Text) * -1, 0, 0, "CARTA NETEO ( " & txtDescCartaNeteo.Text & " )", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
+                    taCXPPagos.Insert(ddlProveedores.SelectedItem.Value, 0, folSolPagoFinagil, Date.Now.ToLongDateString, Date.Now, "", "", guuidCN, 0, CDec(txtImporteCartaNeteto.Text) * -1, 0, 0, "CARTA NETEO ( " & txtDescCartaNeteo.Text & " )", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "No Pagada", "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("MCONTROL_CXP"), "#" & taGenCorresoFases.ObtieneCorreoXFase_ScalarQuery("OPERACIONES_CXP"), Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, nombreAutorizante2, taGenCorresoFases.ObtieneNombreXFase_ScalarQuery("MCONTROL_CXP"), cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
                     conCT = +1
 
                 End If
@@ -888,11 +888,11 @@ Public Class frmConComprobante
                 If Session.Item("Empresa") = "23" Then
                     files.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
                     taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, Date.Now, Date.Now, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
+                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, Date.Now, Date.Now, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
                 Else
                     files.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
                     taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, Date.Now, Date.Now, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
+                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, Date.Now, Date.Now, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", 0, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, "MXN", CDate(txtFechaPago.Text), False, Nothing, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, idCuentas, CDec(txtTipoDeCambio.Text), monedaPago)
                 End If
             Next
         End If
