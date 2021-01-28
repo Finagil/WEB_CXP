@@ -374,6 +374,24 @@ Partial Public Class frmAltaProveedor
     Protected WithEvents divDetalles As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
+    '''Control lbl69.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbl69 As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''Control lbl69B.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents lbl69B As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
     '''Control tablaCuentas.
     '''</summary>
     '''<remarks>

@@ -7,44 +7,53 @@ Public Class frmMisSolicitudes
     Inherits System.Web.UI.Page
     Dim taAutorizantes As New dsProduccionTableAdapters.Vw_CXP_MisSolicitudesTableAdapter
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
-            Response.Redirect("~/Login.aspx")
-            Exit Sub
-        End If
-        If Session.Item("Empresa") = "24" Then
-            GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView1.RowStyle.BackColor = System.Drawing.Color.FromArgb(213, 244, 255)
-        End If
-        Dim taPagosR As New dsProduccionTableAdapters.CXP_PagosTableAdapter
 
-        Dim dtPagosR As New dsProduccion.CXP_PagosDataTable
+        If Not IsPostBack Then
 
-        For Each row As GridViewRow In GridView1.Rows
-            Session.Item("Leyenda") = "Mis solicitudes con comprobante fiscal"
-
-            taPagosR.ObtUuidParaMisSol_FillBy(dtPagosR, CDec(row.Cells(0).Text), CDec(Session.Item("Empresa")))
-
-            Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesDataTable
-            Dim drow As dsProduccion.Vw_CXP_MisSolicitudesRow
-            taAutorizantes.ObtAutorizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CDec(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
-
-            If dtAutorizaciones.Rows.Count > 0 Then
-                drow = dtAutorizaciones.Rows(0)
-                If row.Cells(4).Text.Trim = "Autoriza 1" And drow.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Autorizó (1): " & vbCrLf & drow.Autoriza1
-                ElseIf row.Cells(4).Text.Trim = "Rechazada 1" And drow.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Rechazó (1): " & vbCrLf & drow.Autoriza1
-                ElseIf row.Cells(4).Text.Trim = "Autoriza 2" And drow.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Autorizó (2): " & vbCrLf & drow.Autoriza2
-                ElseIf row.Cells(4).Text.Trim = "Rechazada 2" And drow.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Rechazó (2): " & vbCrLf & drow.Autoriza2
-                ElseIf drow.st = "Cancelada" Then
-                    row.Cells(4).Text = "Cancelada"
-                ElseIf drow.st = "Pagada" Then
-                    row.Cells(4).Text = "Pagada"
-                End If
+            txtFechaFinal.Text = Date.Now.ToShortDateString
+            txtFechaInicial.Text = Date.Now.AddDays(-10).ToShortDateString
+            Session("fechaInicial") = CDate(txtFechaInicial.Text)
+            Session("fechaFinal") = CDate(txtFechaFinal.Text).AddHours(11).AddMinutes(59)
+            If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
+                Response.Redirect("~/Login.aspx")
+                Exit Sub
             End If
-        Next
+            If Session.Item("Empresa") = "24" Then
+                GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+                GridView1.RowStyle.BackColor = System.Drawing.Color.FromArgb(213, 244, 255)
+                btnEnviar.BackColor = System.Drawing.Color.FromArgb(213, 244, 255)
+            End If
+            Dim taPagosR As New dsProduccionTableAdapters.CXP_PagosTableAdapter
+
+            Dim dtPagosR As New dsProduccion.CXP_PagosDataTable
+
+            For Each row As GridViewRow In GridView1.Rows
+                Session.Item("Leyenda") = "Mis solicitudes con comprobante fiscal"
+
+                taPagosR.ObtUuidParaMisSol_FillBy(dtPagosR, CDec(row.Cells(0).Text), CDec(Session.Item("Empresa")))
+
+                Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesDataTable
+                Dim drow As dsProduccion.Vw_CXP_MisSolicitudesRow
+                taAutorizantes.ObtAutorizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CDec(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
+
+                If dtAutorizaciones.Rows.Count > 0 Then
+                    drow = dtAutorizaciones.Rows(0)
+                    If row.Cells(4).Text.Trim = "Autoriza 1" And drow.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Autorizó (1): " & vbCrLf & drow.Autoriza1
+                    ElseIf row.Cells(4).Text.Trim = "Rechazada 1" And drow.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Rechazó (1): " & vbCrLf & drow.Autoriza1
+                    ElseIf row.Cells(4).Text.Trim = "Autoriza 2" And drow.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Autorizó (2): " & vbCrLf & drow.Autoriza2
+                    ElseIf row.Cells(4).Text.Trim = "Rechazada 2" And drow.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Rechazó (2): " & vbCrLf & drow.Autoriza2
+                    ElseIf drow.st = "Cancelada" Then
+                        row.Cells(4).Text = "Cancelada"
+                    ElseIf drow.st = "Pagada" Then
+                        row.Cells(4).Text = "Pagada"
+                    End If
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub GridView1_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridView1.RowCommand
@@ -170,5 +179,43 @@ Public Class frmMisSolicitudes
 
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
 
+    End Sub
+
+    Protected Sub btnEnviar_Click(sender As Object, e As EventArgs) Handles btnEnviar.Click
+        Session("fechaInicial") = CDate(txtFechaInicial.Text)
+        Session("fechaFinal") = CDate(txtFechaFinal.Text).AddHours(11).AddMinutes(59)
+        odsMisSolicitudes.DataBind()
+
+        'odsMisSolicitudes.FilterExpression = "fechaSolicitud >= '" & CDate(txtFechaInicial.Text).ToString & "' AND fechaSolicitud <= '" & CDate(txtFechaFinal.Text).ToString & "'"
+        Dim taPagosR As New dsProduccionTableAdapters.CXP_PagosTableAdapter
+
+        Dim dtPagosR As New dsProduccion.CXP_PagosDataTable
+
+        For Each row As GridViewRow In GridView1.Rows
+            Session.Item("Leyenda") = "Mis solicitudes con comprobante fiscal"
+
+            taPagosR.ObtUuidParaMisSol_FillBy(dtPagosR, CDec(row.Cells(0).Text), CDec(Session.Item("Empresa")))
+
+            Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesDataTable
+            Dim drow As dsProduccion.Vw_CXP_MisSolicitudesRow
+            taAutorizantes.ObtAutorizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CDec(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
+
+            If dtAutorizaciones.Rows.Count > 0 Then
+                drow = dtAutorizaciones.Rows(0)
+                If row.Cells(4).Text.Trim = "Autoriza 1" And drow.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Autorizó (1): " & vbCrLf & drow.Autoriza1
+                ElseIf row.Cells(4).Text.Trim = "Rechazada 1" And drow.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Rechazó (1): " & vbCrLf & drow.Autoriza1
+                ElseIf row.Cells(4).Text.Trim = "Autoriza 2" And drow.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Autorizó (2): " & vbCrLf & drow.Autoriza2
+                ElseIf row.Cells(4).Text.Trim = "Rechazada 2" And drow.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Rechazó (2): " & vbCrLf & drow.Autoriza2
+                ElseIf drow.st = "Cancelada" Then
+                    row.Cells(4).Text = "Cancelada"
+                ElseIf drow.st = "Pagada" Then
+                    row.Cells(4).Text = "Pagada"
+                End If
+            End If
+        Next
     End Sub
 End Class

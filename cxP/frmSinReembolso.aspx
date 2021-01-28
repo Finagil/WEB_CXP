@@ -706,7 +706,7 @@
             <asp:Label ID="lblError" runat="server" Font-Names="Arial Black" Font-Size="X-Large" ForeColor="#FF6401" Text="Error" Visible="False"></asp:Label>
                 </td></tr>
             <tr><td>
-                                <asp:FileUpload ID="fup1" runat="server" Visible="False" accept=".pdf" multiple="multiple" AllowMultiple="true" />
+                                <asp:FileUpload ID="fup1" runat="server" Visible="False" accept=".pdf" multiple="multiple" AllowMultiple="true" ValidateRequestMode="Enabled" ViewStateMode="Enabled" />
                 </td><td>
             <asp:FileUpload ID="fupCarteNeteo" runat="server" Visible="False" /></td></tr>
             <tr><td colspan="2" class="auto-style30">

@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class frmMisSolicitudesSC
     
     '''<summary>
+    '''Control ScriptManager1.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    
+    '''<summary>
     '''Control HiddenID.
     '''</summary>
     '''<remarks>
@@ -48,6 +57,51 @@ Partial Public Class frmMisSolicitudesSC
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents tablaMisSolicitudes As Global.System.Web.UI.HtmlControls.HtmlTable
+    
+    '''<summary>
+    '''Control txtFechaInicial.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtFechaInicial As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control cexFechaInicial.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cexFechaInicial As Global.AjaxControlToolkit.CalendarExtender
+    
+    '''<summary>
+    '''Control txtFechaFinal.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents txtFechaFinal As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''Control cexFechaFinal.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents cexFechaFinal As Global.AjaxControlToolkit.CalendarExtender
+    
+    '''<summary>
+    '''Control btnEnviar.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents btnEnviar As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''Control GridView1.

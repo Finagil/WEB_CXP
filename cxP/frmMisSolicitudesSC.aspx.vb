@@ -15,44 +15,50 @@ Public Class frmMisSolicitudesSC
         'If Session.Item("Usuario") = "lmercado" Or Session.Item("Usuario") = "maria.montes" Then
         '    odsMisSolicitudesSC.FilterExpression = "idConcepto ='" & taEmpresa.ObtTipoConceptoGts_ScalarQuery(Session.Item("Empresa")) & "'"
         'End If
-        If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
-            Response.Redirect("~/Login.aspx")
-            Exit Sub
-        End If
-        If Session.Item("Empresa") = "24" Then
-            GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
-            GridView1.RowStyle.BackColor = System.Drawing.Color.FromArgb(213, 244, 255)
-        End If
-        For Each row As GridViewRow In GridView1.Rows
-            Session.Item("Leyenda") = "Mis solicitudes sin comprobante fiscal"
-
-
-            Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesSCDataTable
-            Dim drAutorizaciones As dsProduccion.Vw_CXP_MisSolicitudesSCRow
-
-
-            taAutorizaciones.ObtAuroizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CInt(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
-            If dtAutorizaciones.Rows.Count > 0 Then
-                drAutorizaciones = dtAutorizaciones.Rows(0)
-                Dim contComp As Integer = taComprobaciones.ObtNoComprobaciones_ScalarQuery(CDec(row.Cells(0).Text.Trim), CInt(Session.Item("Empresa")))
-                If row.Cells(4).Text.Trim = "Autoriza 1" And drAutorizaciones.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Autorizó (1): " & vbCrLf & drAutorizaciones.Autoriza1
-                ElseIf row.Cells(4).Text.Trim = "Rechazada 1" And drAutorizaciones.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Rechazó (1): " & vbCrLf & drAutorizaciones.Autoriza1
-                ElseIf row.Cells(4).Text.Trim = "Autoriza 2" And drAutorizaciones.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Autorizó (2): " & vbCrLf & drAutorizaciones.Autoriza2
-                ElseIf row.Cells(4).Text.Trim = "Rechazada 2" And drAutorizaciones.st <> "Cancelada" Then
-                    row.Cells(4).Text = "Rechazó (2): " & vbCrLf & drAutorizaciones.Autoriza2
-                ElseIf drAutorizaciones.st = "Cancelada" Then
-                    row.Cells(4).Text = "Cancelada"
-                ElseIf drAutorizaciones.st = "Pagada" Then
-                    row.Cells(4).Text = "Pagada"
-                End If
-                If contComp > 0 Then
-                    'row.Cells(4).Text = "Comprobaciones"
-                End If
+        If Not IsPostBack Then
+            txtFechaFinal.Text = Date.Now.ToShortDateString
+            txtFechaInicial.Text = Date.Now.AddDays(-10).ToShortDateString
+            Session("fechaInicialSC") = CDate(txtFechaInicial.Text)
+            Session("fechaFinalSC") = CDate(txtFechaFinal.Text).AddHours(11).AddMinutes(59)
+            If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
+                Response.Redirect("~/Login.aspx")
+                Exit Sub
             End If
-        Next
+            If Session.Item("Empresa") = "24" Then
+                GridView1.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(75, 165, 255)
+                GridView1.RowStyle.BackColor = System.Drawing.Color.FromArgb(213, 244, 255)
+            End If
+            For Each row As GridViewRow In GridView1.Rows
+                Session.Item("Leyenda") = "Mis solicitudes sin comprobante fiscal"
+
+
+                Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesSCDataTable
+                Dim drAutorizaciones As dsProduccion.Vw_CXP_MisSolicitudesSCRow
+
+
+                taAutorizaciones.ObtAuroizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CInt(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
+                If dtAutorizaciones.Rows.Count > 0 Then
+                    drAutorizaciones = dtAutorizaciones.Rows(0)
+                    Dim contComp As Integer = taComprobaciones.ObtNoComprobaciones_ScalarQuery(CDec(row.Cells(0).Text.Trim), CInt(Session.Item("Empresa")))
+                    If row.Cells(4).Text.Trim = "Autoriza 1" And drAutorizaciones.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Autorizó (1): " & vbCrLf & drAutorizaciones.Autoriza1
+                    ElseIf row.Cells(4).Text.Trim = "Rechazada 1" And drAutorizaciones.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Rechazó (1): " & vbCrLf & drAutorizaciones.Autoriza1
+                    ElseIf row.Cells(4).Text.Trim = "Autoriza 2" And drAutorizaciones.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Autorizó (2): " & vbCrLf & drAutorizaciones.Autoriza2
+                    ElseIf row.Cells(4).Text.Trim = "Rechazada 2" And drAutorizaciones.st <> "Cancelada" Then
+                        row.Cells(4).Text = "Rechazó (2): " & vbCrLf & drAutorizaciones.Autoriza2
+                    ElseIf drAutorizaciones.st = "Cancelada" Then
+                        row.Cells(4).Text = "Cancelada"
+                    ElseIf drAutorizaciones.st = "Pagada" Then
+                        row.Cells(4).Text = "Pagada"
+                    End If
+                    If contComp > 0 Then
+                        'row.Cells(4).Text = "Comprobaciones"
+                    End If
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub GridView1_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridView1.RowCommand
@@ -158,6 +164,44 @@ Public Class frmMisSolicitudesSC
     End Sub
 
     Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
+
+    End Sub
+
+    Protected Sub btnEnviar_Click(sender As Object, e As EventArgs) Handles btnEnviar.Click
+        Session("fechaInicialSC") = CDate(txtFechaInicial.Text)
+        Session("fechaFinalSC") = CDate(txtFechaFinal.Text).AddHours(11).AddMinutes(59)
+        odsMisSolicitudesSC.DataBind()
+
+        For Each row As GridViewRow In GridView1.Rows
+            Session.Item("Leyenda") = "Mis solicitudes sin comprobante fiscal"
+
+
+            Dim dtAutorizaciones As New dsProduccion.Vw_CXP_MisSolicitudesSCDataTable
+            Dim drAutorizaciones As dsProduccion.Vw_CXP_MisSolicitudesSCRow
+
+
+            taAutorizaciones.ObtAuroizante_FillBy(dtAutorizaciones, Session.Item("Usuario"), CInt(Session.Item("Empresa")), CDec(row.Cells(0).Text.Trim))
+            If dtAutorizaciones.Rows.Count > 0 Then
+                drAutorizaciones = dtAutorizaciones.Rows(0)
+                Dim contComp As Integer = taComprobaciones.ObtNoComprobaciones_ScalarQuery(CDec(row.Cells(0).Text.Trim), CInt(Session.Item("Empresa")))
+                If row.Cells(4).Text.Trim = "Autoriza 1" And drAutorizaciones.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Autorizó (1): " & vbCrLf & drAutorizaciones.Autoriza1
+                ElseIf row.Cells(4).Text.Trim = "Rechazada 1" And drAutorizaciones.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Rechazó (1): " & vbCrLf & drAutorizaciones.Autoriza1
+                ElseIf row.Cells(4).Text.Trim = "Autoriza 2" And drAutorizaciones.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Autorizó (2): " & vbCrLf & drAutorizaciones.Autoriza2
+                ElseIf row.Cells(4).Text.Trim = "Rechazada 2" And drAutorizaciones.st <> "Cancelada" Then
+                    row.Cells(4).Text = "Rechazó (2): " & vbCrLf & drAutorizaciones.Autoriza2
+                ElseIf drAutorizaciones.st = "Cancelada" Then
+                    row.Cells(4).Text = "Cancelada"
+                ElseIf drAutorizaciones.st = "Pagada" Then
+                    row.Cells(4).Text = "Pagada"
+                End If
+                If contComp > 0 Then
+                    'row.Cells(4).Text = "Comprobaciones"
+                End If
+            End If
+        Next
 
     End Sub
 End Class

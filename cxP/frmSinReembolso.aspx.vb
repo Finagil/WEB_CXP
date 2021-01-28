@@ -363,33 +363,38 @@ Public Class frmSinReembolso
     Private Sub subirArchivosAdjuntos(ByVal foliosSolicitud As Decimal, ByVal deudor As Decimal)
         Dim taCFDI As New dsProduccionTableAdapters.CXP_XmlCfdi2TableAdapter
         Dim taCXPPagos As New dsProduccionTableAdapters.CXP_PagosTableAdapter
-        If fup1.HasFiles Then
-            For Each files As HttpPostedFile In fup1.PostedFiles
+        Try
+            If fup1.HasFiles Then
+                For Each files As HttpPostedFile In fup1.PostedFiles
 
-                'MsgBox(Right(fup1.PostedFile.ContentType.Trim, 3).ToString)
+                    'MsgBox(Right(fup1.PostedFile.ContentType.Trim, 3).ToString)
 
-                If fup1.FileBytes.Length > 500000 Then
-                    lblErrorGeneral.Text = "El tamaño del archivo no puede ser mayor a 5 MB"
-                    Exit Sub
-                ElseIf Right(fup1.PostedFile.ContentType.Trim, 3).ToString <> "PDF" And Right(fup1.PostedFile.ContentType.Trim, 3).ToString <> "pdf" Then
-                    lblErrorGeneral.Text = "El tipo de archivo no puede ser distinto a PDF"
-                    Exit Sub
-                End If
-            Next
-            For Each files As HttpPostedFile In fup1.PostedFiles
+                    If fup1.FileBytes.Length > 500000 Then
+                        lblErrorGeneral.Text = "El tamaño del archivo no puede ser mayor a 5 MB"
+                        Exit Sub
+                    ElseIf Right(fup1.PostedFile.ContentType.Trim, 3).ToString <> "PDF" And Right(fup1.PostedFile.ContentType.Trim, 3).ToString <> "pdf" Then
+                        lblErrorGeneral.Text = "El tipo de archivo no puede ser distinto a PDF"
+                        Exit Sub
+                    End If
+                Next
+                For Each files As HttpPostedFile In fup1.PostedFiles
 
-                Dim guuidCN As String = Guid.NewGuid.ToString
-                If Session.Item("Empresa") = "23" Then
-                    files.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
-                    taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, cmbCuentasBancarias.SelectedValue, 1, "MXN")
-                Else
-                    files.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
-                    taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
-                    taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, cmbCuentasBancarias.SelectedValue, 1, "MXN")
-                End If
-            Next
-        End If
+                    Dim guuidCN As String = Guid.NewGuid.ToString
+                    If Session.Item("Empresa") = "23" Then
+                        files.SaveAs(Path.Combine(Server.MapPath("Finagil") & "\Procesados\", guuidCN & ".pdf"))
+                        taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                        taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, cmbCuentasBancarias.SelectedValue, 1, "MXN")
+                    Else
+                        files.SaveAs(Path.Combine(Server.MapPath("Arfin") & "\Procesados\", guuidCN & ".pdf"))
+                        taCFDI.Insert("", "", 0, "", 0, guuidCN, "", "", "", "", 0, "I", "", "", "", "", Date.Now, "PENDIENTE", CDec(txtImporteCartaNeteto.Text), 1, "", 0, 0, 0, 0)
+                        taCXPPagos.Insert(deudor, 0, foliosSolicitud, lblFechaSolicitud.Text, lblFechaSolicitud.Text, "AD", "ADJUNTO", guuidCN, 0, 0, 0, 0, "adjunto", ddlConcepto.SelectedValue, 1, Session.Item("Usuario"), CInt(Session.Item("Empresa")), "Reemb", "", "", Nothing, Nothing, ddlMoneda.SelectedValue, CDate(txtFechaPago.Text), True, ddlContratos.SelectedValue, ddlAutorizo.SelectedValue, "", "", cmbCentroDeCostos.SelectedValue, cmbFormaPago.SelectedValue, cmbCuentasBancarias.SelectedValue, 1, "MXN")
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            lblErrorGeneral.Text = ex.ToString
+            Exit Sub
+        End Try
     End Sub
 
     Public Sub limpiar()
@@ -484,6 +489,12 @@ Public Class frmSinReembolso
 
                 If txtDescripcionPago.Text.Trim = String.Empty Then
                     lblErrorGeneral.Text = "No se ha agregado una descripción del pago"
+                    ModalPopupExtender1.Show()
+                    Exit Sub
+                End If
+
+                If txtDescripcionPago.Text.Trim.Length > 200 Then
+                    lblErrorGeneral.Text = "la descripción no puede ser mayor a 200 caracteres..."
                     ModalPopupExtender1.Show()
                     Exit Sub
                 End If

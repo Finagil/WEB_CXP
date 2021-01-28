@@ -3,9 +3,11 @@ Imports System.Data.SqlClient.SqlCommand
 Imports System.Data.SqlClient.SqlConnection
 Imports System.Data.SqlClient
 Imports System.Data.Sql
+Imports System.Drawing
 
 Public Class frmAltaProveedor
     Inherits System.Web.UI.Page
+    Dim taProveedor As New dsProduccionTableAdapters.CXP_ProveedoresTableAdapter
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
             Response.Redirect("~/Login.aspx")
@@ -610,6 +612,9 @@ Public Class frmAltaProveedor
         Else
             Session.Item("tipoPersona") = "E"
         End If
+        If chkClientProv.Checked = True Or txtRfc.Text.Trim = "XAXX010101000" Then
+            Session.Item("tipoPersona") = "C"
+        End If
     End Sub
 
     Protected Sub btnAgregarCta_Click(sender As Object, e As EventArgs) Handles btnAgregarCta.Click
@@ -792,6 +797,8 @@ Public Class frmAltaProveedor
 
 
     Protected Sub btnAutorizar_Click(sender As Object, e As EventArgs) Handles btnAutorizar.Click
+
+
         Dim tableAdapterProveedor As New dsProduccionTableAdapters.CXP_Proveedores2TableAdapter
         Dim tableadapterProveedorArch As New dsProduccionTableAdapters.CXP_ProveedoresArchTableAdapter
         Dim tableadapterDocumentacionProv As New dsProduccionTableAdapters.CXP_DocumentacionProvTableAdapter
@@ -812,6 +819,9 @@ Public Class frmAltaProveedor
             Exit Sub
         End If
 
+        If valida_Proveedor() = "ERR"
+            Exit Sub
+        End If
 
         If txtNoProveedor.Text <> String.Empty Then
             If tableadapterDocumentacionProv.NoDoctosOblig_ScalarQuery(Session.Item("tipoPersona")) <= tableadapterProveedorArch.ObtNoDoctsObligXProv_ScalarQuery(txtNoProveedor.Text.Trim) Then
@@ -885,6 +895,8 @@ Public Class frmAltaProveedor
         End If
         Session.Item("tipoPersona") = ""
     End Sub
+
+
 
     Protected Sub btnActualizarArch_Click(sender As Object, e As EventArgs) Handles btnActualizarArch.Click
         Dim tableadapterProveedoresArc As New dsProduccionTableAdapters.CXP_ProveedoresArchTableAdapter
@@ -1300,15 +1312,55 @@ Public Class frmAltaProveedor
         End If
     End Sub
 
-    Protected Sub GridView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles GridView1.SelectedIndexChanged
+    Function valida_Proveedor()
+        Dim estatus As String = "OK"
+        Try
+            lbl69.Text = "PROVEEDOR VÁLIDO EN LISTA EFOS"
+            lbl69B.Text = "PROVEEDOR VÁLIDO EN LISTA EFOS"
+            lbl69.ForeColor = Color.Green
+            lbl69B.ForeColor = Color.Green
 
-    End Sub
+            Dim ta69 As New dsProduccionTableAdapters.CRED_Lista_Art69TableAdapter
+            Dim ta69B As New dsProduccionTableAdapters.CRED_Lista_Art69BTableAdapter
+            Dim dt69 As New dsProduccion.CRED_Lista_Art69DataTable
+            Dim dt69B As New dsProduccion.CRED_Lista_Art69BDataTable
 
-    Protected Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles chkCheque.CheckedChanged
+            ta69.ObtEst_FillBy(dt69, txtRfc.Text.Trim)
 
-    End Sub
+            For Each rows69 As dsProduccion.CRED_Lista_Art69Row In dt69
+                lbl69.ForeColor = Color.Yellow
+                Select Case rows69.supuesto
+                    Case "FIRMES"
+                        lbl69.Text = "1. DE CONTRIBUYENTE QUE TIENE CRÉDITOS FISCALES FIRMES"
+                    Case "EXIGIBLES"
+                        lbl69.Text = "2. CRÉDITOS EXIGIBLES, NO PAGADOS O GARANTIZADOS"
+                    Case "CANCELADOS"
+                        lbl69.Text = "3. CRÉDITOS CANCELADOS"
+                    Case "CONDONADOS"
+                        lbl69.Text = "4. CRÉDITOS CONDONADOS"
+                    Case "SENTENCIA"
+                        lbl69.Text = "5. DE CONTRIBUYENTE QUE TIENE SENTENCIA CONDENATORIA EJECUTORIA POR LA COMISIÓN DE UN DELITO FISCAL"
+                    Case "NO LOCALIZADO"
+                        lbl69.Text = "NO LOCALIZADO"
+                End Select
+            Next
 
+            ta69B.ObtEst_FillBy(dt69B, txtRfc.Text.Trim)
 
+            For Each rows69B As dsProduccion.CRED_Lista_Art69BRow In dt69B
+                lbl69B.ForeColor = Color.Red
+                If rows69B.status_cont <> "Desvirtuado" Or rows69B.status_cont <> "" Then
+                    lbl69B.Text = "NO PROCEDE EL PAGO A PROVEEDOR, SOLICITAR ACLARACION"
+                    estatus = "ERR"
+                End If
+            Next
+        Catch ex As Exception
+            lblErrorGeneral.Text = ex.ToString
+            ModalPopupExtender1.Show()
+
+        End Try
+        Return estatus
+    End Function
 End Class
 
 
