@@ -19,22 +19,26 @@
         If Autentificacion(txtUsuario.TemplateSourceDirectory, txtPassword.Text) Then
             'valida fecha para reiniciar polizas de diario
             'If Date.Now.Day = 1 Then
-            If Date.Now.Month = 1 Then
+            If Date.Now.Month > 1 Then
                 If taPeriodos.ExistePeriodo_ScalarQuery(Date.Now.Year, Date.Now.Month - 1, CDec(Session.Item("Empresa"))) = -1 Then
-                    taPeriodos.Insert(MonthName(Date.Now.Month) & " " & Date.Now.Year.ToString, 31, Date.Now.Year.ToString, CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month - 1))
+                    taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & Date.Now.Year.ToString, 31, Date.Now.Year.ToString, CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month - 1))
                     If Session.Item("Empresa") = "24" Then
                         taTipoDeDocumento.ReiniciaFolio_UpdateQuery(49, taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
+                        taTipoDeDocumento.ReiniciaFoliosEgresos_UpdateQuery(0, CDec(Session.Item("Empresa")))
                     Else
                         taTipoDeDocumento.ReiniciaFolio_UpdateQuery(999, taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
+                        taTipoDeDocumento.ReiniciaFoliosEgresos_UpdateQuery(0, CDec(Session.Item("Empresa")))
                     End If
                 End If
             Else
                 If taPeriodos.ExistePeriodo_ScalarQuery(Date.Now.Year, Date.Now.Month, CDec(Session.Item("Empresa"))) = -1 Then
-                    taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & CStr(Date.Now.Year - 1), 31, CStr(Date.Now.Year - 1), CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa")))))), CStr(Date.Now.Month))
+                    taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & CStr(Date.Now.Year - 1), 31, CStr(Date.Now.Year - 1), CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month))
                     If Session.Item("Empresa") = "24" Then
                         taTipoDeDocumento.ReiniciaFolio_UpdateQuery(49, taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
+                        taTipoDeDocumento.ReiniciaFoliosEgresos_UpdateQuery(0, CDec(Session.Item("Empresa")))
                     Else
                         taTipoDeDocumento.ReiniciaFolio_UpdateQuery(999, taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
+                        taTipoDeDocumento.ReiniciaFoliosEgresos_UpdateQuery(0, CDec(Session.Item("Empresa")))
                     End If
                 End If
             End If
