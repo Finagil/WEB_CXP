@@ -148,6 +148,7 @@ Public Class frmSinReembolso
         Dim dtDatosFactura As New dsProduccion.vw_CXP_XmlCfdi2_grpUuidDataTable
         Dim taUUIDPagos As New dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter
         Dim taComprobacionGtos As New dsProduccionTableAdapters.CXP_ComprobGtosTableAdapter
+        Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
 
         Dim rptSolPago As New ReportDocument
         Dim folSolPagoFinagil As Integer = 0
@@ -183,7 +184,14 @@ Public Class frmSinReembolso
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             idCuentas = cmbCuentasBancarias.SelectedValue
         Else
-            idCuentas = 0
+            'idCuentas = 0
+            If Session.Item("ref") = "CRE" Then
+                idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim, txtConcepto.Text.Trim)
+            Else
+                idCuentas = 0
+                'txtTipoDeCambio.Text = "1.0000"
+                'monedaPago = "MXN"
+            End If
         End If
 
         'End If
@@ -530,8 +538,39 @@ Public Class frmSinReembolso
                         Exit Sub
                     End If
                 Else
-                    cmbCuentasBancarias.Enabled = False
-                    idCuentas = 0
+                    'cmbCuentasBancarias.Enabled = False
+                    'idCuentas = 0
+                    If Session.Item("ref") = "CRE" Then
+                        datosBancarios = "Banco: " & ddlBancos.SelectedItem.Text & " Cuenta: " & txtCuenta.Text.Trim & " CLABE: " & txtClabe.Text.Trim & " Convenio: " & txtConvenio.Text.Trim & " Referencia: " & txtReferencia.Text.Trim
+                        If IsNothing(Session("afuArchivoCtas")) Then
+                            lblErrorGeneral.Text = "No se ha ingresado el archivo de soporte de los datos bancarios"
+                            ModalPopupExtender1.Show()
+                            Exit Sub
+                        Else
+                            If txtClabe.Text.Trim = String.Empty And txtCuenta.Text.Trim = String.Empty And txtReferencia.Text.Trim = String.Empty And txtConvenio.Text.Trim = String.Empty Then
+                                lblErrorGeneral.Text = "No se ha ingresado al menos uno de los siguientes datos: CLABE, Cuenta o Referencia"
+                                ModalPopupExtender1.Show()
+                                Exit Sub
+                            Else
+                                If txtClabe.Text.Trim <> String.Empty And txtClabe.Text.Trim.Length <> 18 Then
+                                    lblErrorGeneral.Text = "La CLABE debe de ser de 18 digitos"
+                                    ModalPopupExtender1.Show()
+                                    Exit Sub
+                                End If
+                                If txtCuenta.Text.Trim <> String.Empty And txtCuenta.Text.Trim.Length <> 10 Then
+                                    lblErrorGeneral.Text = "La cuenta debe de ser de 10 digitos"
+                                    ModalPopupExtender1.Show()
+                                    Exit Sub
+                                End If
+                            End If
+                        End If
+                    Else
+                        datosBancarios = "SIN DATOS BANCARIOS"
+                        cmbCuentasBancarias.Enabled = False
+                        idCuentas = 0
+                        'monedaPago = "MXN"
+                        'txtTipoDeCambio.Text = "1.0000"
+                    End If
                 End If
                 '******
 
@@ -1159,10 +1198,33 @@ Public Class frmSinReembolso
     End Sub
 
     Protected Sub cmbFormaPago_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFormaPago.SelectedIndexChanged
+        'If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
+        '    cmbCuentasBancarias.Enabled = True
+        'Else
+        '    cmbCuentasBancarias.Enabled = False
+        'End If
+        Session.Item("ref") = taFormaPago.ObtRef_ScalarQuery(cmbFormaPago.SelectedValue)
         If cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("empresa"))) Then
             cmbCuentasBancarias.Enabled = True
-        Else
+            tablaReferenciaBancaria.Visible = False
+            txtCuenta.Enabled = True
+            txtCuenta.ReadOnly = False
+            txtClabe.Enabled = True
+            txtClabe.ReadOnly = False
+        ElseIf Session.Item("ref") = "CHE" Then
             cmbCuentasBancarias.Enabled = False
+            tablaReferenciaBancaria.Visible = False
+            txtCuenta.Enabled = True
+            txtCuenta.ReadOnly = False
+            txtClabe.Enabled = True
+            txtClabe.ReadOnly = False
+        ElseIf Session.Item("ref") = "CRE" Then
+            tablaReferenciaBancaria.Visible = True
+            cmbCuentasBancarias.Enabled = False
+            txtCuenta.Enabled = False
+            txtCuenta.ReadOnly = True
+            txtClabe.Enabled = False
+            txtClabe.ReadOnly = True
         End If
     End Sub
 

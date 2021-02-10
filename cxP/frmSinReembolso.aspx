@@ -209,7 +209,19 @@
         </table>
 
         <table runat="server"  id="tablaBuscar" style="border-color:lightgray;width:95%; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style53">
-            <tr><td colspan="2">Proveedor:</td><td class="auto-style66" colspan="2">Estatus EFOS:<asp:ObjectDataSource ID="ObjectDataSource2" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ClientesAnexosActNoPagados_GetData" TypeName="cxP.dsProduccionTableAdapters.ClientesTableAdapter"></asp:ObjectDataSource>
+            <tr><td colspan="2">Proveedor: 
+                    <asp:ObjectDataSource ID="odsDatosCuenta" runat="server" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CuentasDomiTableAdapter">
+                        <InsertParameters>
+                            <asp:Parameter Name="Anexo" Type="String" />
+                            <asp:Parameter Name="CuentaCLABE" Type="String" />
+                            <asp:Parameter Name="Banco" Type="String" />
+                        </InsertParameters>
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="ddlContratos" DefaultValue="0" Name="Anexo" PropertyName="SelectedValue" Type="String" />
+                        </SelectParameters>
+                </asp:ObjectDataSource>
+                
+                        </td><td class="auto-style66" colspan="2">Estatus EFOS:<asp:ObjectDataSource ID="ObjectDataSource2" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ClientesAnexosActNoPagados_GetData" TypeName="cxP.dsProduccionTableAdapters.ClientesTableAdapter"></asp:ObjectDataSource>
                 </td></tr>
             <tr><td class="auto-style54">
                     &nbsp;<asp:TextBox ID="txtBuscarProveedor" runat="server" Width="150px" Enabled="False"></asp:TextBox>
@@ -305,6 +317,80 @@
                     <asp:TextBox ID="txtFechaPago" runat="server" Width="100px"></asp:TextBox><ajaxToolkit:CalendarExtender ID="cexFechaPago" runat="server" TargetControlID="txtFechaPago" TodaysDateFormat="MMMM, yyyy" Format="dd/MM/yyyy" />
                 </td></tr>
             </table>
+
+            <table visible="false" runat="server" id="tablaReferenciaBancaria" style="border-color:lightgray;width:95%; padding:5px; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style75">
+        <tr>
+            <td style="width:14%">Banco:
+                <asp:FormView ID="FormView5" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
+                    <ItemTemplate>
+                        <asp:Label ID="Banco" runat="server" Text='<%# Bind("Banco") %>' />
+                    </ItemTemplate>
+                </asp:FormView>
+            </td>
+            <td style="width:14%">Cuenta:
+
+             </td>
+            <td style="width:14%">CLABE:
+                <asp:FormView ID="FormView4" runat="server" DataSourceID="odsDatosCuenta" EnableViewState="False" Font-Size="Small" DataKeyNames="Anexo" Visible="False">
+                    <ItemTemplate>
+                        <asp:Label ID="CuentaCLABELabel" runat="server" Text='<%# Bind("CuentaCLABE") %>' />
+                    </ItemTemplate>
+                </asp:FormView>
+             </td>
+            <td style="width:14%">Concepto:</td>
+            <td style="width:14%">Convenio:</td>
+            <td style="width:14%">Referencia:
+
+             </td>
+            <td style="width:21%">Adjunto:<asp:ObjectDataSource ID="odsBancos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="GetData" TypeName="cxP.dsProduccionTableAdapters.CXP_BancosTableAdapter" UpdateMethod="Update">
+                    <DeleteParameters>
+                        <asp:Parameter Name="Original_idBancos" Type="Decimal" />
+                    </DeleteParameters>
+                    <InsertParameters>
+                        <asp:Parameter Name="claveBancos" Type="String" />
+                        <asp:Parameter Name="nombreCorto" Type="String" />
+                        <asp:Parameter Name="razonSocial" Type="String" />
+                        <asp:Parameter Name="rfc" Type="String" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="claveBancos" Type="String" />
+                        <asp:Parameter Name="nombreCorto" Type="String" />
+                        <asp:Parameter Name="razonSocial" Type="String" />
+                        <asp:Parameter Name="rfc" Type="String" />
+                        <asp:Parameter Name="Original_idBancos" Type="Decimal" />
+                    </UpdateParameters>
+                </asp:ObjectDataSource>
+
+             </td>
+        </tr>
+        <tr>
+            <td style="width:14%">
+                <asp:DropDownList ID="ddlBancos" runat="server" DataSourceID="odsBancos" DataTextField="nombreCorto" DataValueField="idBancos" Width="90%">
+                </asp:DropDownList>
+
+             </td>
+            <td style="width:14%">
+                <asp:TextBox ID="txtCuenta" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width:14%">
+                <asp:TextBox ID="txtClabe" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width:14%">
+                <asp:TextBox ID="txtConcepto" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width:14%">
+                <asp:TextBox ID="txtConvenio" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width:14%">
+                <asp:TextBox ID="txtReferencia" runat="server" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width:35%">
+              
+                <ajaxToolkit:AsyncFileUpload ID="afuAdjuntoCta" runat="server" Width="100%" />
+              
+            </td>
+        </tr>
+      </table>
 
         <table visible="false" id="tablaContratos" runat="server" style="border-color:lightgray;width:95%; border-radius:5px; border-style: groove; border-width: 3px; margin-top: 20px; font-weight:600; font-family: Verdana; font-size: 15px; color: darkblue; background-color: #FFE0C0; margin-left: auto; margin-right: auto; margin-bottom: 0;" class="auto-style53">
             <tr><td class="auto-style60">Cuenta bancaria:<asp:ObjectDataSource ID="odsCuentasBancarias" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="CuentasBancarias_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter">
