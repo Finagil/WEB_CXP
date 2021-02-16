@@ -189,7 +189,7 @@ click(function (event) {
             <tr>
                 <td>
                     Proveedor:
-                    <asp:Button ID="Button1" runat="server" Text="Button" Visible="False" />
+                    <asp:Button ID="Button1" runat="server" Text="Button" />
                     <asp:Button ID="Button2" runat="server" Text="PruebURL" PostBackUrl="~/aut2TwoPrvCtas.aspx?idCuentas=66&archivo1=a01a11a3-5fef-4f69-981b-ee5535198723" Visible="False" />
                 </td>
                 <td  >

@@ -1467,7 +1467,7 @@ Public Class frmConComprobante
         Dim taSolicitudPDF As New dsProduccionTableAdapters.Vw_CXP_AutorizacionesTableAdapter
         Dim taObsSolic As New dsProduccionTableAdapters.CXP_ObservacionesSolicitudTableAdapter
         Dim taCtasBancarias As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
-        Dim folio As String = "1656"
+        Dim folio As String = "4260"
         Dim idPago As String = "152"
         Dim estatus As String = "No Pagada"
         Dim dtSolPDF As DataTable

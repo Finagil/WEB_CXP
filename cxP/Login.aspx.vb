@@ -72,6 +72,7 @@
                 Session.Item("idSucursal") = rows.id_Sucursal
                 Session.Item("Empresas") = rows.empresas
                 Session.Item("Web") = rows.perfil
+                Session.Item("jefeAlterno") = rows.jefeAlterno
                 Try
                     Session.Item("Activo") = rows.activo
                 Catch ex As Exception
@@ -93,8 +94,13 @@
                 rowsU = dtDatosUsuario.Rows(0)
                 For Each rowsUser As dsSeguridad.USUARIORow In dtDatosUsuario.Rows
                     If dtDatosUsuario.Rows.Count = 1 Then
-                        Session.Item("Jefe") = rowsU.nombre 'rows.encargadoJefe
-                        Session.Item("mailJefe") = rowsU.correo 'rows.MailJefe
+                        If rows.jefeAlterno = Nothing Then
+                            Session.Item("Jefe") = rowsU.nombre
+                            Session.Item("mailJefe") = rowsU.correo
+                        Else
+                            Session.Item("Jefe") = rows.nomAlterno & vbNewLine & "p. a. " & rowsU.nombre
+                            Session.Item("mailJefe") = rows.mailAlterno
+                        End If
                     End If
                 Next
 
