@@ -347,17 +347,18 @@
                 </td></tr>
             <tr><td class="auto-style80">
                 Forma de pago:
-                </td><td colspan="2">
-                    <asp:DropDownList ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" Font-Size="Small" MaxLength="0" style="display: inline;" Width="50%" AutoPostBack="True">
+                </td><td>
+                    <asp:DropDownList ID="cmbFormaPago" runat="server" DataSourceID="odsFormaPago" DataTextField="descripcion" DataValueField="idTipoDocumento" Font-Size="Small" MaxLength="0" style="display: inline;" Width="90%" AutoPostBack="True">
                     </asp:DropDownList>
+                </td><td rowspan="2">
+                    Contratos del cliente:</td></tr>
+            <tr><td class="auto-style80">
+                Fecha de pago:</td><td>
+                    <asp:TextBox ID="txtFechaPago" runat="server" Width="90%"></asp:TextBox><ajaxToolkit:CalendarExtender ID="cexFechaPago" runat="server" TargetControlID="txtFechaPago" TodaysDateFormat="MMMM, yyyy" Format="dd/MM/yyyy" />
                 </td></tr>
             <tr><td class="auto-style80">
-                Fecha de pago:</td><td colspan="2">
-                    <asp:TextBox ID="txtFechaPago" runat="server" Width="200px"></asp:TextBox><ajaxToolkit:CalendarExtender ID="cexFechaPago" runat="server" TargetControlID="txtFechaPago" TodaysDateFormat="MMMM, yyyy" Format="dd/MM/yyyy" />
-                </td></tr>
-            <tr><td class="auto-style80">
-                Autorizante:</td><td colspan="2">
-                        <asp:DropDownList ID="ddlAutorizo" runat="server" Width="50%" DataSourceID="odsAutorizantes" DataTextField="Nombre" DataValueField="id_correo">
+                Autorizante:</td><td>
+                        <asp:DropDownList ID="ddlAutorizo" runat="server" Width="90%" DataSourceID="odsAutorizantes" DataTextField="Nombre" DataValueField="id_correo">
                             <asp:ListItem></asp:ListItem>
                             <asp:ListItem>Valentin Cruz Barrios</asp:ListItem>
                             <asp:ListItem>Elisander Pineda Rojas</asp:ListItem>
@@ -381,10 +382,18 @@
                                 <asp:Parameter Name="Original_id_correo" Type="Decimal" />
                             </UpdateParameters>
                         </asp:ObjectDataSource>
+                </td><td rowspan="2">
+                    <asp:DropDownList ID="ddlContratosTodos" runat="server" DataSourceID="odsContratosTodos" DataTextField="Anexo" DataValueField="Anexo" Width="50%" Visible="False">
+                    </asp:DropDownList>
+                    <asp:ObjectDataSource ID="odsContratosTodos" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="porRfc_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.Vw_AnexosResumenTableAdapter">
+                        <SelectParameters>
+                            <asp:SessionParameter DefaultValue="0" Name="rfc" SessionField="rfcEmisor" Type="String" />
+                        </SelectParameters>
+                    </asp:ObjectDataSource>
                 </td></tr>
             <tr><td class="auto-style80">
-                Sucursal:</td><td colspan="2">
-                    <asp:DropDownList ID="cmbCentroDeCostos" runat="server" DataSourceID="odsCentroDeCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" Width="50%">
+                Sucursal:</td><td>
+                    <asp:DropDownList ID="cmbCentroDeCostos" runat="server" DataSourceID="odsCentroDeCostos" DataTextField="nombreSucursal" DataValueField="idSucursal" Width="90%">
                     </asp:DropDownList>
                 <asp:ObjectDataSource ID="odsCentroDeCostos" runat="server" DeleteMethod="Delete" InsertMethod="Insert" OldValuesParameterFormatString="original_{0}" SelectMethod="ObtCC_GetDataBy" TypeName="cxP.dsProduccionTableAdapters.CXP_SucursalesTableAdapter" UpdateMethod="Update">
                         <DeleteParameters>

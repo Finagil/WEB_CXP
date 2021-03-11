@@ -25,6 +25,7 @@ Public Class frmConComprobante
     Dim idCuentas As Integer = 0
     Dim tipoDeCambio As Decimal = 1
     Dim lblMoneda As Label
+    Dim utilerias As New utilerias
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
@@ -258,9 +259,11 @@ Public Class frmConComprobante
         Dim taImpuesto As New dsProduccionTableAdapters.CXP_ImpuestoTableAdapter
         Dim taGenCorresoFases As New dsProduccionTableAdapters.GEN_CorreosFasesTableAdapter
         Dim taPeriodos As New dsProduccionTableAdapters.CXP_PeriodosTableAdapter
+        Dim taCuentasBanco As New dsProduccionTableAdapters.CXP_CuentaBancoTableAdapter
         Dim monedaPago As String = ""
         Dim importeOtrosGastosIngresos As Decimal = 0
         Dim banderaOtrosIngresos As String = ""
+
 
 
 
@@ -275,6 +278,17 @@ Public Class frmConComprobante
         Else
             If cmbFormaPago.SelectedIndex = 2 Then
                 idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMonedas.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim, txtConcepto.Text.Trim)
+                If txtReferencia.Text <> String.Empty And txtConvenio.Text = String.Empty Then
+                    'inserta solo valor de referencia
+                    If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtReferencia.Text.Trim), "TCR") = "NE" Then
+                        taCuentasBanco.Insert(txtReferencia.Text.Trim, ddlMonedas.SelectedValue, ddlProveedores.SelectedItem.Text, "TCR", False)
+                    End If
+                ElseIf txtConvenio.Text <> String.Empty Then
+                    'inserta valor del convenio
+                    If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtConvenio.Text.Trim), "CIE") = "NE" Then
+                        taCuentasBanco.Insert(txtConvenio.Text.Trim, ddlMonedas.SelectedValue, ddlProveedores.SelectedItem.Text, "CIE", False)
+                    End If
+                End If
             Else
                 cmbCuentasBancarias.Enabled = False
                 idCuentas = 0
@@ -330,6 +344,15 @@ Public Class frmConComprobante
                 Dim folioPolizaDiario As Integer = 0
                 Dim banderaRegistroContable As String = "NO"
 
+                Dim dtPeriodos As New dsProduccion.CXP_PeriodosDataTable
+                Dim rwPeriodos As dsProduccion.CXP_PeriodosRow
+                Dim fechaRegistro As String = "True"
+
+                taPeriodos.Estatus_FillBy(dtPeriodos, CInt(Session.Item("Empresa")))
+                If dtPeriodos.Rows.Count > 0 Then
+                    rwPeriodos = dtPeriodos.Rows(0)
+                End If
+
                 folSolPagoFinagil = taEmpresas.ConsultaFolio(Session.Item("Empresa"))
 
                 Session.Item("namePDF") = Session.Item("Empresa") & "-" & folSolPagoFinagil
@@ -344,13 +367,23 @@ Public Class frmConComprobante
                         If chkContrato.Checked = False And taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = 1 Then
                             If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)) <> 0 Then
                                 fechaRegistroCont = CDate(rows2.fechaEmision)
+                                fechaRegistro = "True"
 
                                 If fechaRegistroCont.Month >= Date.Now.Month Then
                                     folioPolizaDiario = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
                                     fechaRegistroCont = Date.Now
                                 Else
-                                    fechaRegistroCont = Date.Now.AddDays(-Now.Day + 1).AddDays(-1)
-                                    folioPolizaDiario = taPeriodos.ConsultaFolio_ScalarQuery(fechaRegistroCont.Year, fechaRegistroCont.Month, CInt(Session.Item("Empresa")))
+
+                                    If rwPeriodos.estatus = 31 Then
+                                        fechaRegistroCont = rwPeriodos.finPeriodo
+                                        folioPolizaDiario = taPeriodos.ConsultaFolio_ScalarQuery(fechaRegistroCont.Year, fechaRegistroCont.Month, CInt(Session.Item("Empresa")))
+                                        fechaRegistro = "False"
+                                    Else
+                                        folioPolizaDiario = CInt(taTipoDocumento.ConsultaFolio(CInt(Session.Item("tipoPoliza"))))
+                                        fechaRegistroCont = Date.Now
+                                        fechaRegistro = "True"
+                                    End If
+
                                 End If
                             End If
                         End If
@@ -365,14 +398,14 @@ Public Class frmConComprobante
                     Dim txtPorcentaje As TextBox = rows.Cells(11).FindControl("txtPorcentaje")
                     'Dim generaEvento As Boolean = taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue)
 
-                    If ddlConc.SelectedValue = 144 Then
+                    If ddlConc.SelectedValue = 144 And Session.Item("jAlterno") = "False" Then
                         If Session.Item("Usuario") = "atorres" Then
                             Session.Item("mailJefe") = "atorres@finagil.com.mx"
                             Session.Item("Jefe") = "CP ABRAHAM TORRES"
                         End If
                     End If
 
-                        Dim GeneraEventoContable As Boolean = False
+                    Dim GeneraEventoContable As Boolean = False
                     If chkg.Checked = True Then
                         'If taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = True Then
                         '    GeneraEventoContable = True
@@ -581,11 +614,9 @@ Public Class frmConComprobante
                                     If CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)) <> 0 And CDec(taConceptos.ObtCtaIngreso_ScalarQuery(ddlConc.SelectedValue)) <> 0 Then
                                         If existeUUIDReg = "NE" Then
                                             banderaRegistroContable = "SI"
-                                            'If rows2.total = rows2.subTotal And rows2.tasaOCuota = 0.000000 Then
-                                            '    taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), CDec(rows2.subTotal), 0, rows2.rfcEmisor & " Tasa 0%", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
-                                            'Else
-                                            taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), CDec(rows2.subTotal), 0, rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
-                                            'End If
+                                            '***** se comenta para dividir importe en cada concepto
+                                            'taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), CDec(rows2.subTotal), 0, rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+
                                         Else
                                             taRegContable.ActualizaFolioSol_UpdateQuery(folSolPagoFinagil, rows2.uuid, CInt(Session.Item("Empresa")))
                                         End If
@@ -603,19 +634,22 @@ Public Class frmConComprobante
                                                 If existeUUIDReg = "NE" Then
                                                     'taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.mTras, 0, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, "F-" & row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                     If rowsCfdi.tipoFactor = "Exento" Then
-                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.base, 0, rows2.rfcEmisor & " Exento", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), Math.Round(CDec(rowsCfdi.base), 2), 0, rows2.rfcEmisor & " Exento", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                     ElseIf rowsCfdi.tipoFactor = "No Objeto" Then
-                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.importeCon, 0, rows2.rfcEmisor & " No Obj", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), Math.Round(CDec(rowsCfdi.importeCon), 2), 0, rows2.rfcEmisor & " No Obj", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                     ElseIf rowsCfdi.tipoFactor = "Tasa" And CDec(rowsCfdi.mTras) = 0 And rowsCfdi.total <> rowsCfdi.subTotal Then
-                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.base, 0, rows2.rfcEmisor & " Tasa 0%", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), Math.Round(CDec(rowsCfdi.base), 2), 0, rows2.rfcEmisor & " Tasa 0%", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                     ElseIf rowsCfdi.tipoFactor = "Tasa" And CDec(rowsCfdi.mTras) > 0 Then
-                                                        'taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.base, 0, rows2.rfcEmisor, "F-" & row("serie") & " " & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
-                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.mTras, 0, rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+
+                                                        ''***** se quita comentario para dividir importe en cada concepto
+                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaEgreso_ScalarQuery(ddlConc.SelectedValue)), CDec(ddlProveedores.SelectedValue), Math.Round(CDec(rowsCfdi.importeCon), 2), 0, rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+
+                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), Math.Round(CDec(rowsCfdi.mTras), 2), 0, rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                     End If
                                                 End If
                                             Else
                                                 If rowsCfdi.tipoFactor = "No Objeto" Then
-                                                    taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), rowsCfdi.importeCon, 0, rows2.rfcEmisor & " No Obj", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                                    taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), Math.Round(CDec(rowsCfdi.importeCon), 2), 0, rows2.rfcEmisor & " No Obj", "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                 End If
                                             End If
                                             If rowsCfdi.mRet <> "X" Then
@@ -624,7 +658,7 @@ Public Class frmConComprobante
                                                 tipo = "Federal"
                                                 'taPagoImpuestos.Insert(rowsCfdi.Impuesto, mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), rowsCfdi.uuid)
                                                 If existeUUIDReg = "NE" Then
-                                                    taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mRet, taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                                    taRegContable.Insert(CDec(taConceptos.ObtCtaImp_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo)), CDec(ddlProveedores.SelectedValue), 0, Math.Round(CDec(rowsCfdi.mRet), 2), taConceptos.ObtCtaImpDesc_ScalarQuery(ddlConc.SelectedValue, rowsCfdi.Impuesto, efecto, rowsCfdi.tipoFactor, tipo) & " " & rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                 End If
                                             End If
 
@@ -635,7 +669,7 @@ Public Class frmConComprobante
                                                     tipo = "Local"
                                                     'taPagoImpuestos.Insert(rowsCfdi.Impuesto & "L", mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA")), rowsCfdi.uuid)
                                                     If existeUUIDReg = "NE" Then
-                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA")), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mLocTra, taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA") & " " & rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA")), CDec(ddlProveedores.SelectedValue), 0, Math.Round(CDec(rowsCfdi.mLocTra), 2), taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "TRA") & " " & rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                     End If
                                                 End If
 
@@ -645,7 +679,7 @@ Public Class frmConComprobante
                                                     tipo = "Local"
                                                     'taPagoImpuestos.Insert(rowsCfdi.Impuesto & "L", mPago, folSolPagoFinagil, CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET")), rowsCfdi.uuid)
                                                     If existeUUIDReg = "NE" Then
-                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET")), CDec(ddlProveedores.SelectedValue), 0, rowsCfdi.mLocRet, taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET") & " " & rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
+                                                        taRegContable.Insert(CDec(taConceptos.ObtCtaImpLoc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET")), CDec(ddlProveedores.SelectedValue), 0, Math.Round(CDec(rowsCfdi.mLocRet), 2), taConceptos.ObtctaImpLocDesc_ScalarQuery(ddlConc.SelectedValue, tipo, "RET") & " " & rows2.rfcEmisor, "F-" & row("folio") & " " & row("observaciones"), CInt(Session.Item("tipoPoliza")), folioPolizaDiario, CInt(Session.Item("Empresa")), rows2.uuid, folSolPagoFinagil, fechaRegistroCont, 29, ddlConc.SelectedItem.Value, CInt(Session.Item("idPeriodo")))
                                                     End If
                                                 End If
                                             End If
@@ -674,17 +708,6 @@ Public Class frmConComprobante
                                 End If
 #End Region
 
-#Region "ProvisionEgreso"
-
-                                'If taConceptos.GeneraEventoCont_ScalarQuery(ddlConc.SelectedValue) = False Then
-                                '    Dim taRegContPago As New dsProduccionTableAdapters.CXP_RegContPagoTableAdapter
-                                '    Dim folioPolizaEgreso As Integer = taTipoDocumento.ConsultaFolioPEgreso(Session.Item("Empresa"))
-                                '    taRegContPago.Insert(CDec(Session.Item("Empresa")), CDec(ddlProveedores.SelectedValue), 0, 0, CDec(taConceptos.ObtCtaAbonoPago(ddlConc.SelectedValue)), CDec(row("total")), 0, Date.Now, Date.Now, "ABIERTO", Session.Item("Usuario"), CDec(taEmpresas.ObtieneCtaEgreso_ScalarQuery(Session.Item("Empresa"))), folioPolizaEgreso)
-                                '    taRegContPago.Insert(CDec(Session.Item("Empresa")), CDec(ddlProveedores.SelectedValue), 0, 0, CDec(taConceptos.ObtCtaCargoPago(ddlConc.SelectedValue)), 0, CDec(row("total")), Date.Now, Date.Now, "ABIERTO", Session.Item("Usuario"), CDec(taEmpresas.ObtieneCtaEgreso_ScalarQuery(Session.Item("Empresa"))), folioPolizaEgreso)
-                                '    taTipoDocumento.ConsumeFolioPEgreso(Session.Item("Empresa"))
-                                'End If
-
-#End Region
                             End If
 
                             dtDetalle.Rows.Add(row)
@@ -751,7 +774,12 @@ Public Class frmConComprobante
                         Else
                             'fechaRegistroCont = Date.Now.AddDays(-Now.Day + 1).AddDays(-1)
                             'folioPolizaDiario = taPeriodos.ConsultaFolio_ScalarQuery(fechaRegistroCont.Year, fechaRegistroCont.Month, CInt(Session.Item("Empresa")))
-                            taPeriodos.ConsumeFolio_UpdateQuery(fechaRegistroCont.Year, fechaRegistroCont.Month, CInt(Session.Item("Empresa")))
+                            If rwPeriodos.estatus = 31 Then
+                                taPeriodos.ConsumeFolio_UpdateQuery(fechaRegistroCont.Year, fechaRegistroCont.Month, CInt(Session.Item("Empresa")))
+                            Else
+                                taTipoDocumento.ConsumeFolio(CInt(Session.Item("tipoPoliza")))
+                            End If
+
                         End If
                     End If
                     'Genera PDF

@@ -17,6 +17,7 @@ Public Class frmSinComprobante
     Dim taFormaPago As New dsProduccionTableAdapters.CXP_tipoDocumentoSatTableAdapter
     Dim idCuentas As Integer = 0
     Dim monedaPago As String = ""
+    Dim utilerias As New utilerias
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Session.Item("Usuario") = "" Or Session.Item("Usuario") = "0" Then
@@ -180,6 +181,7 @@ Public Class frmSinComprobante
         Dim taPagosTesoreria As New dsProduccionTableAdapters.CXP_PagosTesoreriaTableAdapter
         Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
         Dim taTipoDeCambio As New dsProduccionTableAdapters.CONT_TiposDeCambioTableAdapter
+        Dim taCuentasBanco As New dsProduccionTableAdapters.CXP_CuentaBancoTableAdapter
 
         Dim guuidAdjuntoCtas As String = Guid.NewGuid.ToString
 
@@ -209,7 +211,19 @@ Public Class frmSinComprobante
                     If taConceptos.ObtExigirCtaBancaria__ScalarQuery(ddlConcepto.SelectedValue) = "SI" Then
                         If Session.Item("ref") = "CRE" Then
                             idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim, txtConcepto.Text.Trim)
-                        ElseIf Session.Item("ref") = "TRE" Then
+                            If txtReferencia.Text <> String.Empty And txtConvenio.Text = String.Empty Then
+                                'inserta solo valor de referencia
+                                If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtReferencia.Text.Trim), "TCR") = "NE" Then
+                                    taCuentasbanco.Insert(txtReferencia.Text.Trim, ddlMoneda.SelectedValue, ddlProveedor.SelectedItem.Text, "TCR", False)
+                                End If
+                            ElseIf txtConvenio.Text <> String.Empty Then
+                                'inserta valor del convenio
+                                If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtConvenio.Text.Trim), "CIE") = "NE" Then
+                                    taCuentasbanco.Insert(txtConvenio.Text.Trim, ddlMoneda.SelectedValue, ddlProveedor.SelectedItem.Text, "CIE", False)
+                                End If
+                            End If
+
+                            ElseIf Session.Item("ref") = "TRE" Then
                             idCuentas = cmbCuentasBancarias.SelectedValue
                         ElseIf Session.Item("ref") = "CHE" Then
                             idCuentas = 0
@@ -229,6 +243,17 @@ Public Class frmSinComprobante
                 Else
                     If Session.Item("ref") = "CRE" Then
                         idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim, txtConcepto.Text.Trim)
+                        If txtReferencia.Text <> String.Empty And txtConvenio.Text = String.Empty Then
+                            'inserta solo valor de referencia
+                            If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtReferencia.Text.Trim), "TCR") = "NE" Then
+                                taCuentasbanco.Insert(txtReferencia.Text.Trim, ddlMoneda.SelectedValue, ddlProveedor.SelectedItem.Text, "TCR", False)
+                            End If
+                        ElseIf txtConvenio.Text <> String.Empty Then
+                            'inserta valor del convenio
+                            If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtConvenio.Text.Trim), "CIE") = "NE" Then
+                                taCuentasbanco.Insert(txtConvenio.Text.Trim, ddlMoneda.SelectedValue, ddlProveedor.SelectedItem.Text, "CIE", False)
+                            End If
+                        End If
                     Else
                         idCuentas = 0
                         txtTipoDeCambio.Text = "1.0000"
@@ -1042,6 +1067,11 @@ Public Class frmSinComprobante
                 cmbCentroDeCostos.SelectedValue = taSucursales.ObtSucursalXUsuario_ScalarQuery(Session.Item("Usuario"))
                 cmbFormaPago.SelectedValue = taFormaPago.ObtFormaPago_ScalarQuery(CDec(Session.Item("Empresa")))
         End Select
+        If ddlConcepto.SelectedValue = 61 Or ddlConcepto.SelectedValue = 101 Or ddlConcepto.SelectedValue = 102 Or ddlConcepto.SelectedValue = 103 Or ddlConcepto.SelectedValue = 117 Then
+            ddlContratosTodos.Visible = True
+        Else
+            ddlContratosTodos.Visible = False
+        End If
     End Sub
 
     Protected Sub ddlConcepto_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlConcepto.SelectedIndexChanged
@@ -1067,6 +1097,11 @@ Public Class frmSinComprobante
             contenedor2ID.Visible = False
             chkContrato.Enabled = True
             fupCarteNeteo.Enabled = True
+        End If
+        If ddlConcepto.SelectedValue = 61 Or ddlConcepto.SelectedValue = 101 Or ddlConcepto.SelectedValue = 102 Or ddlConcepto.SelectedValue = 103 Or ddlConcepto.SelectedValue = 117 Then
+            ddlContratosTodos.Visible = True
+        Else
+            ddlContratosTodos.Visible = False
         End If
     End Sub
 

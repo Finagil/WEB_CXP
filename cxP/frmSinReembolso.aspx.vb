@@ -20,6 +20,7 @@ Public Class frmSinReembolso
     Dim taSucursales As New dsProduccionTableAdapters.CXP_SucursalesTableAdapter
     Dim taFormaPago As New dsProduccionTableAdapters.CXP_tipoDocumentoSatTableAdapter
     Dim idCuentas As Integer = 0
+    Dim utilerias As New utilerias
 
 
 
@@ -149,6 +150,7 @@ Public Class frmSinReembolso
         Dim taUUIDPagos As New dsProduccionTableAdapters.vw_CXP_XmlCfdi2_grpUuidTableAdapter
         Dim taComprobacionGtos As New dsProduccionTableAdapters.CXP_ComprobGtosTableAdapter
         Dim taCuentasProv As New dsProduccionTableAdapters.CXP_CuentasBancariasProvTableAdapter
+        Dim taCuentasBanco As New dsProduccionTableAdapters.CXP_CuentaBancoTableAdapter
 
         Dim rptSolPago As New ReportDocument
         Dim folSolPagoFinagil As Integer = 0
@@ -187,6 +189,17 @@ Public Class frmSinReembolso
             'idCuentas = 0
             If Session.Item("ref") = "CRE" Then
                 idCuentas = taCuentasProv.NuevaCuenta_ScalarQuery(0, ddlBancos.SelectedValue, txtCuenta.Text, txtClabe.Text, "PAGO CON REFERENCIA ", ddlMoneda.SelectedValue, Session.Item("guuidArchivoCtas"), True, Session.Item("usuario"), Nothing, Nothing, Nothing, Date.Now, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, System.Data.SqlTypes.SqlDateTime.Null, 11, txtReferencia.Text.Trim, txtConvenio.Text.Trim, txtConcepto.Text.Trim)
+                If txtReferencia.Text <> String.Empty And txtConvenio.Text = String.Empty Then
+                    'inserta solo valor de referencia
+                    If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtReferencia.Text.Trim), "TCR") = "NE" Then
+                        taCuentasbanco.Insert(txtReferencia.Text.Trim, ddlMoneda.SelectedValue, ddlProveedor.SelectedItem.Text, "TCR", False)
+                    End If
+                ElseIf txtConvenio.Text <> String.Empty Then
+                    'inserta valor del convenio
+                    If taCuentasbanco.existeCuenta_ScalarQuery(utilerias.obtNumCadena(txtConvenio.Text.Trim), "CIE") = "NE" Then
+                        taCuentasbanco.Insert(txtConvenio.Text.Trim, ddlMoneda.SelectedValue, ddlProveedor.SelectedItem.Text, "CIE", False)
+                    End If
+                End If
             Else
                 idCuentas = 0
                 'txtTipoDeCambio.Text = "1.0000"
@@ -1294,6 +1307,10 @@ Public Class frmSinReembolso
     End Sub
 
     Protected Sub txtRevision_TextChanged(sender As Object, e As EventArgs) Handles txtRevision.TextChanged
+
+    End Sub
+
+    Protected Sub txtConvenio_TextChanged(sender As Object, e As EventArgs) Handles txtConvenio.TextChanged
 
     End Sub
 End Class

@@ -48,4 +48,18 @@ Public Class utilerias
         End If
         Return True
     End Function
+
+    Public Function obtNumCadena(cadena As String)
+        Dim str As String = String.Empty
+        For i = 0 To cadena.Trim().Length - 1
+            Try
+                If IsNumeric(cadena.Substring(i, 1)) Then
+                    str += cadena.Substring(i, 1)
+                End If
+            Catch exp As Exception
+                str = ""
+            End Try
+        Next
+        Return str
+    End Function
 End Class

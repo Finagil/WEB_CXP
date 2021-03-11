@@ -21,7 +21,7 @@
             'If Date.Now.Day = 1 Then
             If Date.Now.Month > 1 Then
                 If taPeriodos.ExistePeriodo_ScalarQuery(Date.Now.Year, Date.Now.Month - 1, CDec(Session.Item("Empresa"))) = -1 Then
-                    taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & Date.Now.Year.ToString, 31, Date.Now.Year.ToString, CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month - 1))
+                    taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & Date.Now.Year.ToString, Date.Now.AddMonths(1).AddDays(-1), 31, Date.Now.Year.ToString, CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month - 1))
                     If Session.Item("Empresa") = "24" Then
                         taTipoDeDocumento.ReiniciaFolio_UpdateQuery(49, taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
                         taTipoDeDocumento.ReiniciaFoliosEgresos_UpdateQuery(0, CDec(Session.Item("Empresa")))
@@ -32,7 +32,7 @@
                 End If
             Else
                 If taPeriodos.ExistePeriodo_ScalarQuery(Date.Now.Year, Date.Now.Month, CDec(Session.Item("Empresa"))) = -1 Then
-                    taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & CStr(Date.Now.Year - 1), 31, CStr(Date.Now.Year - 1), CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month))
+                    taPeriodos.Insert(MonthName(Date.Now.Month - 1) & " " & CStr(Date.Now.Year - 1), Date.Now.AddMonths(1).AddDays(-1), 31, CStr(Date.Now.Year - 1), CDec(Session.Item("Empresa")), CStr(CDec(taTipoDeDocumento.ConsultaFolio(taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))) - 1), CStr(Date.Now.Month))
                     If Session.Item("Empresa") = "24" Then
                         taTipoDeDocumento.ReiniciaFolio_UpdateQuery(49, taEmpresas.ObtPolizaDiario_ScalarQuery(CDec(Session.Item("Empresa"))))
                         taTipoDeDocumento.ReiniciaFoliosEgresos_UpdateQuery(0, CDec(Session.Item("Empresa")))
@@ -97,9 +97,11 @@
                         If rows.jefeAlterno = Nothing Then
                             Session.Item("Jefe") = rowsU.nombre
                             Session.Item("mailJefe") = rowsU.correo
+                            Session.Item("jAlterno") = "False"
                         Else
                             Session.Item("Jefe") = rows.nomAlterno & vbNewLine & "p. a. " & rowsU.nombre
                             Session.Item("mailJefe") = rows.mailAlterno
+                            Session.Item("jAlterno") = "True"
                         End If
                     End If
                 Next

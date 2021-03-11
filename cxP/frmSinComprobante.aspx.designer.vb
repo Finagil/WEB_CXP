@@ -491,6 +491,24 @@ Partial Public Class frmSinComprobante
     Protected WithEvents odsAutorizantes As Global.System.Web.UI.WebControls.ObjectDataSource
     
     '''<summary>
+    '''Control ddlContratosTodos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ddlContratosTodos As Global.System.Web.UI.WebControls.DropDownList
+    
+    '''<summary>
+    '''Control odsContratosTodos.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents odsContratosTodos As Global.System.Web.UI.WebControls.ObjectDataSource
+    
+    '''<summary>
     '''Control cmbCentroDeCostos.
     '''</summary>
     '''<remarks>
